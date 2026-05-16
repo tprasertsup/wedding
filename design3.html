@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nine & Tom — July 11, 2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: #fefefe;
+      color: #2d3a2e;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── CSS Variables ────────────────────────────────────────── */
+    :root {
+      --sage:       #7a9b72;
+      --sage-light: #a8bf9f;
+      --sage-dark:  #2d3a2e;
+      --blush:      #e8c4c0;
+      --dusty-rose: #d4968e;
+      --warm-tan:   #c9a87c;
+      --text-dark:  #2d3a2e;
+      --text-med:   #6b7d6c;
+      --cream:      #faf7f2;
+      --border:     #d8e4d4;
+      --peach-soft: #f5ebe4;
+      --shadow:     0 4px 30px rgba(0,0,0,0.06);
+      --shadow-md:  0 8px 40px rgba(0,0,0,0.10);
+      --radius:     16px;
+      --radius-sm:  10px;
+    }
+
+    /* ── Typography ───────────────────────────────────────────── */
+    h1, h2, h3 { line-height: 1.2; }
+    .playfair  { font-family: 'Playfair Display', serif; }
+    .dm-serif  { font-family: 'DM Serif Display', serif; }
+    .dm-sans   { font-family: 'DM Sans', sans-serif; }
+    p { color: var(--text-med); }
+
+    /* ── Scroll animations ────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── NAV ──────────────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(254,254,254,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(1.5rem, 5vw, 3.5rem);
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--sage);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-med);
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--sage);
+      border-color: var(--sage);
+    }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--sage);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(165deg, #fefefe 60%, #f0f5ee 100%);
+    }
+
+    /* Botanical corner decorations */
+    .botanical {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.18;
+    }
+    .bot-tl {
+      top: 0; left: 0;
+      width: 280px; height: 280px;
+    }
+    .bot-br {
+      bottom: 0; right: 0;
+      width: 280px; height: 280px;
+      transform: rotate(180deg);
+    }
+    .bot-tr {
+      top: 0; right: 0;
+      width: 200px; height: 200px;
+      transform: scaleX(-1);
+    }
+    .bot-bl {
+      bottom: 0; left: 0;
+      width: 200px; height: 200px;
+      transform: scaleY(-1);
+    }
+
+    /* SVG leaf cluster */
+    .leaf-svg { animation: sway 6s ease-in-out infinite; transform-origin: bottom center; }
+    @keyframes sway {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      33%       { transform: rotate(2deg) scale(1.01); }
+      66%       { transform: rotate(-1.5deg) scale(0.99); }
+    }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.3s forwards;
+    }
+    .hero-names {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.4rem, 9vw, 7.5rem);
+      font-style: italic;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 1s 0.55s forwards;
+    }
+    .hero-names span { color: var(--sage); }
+    .hero-ampersand {
+      display: inline-block;
+      color: var(--dusty-rose);
+      font-style: normal;
+      font-size: 0.7em;
+    }
+    .hero-date {
+      margin-top: 1.5rem;
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      color: var(--text-med);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.75s forwards;
+    }
+    .hero-divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--sage-light), transparent);
+      margin: 1.6rem auto;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.9s forwards;
+    }
+    .hero-location {
+      font-size: 0.95rem;
+      color: var(--text-med);
+      opacity: 0;
+      animation: fadeUp 0.9s 1s forwards;
+    }
+    .hero-location strong { color: var(--sage); font-weight: 500; }
+
+    /* Countdown */
+    .countdown {
+      display: flex;
+      gap: clamp(1rem, 3vw, 2.5rem);
+      margin-top: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 1.15s forwards;
+    }
+    .cd-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .cd-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1;
+      min-width: 2.5ch;
+      text-align: center;
+    }
+    .cd-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-med);
+      font-weight: 500;
+    }
+    .cd-sep {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--border);
+      align-self: flex-start;
+      padding-top: 0.25rem;
+      line-height: 1;
+    }
+
+    /* Scroll indicator */
+    .scroll-cue {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: fadeIn 1s 1.6s forwards;
+      color: var(--text-med);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .scroll-cue-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(180deg, var(--sage-light), transparent);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+      50%       { opacity: 1; transform: scaleY(1); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── SECTION SHARED ───────────────────────────────────────── */
+    section {
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 6vw, 4rem);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-label::before, .section-label::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--sage-light);
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.9rem, 4vw, 2.9rem);
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+
+    /* ── COUPLE SECTION ───────────────────────────────────────── */
+    #couple {
+      max-width: 100%;
+      padding: 0;
+    }
+    .couple-inner {
+      background: linear-gradient(135deg, #f2f7f0, #faf7f2);
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 6vw, 4rem);
+    }
+    .couple-intro {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 4rem;
+    }
+    .couple-intro .section-label { justify-content: center; }
+    .couple-tagline {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+      color: var(--text-dark);
+      line-height: 1.5;
+      margin-top: 1rem;
+    }
+    .couple-tagline span { color: var(--sage); }
+    .couple-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .portrait-card {
+      text-align: center;
+      background: #fefefe;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .portrait-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+    }
+    .portrait-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .portrait-circle-bride {
+      background: radial-gradient(circle at 35% 35%, var(--blush), var(--dusty-rose) 80%);
+    }
+    .portrait-circle-groom {
+      background: radial-gradient(circle at 35% 35%, #b8d0b4, var(--sage) 80%);
+    }
+    .portrait-circle::after {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.5);
+    }
+    .portrait-initials {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.9);
+      font-weight: 700;
+    }
+    .portrait-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-style: italic;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.2rem;
+    }
+    .portrait-fullname {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--sage);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .portrait-bio {
+      font-size: 0.92rem;
+      color: var(--text-med);
+      line-height: 1.75;
+    }
+    .portrait-detail {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--sage);
+      font-weight: 500;
+      margin-top: 1rem;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    /* ── CEREMONY ─────────────────────────────────────────────── */
+    #ceremony { text-align: center; }
+    .ceremony-header { margin-bottom: 3.5rem; }
+    .ceremony-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      text-align: left;
+    }
+    .ceremony-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 2.5rem 2.2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .ceremony-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+    .ceremony-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .ceremony-card.afternoon::before { background: linear-gradient(90deg, var(--blush), var(--dusty-rose)); }
+    .ceremony-card.evening::before   { background: linear-gradient(90deg, var(--sage-light), var(--sage)); }
+    .card-time {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--text-dark);
+      margin-bottom: 0.2rem;
+    }
+    .card-time-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-med);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+    .program-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .program-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.93rem;
+      color: var(--text-med);
+      line-height: 1.55;
+    }
+    .program-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sage-light);
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+    .ceremony-card.afternoon .program-dot { background: var(--blush); }
+    .ceremony-note {
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--sage);
+      font-style: italic;
+      font-family: 'DM Serif Display', serif;
+    }
+
+    /* ── DRESS CODE ───────────────────────────────────────────── */
+    #dresscode {
+      max-width: 100%;
+      padding: 0;
+      background: var(--peach-soft);
+    }
+    .dresscode-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 6vw, 4rem);
+      text-align: center;
+    }
+    .dresscode-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-style: italic;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin: 1rem 0 0.5rem;
+    }
+    .dresscode-sub {
+      max-width: 540px;
+      margin: 0 auto 3rem;
+      font-size: 0.97rem;
+      color: var(--text-med);
+    }
+    .palette-strip {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: default;
+    }
+    .swatch-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .swatch:hover .swatch-circle {
+      transform: scale(1.12) translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+    .swatch-name {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-med);
+      font-weight: 500;
+      text-align: center;
+      max-width: 70px;
+    }
+    .dresscode-note {
+      max-width: 580px;
+      margin: 1.5rem auto 0;
+      font-size: 0.93rem;
+      color: var(--text-med);
+      font-style: italic;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+    }
+    .dresscode-note span { color: var(--sage); }
+
+    /* ── VENUE ────────────────────────────────────────────────── */
+    #venue { }
+    .venue-header { margin-bottom: 3rem; }
+    .venue-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    .venue-details { }
+    .venue-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.7rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+    .venue-info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .venue-info-list li {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .venue-info-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      font-weight: 600;
+    }
+    .venue-info-value {
+      font-size: 0.97rem;
+      color: var(--text-dark);
+      font-weight: 400;
+    }
+    .venue-btn {
+      display: inline-block;
+      padding: 0.8rem 1.8rem;
+      background: var(--sage-dark);
+      color: #fefefe;
+      text-decoration: none;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .venue-btn:hover { background: var(--sage); transform: translateY(-2px); }
+    .venue-map {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+    .venue-map iframe {
+      width: 100%;
+      height: 400px;
+      display: block;
+      border: none;
+    }
+
+    /* ── RSVP ─────────────────────────────────────────────────── */
+    #rsvp {
+      max-width: 100%;
+      padding: 0;
+      background: linear-gradient(160deg, #f0f5ee, #faf7f2 60%);
+    }
+    .rsvp-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 6vw, 3rem);
+    }
+    .rsvp-header { text-align: center; margin-bottom: 3rem; }
+    .rsvp-deadline {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dusty-rose);
+      font-weight: 600;
+      background: rgba(212,150,142,0.12);
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+    }
+
+    /* Form */
+    .form-card {
+      background: #fefefe;
+      border-radius: var(--radius);
+      padding: clamp(2rem, 5vw, 3rem);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background: #fefefe;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    input::placeholder, textarea::placeholder { color: #b0bdb1; }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(122,155,114,0.14);
+    }
+    textarea { resize: vertical; min-height: 110px; }
+
+    /* Session cards */
+    .session-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-bottom: 1.4rem;
+    }
+    .session-card {
+      position: relative;
+    }
+    .session-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+    .session-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1.1rem 0.75rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      background: var(--cream);
+      transition: all 0.2s;
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-med);
+      line-height: 1.3;
+    }
+    .session-label .icon { font-size: 1.5rem; }
+    .session-card input:checked + .session-label {
+      border-color: var(--sage);
+      background: rgba(122,155,114,0.08);
+      color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(122,155,114,0.14);
+    }
+    .session-label:hover {
+      border-color: var(--sage-light);
+      background: rgba(168,191,159,0.1);
+    }
+
+    /* Plus one toggle */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.4rem;
+    }
+    .toggle-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dark);
+    }
+    .toggle-switch {
+      display: flex;
+      gap: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 30px;
+      overflow: hidden;
+    }
+    .toggle-switch input[type="radio"] { display: none; }
+    .toggle-switch label {
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--text-med);
+      background: transparent;
+      margin: 0;
+      transition: background 0.2s, color 0.2s;
+    }
+    .toggle-switch input:checked + label {
+      background: var(--sage);
+      color: #fefefe;
+    }
+    .plus-one-field {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .plus-one-field.open {
+      max-height: 120px;
+      opacity: 1;
+    }
+
+    /* Blessing */
+    .blessing-box {
+      border: 2px solid var(--blush);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(232,196,192,0.12), rgba(250,247,242,1));
+      margin-bottom: 1.4rem;
+    }
+    .blessing-title {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--dusty-rose);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .blessing-box textarea {
+      border-color: rgba(232,196,192,0.6);
+      background: rgba(255,255,255,0.7);
+    }
+    .blessing-box textarea:focus {
+      border-color: var(--blush);
+      box-shadow: 0 0 0 3px rgba(232,196,192,0.2);
+    }
+
+    /* Submit */
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--sage);
+      color: #fefefe;
+      border: none;
+      border-radius: 40px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 4px 20px rgba(122,155,114,0.35);
+    }
+    .form-submit:hover {
+      background: var(--sage-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(122,155,114,0.4);
+    }
+    .form-submit:active { transform: translateY(0); }
+
+    /* Success */
+    .rsvp-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .rsvp-success.show { display: block; }
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .success-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+    .success-msg { color: var(--text-med); font-size: 0.97rem; }
+
+    /* Confetti */
+    .confetti-piece {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 2px;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    footer {
+      background: var(--sage-dark);
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 0.5rem;
+    }
+    .footer-names {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-style: italic;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .footer-date {
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-light);
+      margin-bottom: 2rem;
+    }
+    .footer-divider {
+      width: 50px;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      margin: 1.5rem auto;
+    }
+    .footer-tagline {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 62px; left: 0; right: 0;
+        background: rgba(254,254,254,0.97);
+        padding: 1.5rem 2rem 2rem;
+        border-bottom: 1px solid var(--border);
+        gap: 1.2rem;
+      }
+      .nav-hamburger { display: flex; }
+      .couple-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+      .ceremony-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .session-grid { grid-template-columns: 1fr 1fr; }
+      .venue-layout { grid-template-columns: 1fr; }
+      .venue-map iframe { height: 280px; }
+      .bot-tr, .bot-bl { display: none; }
+      .countdown { gap: 0.8rem; }
+      .cd-sep { font-size: 1.4rem; padding-top: 0.15rem; }
+    }
+    @media (max-width: 480px) {
+      .session-grid { grid-template-columns: 1fr; }
+      .palette-strip { gap: 0.75rem; }
+      .swatch-circle { width: 52px; height: 52px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ──────────────────────────────────────────────────── -->
+  <nav id="nav" aria-label="Main navigation">
+    <a href="#hero" class="nav-logo">囍</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#couple">Our Story</a></li>
+      <li><a href="#ceremony">Ceremony</a></li>
+      <li><a href="#dresscode">Dress Code</a></li>
+      <li><a href="#venue">Venue</a></li>
+      <li><a href="#rsvp">RSVP</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <section id="hero">
+    <!-- Botanical SVG corners -->
+    <div class="botanical bot-tl">
+      <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" class="leaf-svg">
+        <g fill="#7a9b72">
+          <ellipse cx="30" cy="140" rx="22" ry="90" transform="rotate(-30 30 140)" opacity="0.9"/>
+          <ellipse cx="80" cy="110" rx="18" ry="70" transform="rotate(-50 80 110)" opacity="0.7"/>
+          <ellipse cx="120" cy="80" rx="14" ry="55" transform="rotate(-70 120 80)" opacity="0.6"/>
+          <ellipse cx="55" cy="165" rx="16" ry="60" transform="rotate(-15 55 165)" opacity="0.5"/>
+          <circle cx="35" cy="30" r="8" opacity="0.4"/>
+          <circle cx="65" cy="15" r="5" opacity="0.3"/>
+          <circle cx="15" cy="55" r="6" opacity="0.35"/>
+          <!-- small berries -->
+          <circle cx="90" cy="55" r="4" fill="#d4968e" opacity="0.6"/>
+          <circle cx="105" cy="42" r="3" fill="#d4968e" opacity="0.5"/>
+          <circle cx="78" cy="38" r="3.5" fill="#e8c4c0" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+    <div class="botanical bot-br">
+      <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" class="leaf-svg" style="animation-delay:-2s">
+        <g fill="#7a9b72">
+          <ellipse cx="30" cy="140" rx="22" ry="90" transform="rotate(-30 30 140)" opacity="0.9"/>
+          <ellipse cx="80" cy="110" rx="18" ry="70" transform="rotate(-50 80 110)" opacity="0.7"/>
+          <ellipse cx="120" cy="80" rx="14" ry="55" transform="rotate(-70 120 80)" opacity="0.6"/>
+          <ellipse cx="55" cy="165" rx="16" ry="60" transform="rotate(-15 55 165)" opacity="0.5"/>
+          <circle cx="35" cy="30" r="8" opacity="0.4"/>
+          <circle cx="65" cy="15" r="5" opacity="0.3"/>
+          <circle cx="90" cy="55" r="4" fill="#d4968e" opacity="0.6"/>
+          <circle cx="105" cy="42" r="3" fill="#d4968e" opacity="0.5"/>
+        </g>
+      </svg>
+    </div>
+    <div class="botanical bot-tr">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="leaf-svg" style="animation-delay:-4s">
+        <g fill="#a8bf9f">
+          <ellipse cx="20" cy="100" rx="14" ry="60" transform="rotate(-25 20 100)" opacity="0.8"/>
+          <ellipse cx="55" cy="75" rx="11" ry="45" transform="rotate(-55 55 75)" opacity="0.6"/>
+          <ellipse cx="85" cy="55" rx="9" ry="35" transform="rotate(-75 85 55)" opacity="0.5"/>
+          <circle cx="100" cy="25" r="5" fill="#e8c4c0" opacity="0.5"/>
+          <circle cx="115" cy="12" r="3.5" fill="#e8c4c0" opacity="0.4"/>
+        </g>
+      </svg>
+    </div>
+    <div class="botanical bot-bl">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="leaf-svg" style="animation-delay:-1s">
+        <g fill="#a8bf9f">
+          <ellipse cx="20" cy="100" rx="14" ry="60" transform="rotate(-25 20 100)" opacity="0.8"/>
+          <ellipse cx="55" cy="75" rx="11" ry="45" transform="rotate(-55 55 75)" opacity="0.6"/>
+          <ellipse cx="85" cy="55" rx="9" ry="35" transform="rotate(-75 85 55)" opacity="0.5"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="hero-tag">Together Forever ✦</p>
+    <h1 class="hero-names">
+      <span>Nine</span>
+      <span class="hero-ampersand"> &amp; </span>
+      <span>Tom</span>
+    </h1>
+
+    <p class="hero-date">July 11, 2027 &nbsp;·&nbsp; Le Pansiri, Nonthaburi</p>
+    <div class="hero-divider"></div>
+    <p class="hero-location">
+      <strong>15:30</strong> Afternoon Ceremony &nbsp;·&nbsp; <strong>18:00</strong> Evening Reception
+    </p>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-unit"><span class="cd-number" id="cd-days">—</span><span class="cd-label">Days</span></div>
+      <span class="cd-sep">·</span>
+      <div class="cd-unit"><span class="cd-number" id="cd-hours">—</span><span class="cd-label">Hours</span></div>
+      <span class="cd-sep">·</span>
+      <div class="cd-unit"><span class="cd-number" id="cd-mins">—</span><span class="cd-label">Minutes</span></div>
+      <span class="cd-sep">·</span>
+      <div class="cd-unit"><span class="cd-number" id="cd-secs">—</span><span class="cd-label">Seconds</span></div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <div class="scroll-cue-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ── COUPLE ─────────────────────────────────────────────────── -->
+  <div id="couple">
+    <div class="couple-inner">
+      <div class="couple-intro reveal">
+        <p class="section-label">The Couple</p>
+        <h2 class="section-title">A Bangkok Heart,<br>A Seattle Soul</h2>
+        <p class="couple-tagline">
+          <span>She grew up amid temples and jasmine.</span><br>
+          He grew up under grey Pacific skies.<br>
+          Together, they found exactly where home is.
+        </p>
+      </div>
+      <div class="couple-grid">
+        <div class="portrait-card reveal reveal-delay-1">
+          <div class="portrait-circle portrait-circle-bride">
+            <span class="portrait-initials">N</span>
+          </div>
+          <p class="portrait-name">Nine</p>
+          <p class="portrait-fullname">Thananun Prasertsup</p>
+          <p class="portrait-bio">
+            Born in Bangkok on a warm November day, Nine brings warmth, laughter, and an infectious
+            zest for life to every room she enters. She loves Thai street food at midnight, long
+            wandering conversations, and making everyone feel like they've been friends for years.
+          </p>
+          <span class="portrait-detail">🌸 Bangkok, Thailand · Nov 10, 1997</span>
+        </div>
+        <div class="portrait-card reveal reveal-delay-2">
+          <div class="portrait-circle portrait-circle-groom">
+            <span class="portrait-initials">T</span>
+          </div>
+          <p class="portrait-name">Tom</p>
+          <p class="portrait-fullname">Thomas La Pham</p>
+          <p class="portrait-bio">
+            A Washington-born Vietnamese American with a big heart and an even bigger laugh,
+            Tom navigates the world with quiet confidence and boundless curiosity. He fell for
+            Nine the moment she argued, quite convincingly, that pad see ew is superior to pad thai.
+          </p>
+          <span class="portrait-detail">🌿 Seattle, WA · Oct 3, 1995</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CEREMONY ───────────────────────────────────────────────── -->
+  <section id="ceremony">
+    <div class="ceremony-header reveal">
+      <p class="section-label" style="justify-content:center;">The Day</p>
+      <h2 class="section-title">Ceremony Program</h2>
+      <p style="max-width:500px;margin:0 auto;font-size:0.97rem;">
+        A day that weaves Thai tradition with pure celebration — two ceremonies, one beautiful love story.
+      </p>
+    </div>
+    <div class="ceremony-grid">
+      <div class="ceremony-card afternoon reveal reveal-delay-1">
+        <div class="card-time">15:30</div>
+        <p class="card-time-label">Afternoon Ceremony</p>
+        <h3 class="card-title">Thai Khan Maak Procession &amp; Tea Ceremony</h3>
+        <ul class="program-list">
+          <li>
+            <span class="program-dot"></span>
+            <span><strong>Khan Maak Procession</strong> — The groom's family arrives bearing ceremonial gifts through a joyful, music-filled parade.</span>
+          </li>
+          <li>
+            <span class="program-dot"></span>
+            <span><strong>Blessing by Elders</strong> — Respected elders bestow blessings and tie sacred threads (sai monkhon) around the couple's wrists.</span>
+          </li>
+          <li>
+            <span class="program-dot"></span>
+            <span><strong>Water Pouring Ceremony</strong> — Guests pour lustral water over the couple's joined hands as a blessing for a harmonious life.</span>
+          </li>
+          <li>
+            <span class="program-dot"></span>
+            <span><strong>Tea Ceremony</strong> — Honoring both Thai and Vietnamese heritage, the couple serve tea to family elders as an act of gratitude.</span>
+          </li>
+        </ul>
+        <p class="ceremony-note">❀ Traditional Thai dress welcome and encouraged</p>
+      </div>
+      <div class="ceremony-card evening reveal reveal-delay-2">
+        <div class="card-time">18:00</div>
+        <p class="card-time-label">Evening Celebration</p>
+        <h3 class="card-title">Evening Reception &amp; Dinner</h3>
+        <ul class="program-list">
+          <li>
+            <span class="program-dot"></span>
+            <span><strong>Cocktail Hour</strong> — Welcome drinks and canapés as the sun sets over the gardens of Le Pansiri.</span>
+          </li>
+          <li>
+            <span class="program-dot"></span>
+            <span><strong>Grand Entrance</strong> — The newlyweds make their debut as husband and wife for the very first time.</span>
+          </li>
+          <li>
+            <span class="program-dot"></span>
+            <span><strong>Banquet Dinner</strong> — A curated menu celebrating Thai and Vietnamese flavors, lovingly prepared for the occasion.</span>
+          </li>
+          <li>
+            <span class="program-dot"></span>
+            <span><strong>Toasts, Dancing &amp; Festivities</strong> — An evening of music, laughter, and memories that will last a lifetime.</span>
+          </li>
+        </ul>
+        <p class="ceremony-note">✦ Dress code: Garden Romance palette (see below)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DRESS CODE ─────────────────────────────────────────────── -->
+  <div id="dresscode">
+    <div class="dresscode-inner">
+      <p class="section-label reveal" style="justify-content:center;">Attire</p>
+      <h2 class="dresscode-headline reveal">Dress the Garden.</h2>
+      <p class="dresscode-sub reveal">
+        We're keeping it elegant and earthy — think soft petals, warm linen, and the colors of a garden in bloom.
+        Semi-formal to formal attire encouraged. Please avoid white and black.
+      </p>
+      <div class="palette-strip reveal reveal-delay-1">
+        <div class="swatch">
+          <div class="swatch-circle" style="background:#f5c5bd;"></div>
+          <span class="swatch-name">Blush Peach</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-circle" style="background:#e8dcc8;"></div>
+          <span class="swatch-name">Warm Linen</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-circle" style="background:#d4c5a0;"></div>
+          <span class="swatch-name">Champagne</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-circle" style="background:#b8a898;"></div>
+          <span class="swatch-name">Taupe</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-circle" style="background:#7a9b72;"></div>
+          <span class="swatch-name">Sage</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-circle" style="background:#d4968e;"></div>
+          <span class="swatch-name">Dusty Rose</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-circle" style="background:#c9b89a;"></div>
+          <span class="swatch-name">Sand</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-circle" style="background:#9da89c;"></div>
+          <span class="swatch-name">Stone</span>
+        </div>
+      </div>
+      <p class="dresscode-note reveal reveal-delay-2">
+        "Come dressed in the colors of the garden — <span>soft, warm, and full of life.</span>"
+      </p>
+    </div>
+  </div>
+
+  <!-- ── VENUE ──────────────────────────────────────────────────── -->
+  <section id="venue">
+    <div class="venue-header reveal">
+      <p class="section-label">The Location</p>
+      <h2 class="section-title">Le Pansiri</h2>
+    </div>
+    <div class="venue-layout">
+      <div class="venue-details reveal reveal-delay-1">
+        <h3 class="venue-name">Le Pansiri<br><span style="font-size:1rem;color:var(--text-med);font-family:'DM Sans',sans-serif;font-weight:400;">Nonthaburi, Thailand</span></h3>
+        <ul class="venue-info-list">
+          <li>
+            <span class="venue-info-label">Venue</span>
+            <span class="venue-info-value">Le Pansiri</span>
+          </li>
+          <li>
+            <span class="venue-info-label">Location</span>
+            <span class="venue-info-value">Nonthaburi, Thailand<br><span style="font-size:0.88rem;color:var(--text-med);">Greater Bangkok Area</span></span>
+          </li>
+          <li>
+            <span class="venue-info-label">Afternoon Ceremony</span>
+            <span class="venue-info-value">15:30 — Thai Khan Maak &amp; Tea Ceremony</span>
+          </li>
+          <li>
+            <span class="venue-info-label">Evening Reception</span>
+            <span class="venue-info-value">18:00 — Dinner &amp; Celebration</span>
+          </li>
+          <li>
+            <span class="venue-info-label">Date</span>
+            <span class="venue-info-value">Saturday, July 11, 2027</span>
+          </li>
+        </ul>
+        <a href="https://maps.google.com/?q=Le+Pansiri+Nonthaburi+Thailand" target="_blank" rel="noopener" class="venue-btn">
+          Open in Google Maps ↗
+        </a>
+      </div>
+      <div class="venue-map reveal reveal-delay-2">
+        <iframe
+          src="https://maps.google.com/maps?q=Le+Pansiri+Nonthaburi+Thailand&output=embed"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Le Pansiri location map"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RSVP ───────────────────────────────────────────────────── -->
+  <div id="rsvp">
+    <div class="rsvp-inner">
+      <div class="rsvp-header reveal">
+        <p class="section-label" style="justify-content:center;">You're Invited</p>
+        <h2 class="section-title" style="font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);color:var(--text-dark);">Will You Be There?</h2>
+        <p style="font-size:0.97rem;max-width:420px;margin:0.75rem auto 0;">
+          We'd love to celebrate this day with you. Please RSVP by the deadline so we can save your seat.
+        </p>
+        <span class="rsvp-deadline">RSVP by June 1, 2027</span>
+      </div>
+
+      <div class="form-card reveal reveal-delay-1">
+        <form id="rsvpForm" novalidate>
+
+          <!-- Name + Email -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-name">Full Name</label>
+              <input type="text" id="f-name" name="name" placeholder="Your full name" required />
+            </div>
+            <div class="form-group">
+              <label for="f-email">Email</label>
+              <input type="email" id="f-email" name="email" placeholder="your@email.com" required />
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label for="f-phone">Phone Number</label>
+            <input type="tel" id="f-phone" name="phone" placeholder="+66 or international" />
+          </div>
+
+          <!-- Session -->
+          <div class="form-group">
+            <label>I'll be attending</label>
+            <div class="session-grid">
+              <div class="session-card">
+                <input type="radio" name="session" id="s-afternoon" value="afternoon" />
+                <label for="s-afternoon" class="session-label">
+                  <span class="icon">🌸</span>
+                  <span>Afternoon Ceremony<br><small style="font-weight:400;color:inherit;opacity:0.8;">15:30</small></span>
+                </label>
+              </div>
+              <div class="session-card">
+                <input type="radio" name="session" id="s-evening" value="evening" />
+                <label for="s-evening" class="session-label">
+                  <span class="icon">✨</span>
+                  <span>Evening Reception<br><small style="font-weight:400;color:inherit;opacity:0.8;">18:00</small></span>
+                </label>
+              </div>
+              <div class="session-card">
+                <input type="radio" name="session" id="s-both" value="both" checked />
+                <label for="s-both" class="session-label">
+                  <span class="icon">🎊</span>
+                  <span>Both Ceremonies<br><small style="font-weight:400;color:inherit;opacity:0.8;">Full Day</small></span>
+                </label>
+              </div>
+              <div class="session-card">
+                <input type="radio" name="session" id="s-unable" value="unable" />
+                <label for="s-unable" class="session-label">
+                  <span class="icon">💌</span>
+                  <span>Unable to Attend<br><small style="font-weight:400;color:inherit;opacity:0.8;">Sending love</small></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dietary -->
+          <div class="form-group">
+            <label for="f-diet">Dietary Requirements</label>
+            <select id="f-diet" name="dietary">
+              <option value="">No restrictions</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="halal">Halal</option>
+              <option value="gluten-free">Gluten-Free</option>
+              <option value="nut-allergy">Nut Allergy</option>
+              <option value="other">Other (please note below)</option>
+            </select>
+          </div>
+
+          <!-- Plus One -->
+          <div class="toggle-row">
+            <span class="toggle-label">Bringing a Plus One?</span>
+            <div class="toggle-switch">
+              <input type="radio" name="plusone" id="po-no" value="no" checked />
+              <label for="po-no">No</label>
+              <input type="radio" name="plusone" id="po-yes" value="yes" />
+              <label for="po-yes">Yes</label>
+            </div>
+          </div>
+          <div class="plus-one-field" id="plusOneField">
+            <div class="form-group" style="margin-bottom:1.4rem;">
+              <label for="f-plus-name">Plus One's Name</label>
+              <input type="text" id="f-plus-name" name="plusname" placeholder="Their full name" />
+            </div>
+          </div>
+
+          <!-- Blessing -->
+          <div class="blessing-box">
+            <p class="blessing-title">✿ Leave a Blessing for Nine &amp; Tom ♡</p>
+            <textarea id="f-blessing" name="blessing" placeholder="Share a wish, a memory, or words of love for the couple on their special day…" style="min-height:90px;"></textarea>
+          </div>
+
+          <!-- Notes -->
+          <div class="form-group">
+            <label for="f-notes">Additional Notes</label>
+            <textarea id="f-notes" name="notes" placeholder="Anything else we should know? Accessibility needs, questions, etc."></textarea>
+          </div>
+
+          <button type="submit" class="form-submit">Confirm RSVP ✦</button>
+        </form>
+
+        <!-- Success -->
+        <div class="rsvp-success" id="rsvpSuccess">
+          <div class="success-icon">🌸</div>
+          <h3 class="success-title">Thank You!</h3>
+          <p class="success-msg">
+            Your RSVP has been received. We are so excited to celebrate with you.<br>
+            <em style="color:var(--sage);font-family:'DM Serif Display',serif;">Nine &amp; Tom</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-logo">囍</div>
+    <h2 class="footer-names">Nine &amp; Tom</h2>
+    <p class="footer-date">July 11, 2027 &nbsp;·&nbsp; Le Pansiri, Nonthaburi, Thailand</p>
+    <div class="footer-divider"></div>
+    <p class="footer-tagline">Celebrating love, culture, and new beginnings</p>
+  </footer>
+
+  <!-- ── JAVASCRIPT ──────────────────────────────────────────────── -->
+  <script>
+    // ── Hamburger menu ───────────────────────────────────────────
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', false);
+      });
+    });
+
+    // ── Active nav link on scroll ────────────────────────────────
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navAs    = document.querySelectorAll('.nav-links a');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navAs.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => observer.observe(s));
+
+    // ── Scroll reveal ────────────────────────────────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => revealObs.observe(el));
+
+    // ── Countdown timer ──────────────────────────────────────────
+    function updateCountdown() {
+      const target = new Date('2027-07-11T15:30:00+07:00').getTime();
+      const now    = Date.now();
+      const diff   = target - now;
+      if (diff <= 0) {
+        ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => {
+          document.getElementById(id).textContent = '00';
+        });
+        return;
+      }
+      const days  = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins  = Math.floor((diff % 3600000) / 60000);
+      const secs  = Math.floor((diff % 60000) / 1000);
+      document.getElementById('cd-days').textContent  = String(days).padStart(2,'0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+      document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
+      document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // ── Plus one reveal ──────────────────────────────────────────
+    const poYes   = document.getElementById('po-yes');
+    const poNo    = document.getElementById('po-no');
+    const poField = document.getElementById('plusOneField');
+    function syncPlusOne() {
+      if (poYes.checked) {
+        poField.classList.add('open');
+      } else {
+        poField.classList.remove('open');
+        document.getElementById('f-plus-name').value = '';
+      }
+    }
+    poYes.addEventListener('change', syncPlusOne);
+    poNo.addEventListener('change', syncPlusOne);
+    syncPlusOne();
+
+    // ── Confetti ─────────────────────────────────────────────────
+    function launchConfetti() {
+      const colors = ['#7a9b72','#e8c4c0','#d4968e','#c9a87c','#a8bf9f','#faf7f2'];
+      for (let i = 0; i < 60; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.cssText = `
+          left: ${Math.random() * 100}vw;
+          top: -10px;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          width: ${4 + Math.random() * 8}px;
+          height: ${4 + Math.random() * 8}px;
+          border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+          transform: rotate(${Math.random() * 360}deg);
+          animation: confettiFall ${1.5 + Math.random() * 2}s ${Math.random() * 0.5}s ease-in forwards;
+        `;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+      }
+    }
+
+    // Inject confetti keyframes
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+      @keyframes confettiFall {
+        0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
+        100% { opacity: 0; transform: translateY(100vh) rotate(${Math.random()*720}deg); }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+
+    // ── Form submit ───────────────────────────────────────────────
+    document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name  = document.getElementById('f-name').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+      if (!name || !email) {
+        document.getElementById(name ? 'f-email' : 'f-name').focus();
+        return;
+      }
+      this.style.display = 'none';
+      const success = document.getElementById('rsvpSuccess');
+      success.classList.add('show');
+      launchConfetti();
+      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // ── Card hover 3-D tilt (subtle) ─────────────────────────────
+    document.querySelectorAll('.portrait-card, .ceremony-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform = `perspective(600px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-5px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  </script>
+</body>
+</html>
