@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Your RSVP — Nine & Tom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- Replace with your Apps Script Web App URL ---- */
+    /* Set via script tag below                            */
+
+    :root {
+      --peach:        #f5e6d8;
+      --peach-light:  #faf3ec;
+      --gold:         #c9a96e;
+      --gold-dark:    #8b6914;
+      --gold-border:  #d4b896;
+      --rose:         #e8968a;
+      --green:        #8fa884;
+      --brown:        #5c3d2e;
+      --brown-light:  #8a6552;
+      --cream:        #fefaf6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--peach-light);
+      color: var(--brown);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    header {
+      background: var(--peach);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .header-ornament { font-size: 28px; color: var(--gold); opacity: .7; margin-bottom: 6px; }
+    .header-names {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--brown);
+    }
+    .header-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-top: 4px;
+    }
+
+    /* ---- Main ---- */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .card {
+      background: var(--cream);
+      border: 1px solid var(--gold-border);
+      max-width: 680px;
+      width: 100%;
+      padding: 50px 48px;
+      position: relative;
+    }
+    .card::before, .card::after {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .card::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .card::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .card-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-style: italic;
+      text-align: center;
+      color: var(--gold-dark);
+      margin-bottom: 36px;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 0 0 36px;
+    }
+
+    /* ---- State screens ---- */
+    .state { display: none; }
+    .state.active { display: block; }
+
+    .loading-wrap {
+      text-align: center;
+      padding: 20px 0 10px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 36px; height: 36px;
+      border: 3px solid var(--gold-border);
+      border-top-color: var(--gold-dark);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-wrap {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .error-icon { font-size: 40px; margin-bottom: 16px; }
+    .error-wrap h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .error-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
+
+    .success-wrap { text-align: center; padding: 10px 0; }
+    .success-icon { font-size: 40px; margin-bottom: 16px; }
+    .success-wrap h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .success-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
+
+    /* ---- Form ---- */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-bottom: 7px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--gold-border);
+      background: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--brown);
+      outline: none;
+      transition: border-color .25s;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    /* session radio cards */
+    .radio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .radio-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--gold-border);
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      user-select: none;
+    }
+    .radio-card:hover { border-color: var(--gold); background: rgba(201,169,110,.06); }
+    .radio-card input[type="radio"] { margin-top: 3px; flex-shrink: 0; accent-color: var(--gold-dark); }
+    .radio-card-label { font-size: 13px; font-weight: 700; display: block; }
+    .radio-card-desc { font-size: 11px; color: var(--brown-light); margin-top: 2px; }
+    .radio-card.selected { border-color: var(--gold); background: rgba(201,169,110,.1); }
+
+    /* plus one */
+    .plusone-toggle { display: flex; gap: 12px; margin-bottom: 12px; }
+    .toggle-btn {
+      flex: 1;
+      padding: 11px;
+      border: 1px solid var(--gold-border);
+      background: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .2s;
+      color: var(--brown);
+    }
+    .toggle-btn.active {
+      border-color: var(--gold);
+      background: var(--gold-dark);
+      color: white;
+    }
+    .plusone-name-wrap {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height .35s ease;
+    }
+    .plusone-name-wrap.open { max-height: 80px; }
+
+    /* blessing */
+    .blessing-group textarea {
+      border-color: var(--gold);
+      background: #fffdf9;
+      min-height: 130px;
+    }
+    .blessing-label-icon { color: var(--gold-dark); }
+
+    /* submit */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--gold-dark);
+      color: white;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .25s, transform .1s;
+      margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--brown); }
+    .btn-submit:active { transform: scale(.99); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--brown-light);
+      text-align: center;
+      margin-top: 18px;
+      line-height: 1.7;
+    }
+
+    /* ---- Footer ---- */
+    footer {
+      background: var(--brown);
+      color: var(--peach);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      .card { padding: 36px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .radio-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">囍</div>
+  <div class="header-names">Nine &amp; Tom</div>
+  <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
+</header>
+
+<main>
+  <div class="card">
+
+    <!-- Loading -->
+    <div class="state active" id="state-loading">
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <p style="color:var(--brown-light);font-size:14px;">Fetching your details…</p>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="state" id="state-error">
+      <div class="error-wrap">
+        <div class="error-icon">💌</div>
+        <h2>Link Not Found</h2>
+        <p id="error-msg">This edit link is invalid or has expired. Please check your email for the correct link, or contact Nine or Tom directly.</p>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="state" id="state-form">
+      <h2 class="card-title">Update Your RSVP</h2>
+      <p class="card-sub">Make any changes below and save</p>
+      <div class="divider"></div>
+
+      <form id="edit-form" novalidate>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" id="f-name" required placeholder="Full name">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="f-email" disabled style="opacity:.6;cursor:not-allowed;" title="Email cannot be changed">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="f-phone" placeholder="+66 XX XXX XXXX">
+        </div>
+
+        <div class="form-group">
+          <label>Which Session Will You Attend? *</label>
+          <div class="radio-grid" id="session-grid">
+            <label class="radio-card" data-val="afternoon">
+              <input type="radio" name="session" value="afternoon">
+              <div>
+                <span class="radio-card-label">Afternoon</span>
+                <span class="radio-card-desc">15:30 · Khan Maak &amp; Tea Ceremony</span>
+              </div>
+            </label>
+            <label class="radio-card" data-val="evening">
+              <input type="radio" name="session" value="evening">
+              <div>
+                <span class="radio-card-label">Evening</span>
+                <span class="radio-card-desc">18:00 · Reception &amp; Dinner</span>
+              </div>
+            </label>
+            <label class="radio-card" data-val="both">
+              <input type="radio" name="session" value="both">
+              <div>
+                <span class="radio-card-label">Both Sessions</span>
+                <span class="radio-card-desc">All day celebration!</span>
+              </div>
+            </label>
+            <label class="radio-card" data-val="none">
+              <input type="radio" name="session" value="none">
+              <div>
+                <span class="radio-card-label">Unable to Attend</span>
+                <span class="radio-card-desc">We'll miss you</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Dietary Restrictions</label>
+          <select id="f-dietary">
+            <option value="">None</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="halal">Halal</option>
+            <option value="gluten-free">Gluten-Free</option>
+            <option value="nut-allergy">Nut Allergy</option>
+            <option value="seafood-allergy">Seafood Allergy</option>
+            <option value="other">Other (specify in notes)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Plus One</label>
+          <div class="plusone-toggle">
+            <button type="button" class="toggle-btn" id="btn-plusone-no"  onclick="setPlusOne('no')">No</button>
+            <button type="button" class="toggle-btn" id="btn-plusone-yes" onclick="setPlusOne('yes')">Yes</button>
+          </div>
+          <div class="plusone-name-wrap" id="plusone-name-wrap">
+            <input type="text" id="f-plusone-name" placeholder="Your plus one's name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Additional Notes</label>
+          <textarea id="f-notes" placeholder="Any special requirements…"></textarea>
+        </div>
+
+        <div class="form-group blessing-group">
+          <label><span class="blessing-label-icon">✦</span> A Blessing for the Couple</label>
+          <textarea id="f-blessing" placeholder="Share your wishes and blessings for Nine &amp; Tom…"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btn-submit">Save Changes</button>
+        <p class="form-note">Please update by <strong>June 1, 2027</strong>.</p>
+
+      </form>
+    </div>
+
+    <!-- Success -->
+    <div class="state" id="state-success">
+      <div class="success-wrap">
+        <div class="success-icon">🌸</div>
+        <h2>Changes Saved!</h2>
+        <p>Your RSVP has been updated. We look forward to celebrating with you on July 11, 2027.</p>
+        <p style="margin-top:16px;font-style:italic;color:var(--gold-dark);">With love, Nine &amp; Tom</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>Nine &amp; Tom · July 11, 2027</footer>
+
+<script>
+  // ---- CONFIG — update after deploying Apps Script ----
+  const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+  // -----------------------------------------------------
+
+  const token = new URLSearchParams(window.location.search).get('token');
+
+  function showState(id) {
+    document.querySelectorAll('.state').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function showError(msg) {
+    if (msg) document.getElementById('error-msg').textContent = msg;
+    showState('state-error');
+  }
+
+  // ---- Load guest data ----
+  async function loadRSVP() {
+    if (!token) { showError('No token found in the URL. Please use the link from your confirmation email.'); return; }
+
+    try {
+      const res = await fetch(`${APPS_SCRIPT_URL}?token=${encodeURIComponent(token)}`);
+      const data = await res.json();
+
+      if (data.error) { showError(data.error); return; }
+
+      prefill(data);
+      showState('state-form');
+    } catch (e) {
+      showError('Could not connect to the server. Please try again in a moment.');
+    }
+  }
+
+  function prefill(d) {
+    document.getElementById('f-name').value    = d.name    || '';
+    document.getElementById('f-email').value   = d.email   || '';
+    document.getElementById('f-phone').value   = d.phone   || '';
+    document.getElementById('f-dietary').value = d.dietary || '';
+    document.getElementById('f-notes').value   = d.notes   || '';
+    document.getElementById('f-blessing').value= d.blessing|| '';
+
+    // Session radio
+    if (d.session) {
+      const radio = document.querySelector(`input[name="session"][value="${d.session}"]`);
+      if (radio) { radio.checked = true; radio.closest('.radio-card').classList.add('selected'); }
+    }
+
+    // Plus one
+    setPlusOne(d.plusone === 'yes' ? 'yes' : 'no');
+    if (d.plusoneName) document.getElementById('f-plusone-name').value = d.plusoneName;
+  }
+
+  // ---- Plus one toggle ----
+  function setPlusOne(val) {
+    const wrap = document.getElementById('plusone-name-wrap');
+    document.getElementById('btn-plusone-yes').classList.toggle('active', val === 'yes');
+    document.getElementById('btn-plusone-no').classList.toggle('active', val === 'no');
+    wrap.classList.toggle('open', val === 'yes');
+    wrap._val = val;
+  }
+  setPlusOne('no');
+
+  // ---- Radio card highlight ----
+  document.querySelectorAll('.radio-card input[type="radio"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+      r.closest('.radio-card').classList.add('selected');
+    });
+  });
+
+  // ---- Form submit ----
+  document.getElementById('edit-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const session = document.querySelector('input[name="session"]:checked');
+    if (!session) { alert('Please select which session you will attend.'); return; }
+    if (!document.getElementById('f-name').value.trim()) { alert('Please enter your name.'); return; }
+
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    const plusoneVal = document.getElementById('btn-plusone-yes').classList.contains('active') ? 'yes' : 'no';
+
+    const payload = {
+      action:      'update',
+      token,
+      name:        document.getElementById('f-name').value.trim(),
+      phone:       document.getElementById('f-phone').value.trim(),
+      session:     session.value,
+      dietary:     document.getElementById('f-dietary').value,
+      plusone:     plusoneVal,
+      plusoneName: plusoneVal === 'yes' ? document.getElementById('f-plusone-name').value.trim() : '',
+      notes:       document.getElementById('f-notes').value.trim(),
+      blessing:    document.getElementById('f-blessing').value.trim()
+    };
+
+    try {
+      // Use text/plain to avoid CORS preflight with Apps Script
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'text/plain' }
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        showState('state-success');
+      } else {
+        alert(data.error || 'Something went wrong. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Save Changes';
+      }
+    } catch (err) {
+      alert('Could not connect. Please check your internet connection and try again.');
+      btn.disabled = false;
+      btn.textContent = 'Save Changes';
+    }
+  });
+
+  // ---- Init ----
+  loadRSVP();
+</script>
+</body>
+</html>

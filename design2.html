@@ -1594,6 +1594,9 @@
 
   <!-- ─── JAVASCRIPT ─────────────────────────────────────────────────── -->
   <script>
+    // ---- CONFIG — paste your Apps Script Web App URL here after deploying ----
+    const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+    // -------------------------------------------------------------------------
     // ── Countdown Timer ──────────────────────────────────────────────
     (function () {
       const wedding = new Date('2027-07-11T15:30:00+07:00').getTime();
@@ -1665,7 +1668,7 @@
       const form    = document.getElementById('rsvp-form');
       const success = document.getElementById('rsvp-success');
 
-      form.addEventListener('submit', function (e) {
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const name    = document.getElementById('name').value.trim();
@@ -1673,21 +1676,61 @@
         const session = document.querySelector('input[name="session"]:checked');
 
         if (!name || !email || !session) {
-          const missing = [];
-          if (!name)    missing.push('full name');
-          if (!email)   missing.push('email address');
-          if (!session) missing.push('session preference');
-
-          // Gentle error highlight
           if (!name)    document.getElementById('name').style.borderColor  = 'var(--terracotta)';
           if (!email)   document.getElementById('email').style.borderColor = 'var(--terracotta)';
+          if (!session) alert('Please select which session you will attend.');
           return;
         }
 
-        // Show success state
-        form.style.display = 'none';
-        success.classList.add('show');
-        document.getElementById('rsvp-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+
+        const plusoneRadio = document.querySelector('input[name="plusone"]:checked');
+        const plusoneVal   = plusoneRadio ? plusoneRadio.value : 'no';
+
+        const payload = {
+          name,
+          email,
+          phone:       (document.getElementById('phone')?.value || '').trim(),
+          session:     session.value,
+          dietary:     document.getElementById('dietary')?.value || '',
+          plusone:     plusoneVal,
+          plusoneName: plusoneVal === 'yes' ? (document.getElementById('plusone-name')?.value || '').trim() : '',
+          notes:       (document.getElementById('notes')?.value || '').trim(),
+          blessing:    (document.getElementById('blessing')?.value || '').trim()
+        };
+
+        try {
+          const res  = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'text/plain' }
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            form.style.display = 'none';
+            success.innerHTML = `
+              <div class="success-icon">✦</div>
+              <div class="success-title">We can't wait to see you!</div>
+              <p class="success-text">Your RSVP is confirmed. Check your email for a personal link to update your details anytime before June 1, 2027.</p>`;
+            success.classList.add('show');
+            document.getElementById('rsvp-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else if (data.alreadyExists) {
+            alert('This email is already registered. Check your inbox for your personal edit link.');
+            btn.disabled = false;
+            btn.textContent = 'Confirm RSVP';
+          } else {
+            alert(data.error || 'Something went wrong. Please try again.');
+            btn.disabled = false;
+            btn.textContent = 'Confirm RSVP';
+          }
+        } catch (err) {
+          alert('Could not connect. Please check your connection and try again.');
+          btn.disabled = false;
+          btn.textContent = 'Confirm RSVP';
+        }
       });
 
       // Clear error border on input

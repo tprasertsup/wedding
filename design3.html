@@ -1425,6 +1425,9 @@
 
   <!-- ── JAVASCRIPT ──────────────────────────────────────────────── -->
   <script>
+    // ---- CONFIG — paste your Apps Script Web App URL here after deploying ----
+    const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+    // -------------------------------------------------------------------------
     // ── Hamburger menu ───────────────────────────────────────────
     const hamburger = document.getElementById('hamburger');
     const navLinks  = document.getElementById('navLinks');
@@ -1536,19 +1539,71 @@
     document.head.appendChild(styleSheet);
 
     // ── Form submit ───────────────────────────────────────────────
-    document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+    document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const name  = document.getElementById('f-name').value.trim();
-      const email = document.getElementById('f-email').value.trim();
+      const name    = document.getElementById('f-name').value.trim();
+      const email   = document.getElementById('f-email').value.trim();
+      const session = document.querySelector('input[name="session"]:checked');
+
       if (!name || !email) {
         document.getElementById(name ? 'f-email' : 'f-name').focus();
         return;
       }
-      this.style.display = 'none';
-      const success = document.getElementById('rsvpSuccess');
-      success.classList.add('show');
-      launchConfetti();
-      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (!session) {
+        alert('Please select which session you will attend.');
+        return;
+      }
+
+      const btn = this.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      const plusoneRadio = document.querySelector('input[name="plusone"]:checked');
+      const plusoneVal   = plusoneRadio ? plusoneRadio.value : 'no';
+
+      const payload = {
+        name,
+        email,
+        phone:       (document.getElementById('f-phone')?.value || '').trim(),
+        session:     session.value,
+        dietary:     document.getElementById('f-diet')?.value || '',
+        plusone:     plusoneVal,
+        plusoneName: plusoneVal === 'yes' ? (document.getElementById('f-plus-name')?.value || '').trim() : '',
+        notes:       (document.getElementById('f-notes')?.value || '').trim(),
+        blessing:    (document.getElementById('f-blessing')?.value || '').trim()
+      };
+
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain' }
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          this.style.display = 'none';
+          const success = document.getElementById('rsvpSuccess');
+          success.querySelector('.success-title').textContent = 'See you on July 11!';
+          success.querySelector('.success-msg').innerHTML =
+            'Your RSVP is confirmed. 🎊<br>Check your email for a personal link to update your details anytime.';
+          success.classList.add('show');
+          launchConfetti();
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (data.alreadyExists) {
+          alert('This email is already registered. Check your inbox for your personal edit link.');
+          btn.disabled = false;
+          btn.textContent = 'Confirm RSVP ✦';
+        } else {
+          alert(data.error || 'Something went wrong. Please try again.');
+          btn.disabled = false;
+          btn.textContent = 'Confirm RSVP ✦';
+        }
+      } catch (err) {
+        alert('Could not connect. Please check your connection and try again.');
+        btn.disabled = false;
+        btn.textContent = 'Confirm RSVP ✦';
+      }
     });
 
     // ── Card hover 3-D tilt (subtle) ─────────────────────────────

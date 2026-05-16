@@ -1311,6 +1311,9 @@
        JAVASCRIPT
   =========================== -->
   <script>
+    // ---- CONFIG — paste your Apps Script Web App URL here after deploying ----
+    const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+    // -------------------------------------------------------------------------
     /* ---- PETALS ---- */
     (function() {
       const container = document.getElementById('petals-container');
@@ -1400,25 +1403,77 @@
     }
 
     /* ---- RSVP SUBMIT ---- */
-    function handleRSVP(e) {
+    async function handleRSVP(e) {
       e.preventDefault();
-      const form = document.getElementById('rsvp-form');
-      const nameVal = document.getElementById('name').value.trim();
+      const form     = document.getElementById('rsvp-form');
+      const nameVal  = document.getElementById('name').value.trim();
       const emailVal = document.getElementById('email').value.trim();
-      if (!nameVal || !emailVal) {
-        alert('Please fill in your name and email address.');
+      const session  = document.querySelector('input[name="session"]:checked');
+
+      if (!nameVal || !emailVal || !session) {
+        alert('Please fill in your name, email, and session preference.');
         return;
       }
-      form.style.opacity = '0';
-      form.style.transition = 'opacity 0.4s ease';
-      setTimeout(() => {
-        form.style.display = 'none';
-        const success = document.getElementById('rsvp-success');
-        success.style.display = 'block';
-        success.style.opacity = '0';
-        success.style.transition = 'opacity 0.6s ease';
-        setTimeout(() => success.style.opacity = '1', 30);
-      }, 400);
+
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      const plusoneRadio = document.querySelector('input[name="plusone"]:checked');
+      const plusoneVal   = plusoneRadio ? plusoneRadio.value : 'no';
+
+      const payload = {
+        name:        nameVal,
+        email:       emailVal,
+        phone:       (document.getElementById('phone')?.value || '').trim(),
+        session:     session.value,
+        dietary:     document.getElementById('dietary')?.value || '',
+        plusone:     plusoneVal,
+        plusoneName: plusoneVal === 'yes' ? (document.getElementById('plusone-name')?.value || '').trim() : '',
+        notes:       (document.getElementById('notes')?.value || '').trim(),
+        blessing:    (document.getElementById('blessing')?.value || '').trim()
+      };
+
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain' }
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          form.style.opacity = '0';
+          form.style.transition = 'opacity 0.4s ease';
+          setTimeout(() => {
+            form.style.display = 'none';
+            const success = document.getElementById('rsvp-success');
+            success.innerHTML = `
+              <div style="text-align:center;padding:20px 0;">
+                <div style="font-size:36px;color:var(--gold);margin-bottom:12px;">🌸</div>
+                <h3 style="font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:10px;">Thank You!</h3>
+                <p style="color:var(--brown-light);line-height:1.8;">We've received your RSVP.<br>Check your email for a link to update your details anytime.</p>
+                <p style="margin-top:14px;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-dark);">With love, Nine &amp; Tom</p>
+              </div>`;
+            success.style.display = 'block';
+            success.style.opacity = '0';
+            success.style.transition = 'opacity 0.6s ease';
+            setTimeout(() => success.style.opacity = '1', 30);
+          }, 400);
+        } else if (data.alreadyExists) {
+          alert('This email has already been registered. Check your inbox for your personal edit link.');
+          btn.disabled = false;
+          btn.textContent = 'Confirm My RSVP';
+        } else {
+          alert(data.error || 'Something went wrong. Please try again.');
+          btn.disabled = false;
+          btn.textContent = 'Confirm My RSVP';
+        }
+      } catch (err) {
+        alert('Could not connect. Please check your connection and try again.');
+        btn.disabled = false;
+        btn.textContent = 'Confirm My RSVP';
+      }
     }
 
     /* ---- SMOOTH NAV BACKGROUND ON SCROLL ---- */
