@@ -644,8 +644,17 @@
 
     /* Session cards */
     .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.5rem; }
-    .session-option { position: relative; }
-    .session-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .session-option { position: relative; overflow: hidden; }
+    .session-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 1px; height: 1px;
+      pointer-events: none;
+      clip: rect(0,0,0,0);
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0; padding: 0; border: 0;
+    }
     .session-label {
       display: block;
       padding: 1rem 0.9rem;
