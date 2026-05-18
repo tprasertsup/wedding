@@ -907,6 +907,16 @@
       }
       .nav-links.open { display: flex; }
       .nav-toggle { display: flex; }
+      .lang-switcher { display: none; }
+      .nav-lang-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 0.4rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--gold-border);
+      }
+      .nav-lang-item .lang-btn { font-size: 0.78rem; padding: 4px 6px; }
 
       .couple-grid { grid-template-columns: 1fr; max-width: 420px; }
       .program-cards { grid-template-columns: 1fr; }
@@ -928,6 +938,7 @@
     }
 
     /* ── Language toggle ── */
+    .nav-lang-item { display: none; } /* shown only in mobile dropdown */
     .lang-switcher { display: flex; align-items: center; gap: 6px; margin-left: 1.5rem; }
     .lang-btn {
       background: none; border: none;
@@ -974,11 +985,16 @@
         <li><a href="#dresscode" onclick="closeNav()" data-i18n="nav.dresscode">Dress Code</a></li>
         <li><a href="#venue"     onclick="closeNav()" data-i18n="nav.venue">Venue</a></li>
         <li class="nav-rsvp-cta"><a href="#rsvp" onclick="closeNav()" data-i18n="nav.rsvp">RSVP</a></li>
+        <li class="nav-lang-item">
+          <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+          <span class="lang-sep">|</span>
+          <button class="lang-btn" data-lang="th" onclick="setLang('th')">ไทย</button>
+        </li>
       </ul>
       <div class="lang-switcher">
-        <button class="lang-btn active" id="btn-lang-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
         <span class="lang-sep">|</span>
-        <button class="lang-btn" id="btn-lang-th" onclick="setLang('th')">ไทย</button>
+        <button class="lang-btn" data-lang="th" onclick="setLang('th')">ไทย</button>
       </div>
     </div>
   </nav>
@@ -1674,8 +1690,8 @@
       });
 
       // Toggle active state on lang buttons
-      document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
-      document.getElementById('btn-lang-th').classList.toggle('active', lang === 'th');
+      document.querySelectorAll('.lang-btn[data-lang="en"]').forEach(b => b.classList.toggle('active', lang === 'en'));
+      document.querySelectorAll('.lang-btn[data-lang="th"]').forEach(b => b.classList.toggle('active', lang === 'th'));
 
       // Toggle Thai font class on body
       document.body.classList.toggle('lang-th', lang === 'th');
