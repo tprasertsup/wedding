@@ -22,7 +22,8 @@ function doPost(e) {
     return jsonOut({ error: 'Invalid JSON.' }, 400);
   }
 
-  if (data.action === 'update') return updateRSVP(data);
+  if (data.action === 'blessing') return createBlessing(data);
+  if (data.action === 'update')  return updateRSVP(data);
   return createRSVP(data);
 }
 
@@ -200,6 +201,40 @@ function sendEditEmail(email, name, token) {
     htmlBody: html,
     noReply: true
   });
+}
+
+// --------------- Blessing Wall ---------------
+
+function createBlessing(data) {
+  if (!data.name || !data.message) {
+    return jsonOut({ error: 'Name and message are required.' }, 400);
+  }
+
+  const sheet = getBlessingSheet();
+  sheet.appendRow([
+    new Date().toISOString(),
+    data.name.trim(),
+    (data.relationship || '').trim(),
+    data.message.trim()
+  ]);
+
+  return jsonOut({ success: true });
+}
+
+function getBlessingSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName('Blessings');
+
+  if (!sheet) {
+    sheet = ss.insertSheet('Blessings');
+    sheet.appendRow(['timestamp', 'name', 'relationship', 'message']);
+    sheet.setFrozenRows(1);
+    sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
+    sheet.setColumnWidths(1, 4, 220);
+    sheet.getRange(1, 4, 1, 1).setColumnWidth(400);
+  }
+
+  return sheet;
 }
 
 // --------------- Utility ---------------
