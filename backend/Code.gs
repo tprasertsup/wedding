@@ -162,7 +162,7 @@ function findRowByEmail(email) {
 
 function sendEditEmail(email, name, token) {
   // Update WEBSITE_URL before deploying
-  const WEBSITE_URL = 'https://YOUR_WEBSITE_URL';
+  const WEBSITE_URL = 'https://tprasertsup.github.io/wedding';
   const editUrl = `${WEBSITE_URL}/edit.html?token=${token}`;
 
   const html = `
