@@ -1553,7 +1553,8 @@
         plusone:     plusoneVal,
         plusoneName: plusoneVal === 'yes' ? (document.getElementById('rsvp-plusone-name')?.value || '').trim() : '',
         notes:       (document.getElementById('rsvp-notes')?.value || '').trim(),
-        blessing:    (document.getElementById('rsvp-blessing')?.value || '').trim()
+        blessing:    (document.getElementById('rsvp-blessing')?.value || '').trim(),
+        lang:        currentLang
       };
 
       try {

@@ -49,6 +49,7 @@ function createRSVP(data) {
   const sheet = getSheet();
   const token = Utilities.getUuid();
   const now = new Date().toISOString();
+  const lang = (data.lang === 'th') ? 'th' : 'en';
 
   sheet.appendRow([
     now,          // A: created_at
@@ -63,10 +64,11 @@ function createRSVP(data) {
     (data.notes || '').trim(),
     (data.blessing || '').trim(),
     'active',     // L: status
-    ''            // M: updated_at
+    '',           // M: updated_at
+    lang          // N: lang
   ]);
 
-  sendEditEmail(email, data.name.trim(), token);
+  sendEditEmail(email, data.name.trim(), token, lang);
 
   return jsonOut({ success: true });
 }
@@ -126,14 +128,13 @@ function getSheet() {
     sheet.appendRow([
       'created_at', 'token', 'name', 'email', 'phone',
       'session', 'dietary', 'plusone', 'plusone_name',
-      'notes', 'blessing', 'status', 'updated_at'
+      'notes', 'blessing', 'status', 'updated_at', 'lang'
     ]);
     sheet.setFrozenRows(1);
 
-    // Basic formatting
-    sheet.getRange(1, 1, 1, 13).setFontWeight('bold');
-    sheet.setColumnWidths(1, 13, 160);
-    sheet.getRange(1, 2, 1, 1).setColumnWidth(280); // token column wider
+    sheet.getRange(1, 1, 1, 14).setFontWeight('bold');
+    sheet.setColumnWidths(1, 14, 160);
+    sheet.getRange(1, 2, 1, 1).setColumnWidth(280);
   }
 
   return sheet;
@@ -163,12 +164,46 @@ function findRowByEmail(email) {
 
 // --------------- Email ---------------
 
-function sendEditEmail(email, name, token) {
+function sendEditEmail(email, name, token, lang) {
   // Update WEBSITE_URL before deploying
   const WEBSITE_URL = 'https://tprasertsup.github.io/wedding';
   const editUrl = `${WEBSITE_URL}/edit.html?token=${token}`;
 
-  const html = `
+  const isThai = (lang === 'th');
+
+  const subject = isThai
+    ? 'ยืนยันการเข้าร่วมงานแต่งงานไนน์ & ทอม ✨'
+    : "Your RSVP for Nine & Tom's Wedding ✨";
+
+  const html = isThai ? `
+  <div style="font-family:'Sarabun',sans-serif;max-width:580px;margin:0 auto;background:#faf3ec;padding:0;border:1px solid #d4b896;">
+    <div style="background:#f5e6d8;padding:40px 40px 30px;text-align:center;border-bottom:1px solid #d4b896;">
+      <div style="font-size:36px;color:#c9a96e;margin-bottom:8px;">囍</div>
+      <h1 style="font-size:28px;color:#5c3d2e;margin:0;font-weight:400;letter-spacing:1px;">ไนน์ &amp; ทอม</h1>
+      <p style="color:#8a6552;font-size:13px;letter-spacing:2px;margin:6px 0 0;">11 กรกฎาคม 2570</p>
+    </div>
+    <div style="padding:40px;">
+      <p style="color:#5c3d2e;font-size:16px;">เรียน คุณ${name},</p>
+      <p style="color:#6b4c3b;line-height:1.9;">ขอบคุณมากนะคะที่ยืนยันการเข้าร่วม — ดีใจมากที่จะได้เจอกัน!</p>
+      <p style="color:#6b4c3b;line-height:1.9;">ใช้ลิงก์ด้านล่างเพื่อดูหรือแก้ไขข้อมูลได้ตลอดเวลา กรุณาเก็บอีเมลนี้ไว้ด้วยนะคะ</p>
+      <div style="text-align:center;margin:35px 0;">
+        <a href="${editUrl}"
+           style="display:inline-block;background:#8b6914;color:#fff;padding:14px 36px;
+                  text-decoration:none;font-size:12px;letter-spacing:2px;
+                  text-transform:uppercase;font-family:Arial,sans-serif;">
+          ดูหรือแก้ไข RSVP
+        </a>
+      </div>
+      <p style="color:#8a6552;font-size:12px;line-height:1.8;text-align:center;">
+        กรุณาตอบรับภายใน <strong>1 มิถุนายน 2570</strong><br>
+        หากมีข้อสงสัย สามารถติดต่อไนน์หรือทอมได้โดยตรง
+      </p>
+      <hr style="border:none;border-top:1px solid #d4b896;margin:30px 0;">
+      <p style="color:#5c3d2e;font-size:14px;font-style:italic;text-align:center;">
+        ฉลองรักและบทใหม่ของชีวิต
+      </p>
+    </div>
+  </div>` : `
   <div style="font-family:'Georgia',serif;max-width:580px;margin:0 auto;background:#faf3ec;padding:0;border:1px solid #d4b896;">
     <div style="background:#f5e6d8;padding:40px 40px 30px;text-align:center;border-bottom:1px solid #d4b896;">
       <div style="font-size:36px;color:#c9a96e;margin-bottom:8px;">囍</div>
@@ -193,14 +228,14 @@ function sendEditEmail(email, name, token) {
       </p>
       <hr style="border:none;border-top:1px solid #d4b896;margin:30px 0;">
       <p style="color:#5c3d2e;font-size:14px;font-style:italic;text-align:center;">
-        Celebrating Our Love and New Beginning
+        Celebrating love, family, and a beautiful new beginning
       </p>
     </div>
   </div>`;
 
   MailApp.sendEmail({
     to: email,
-    subject: "Your RSVP for Nine & Tom's Wedding ✨",
+    subject: subject,
     htmlBody: html,
     noReply: true
   });
