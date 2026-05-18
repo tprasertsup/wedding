@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nine & Tom — July 11, 2027</title>
+  <!-- Once you pick a design, replace this file's contents with that design file,
+       or just rename e.g. design1.html → index.html and delete this file. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #f5e6d8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      color: #5c3d2e;
+    }
+    .ornament { font-size: 40px; color: #c9a96e; margin-bottom: 16px; }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .sub {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #8a6552;
+      margin-bottom: 50px;
+    }
+    .designs {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 860px;
+    }
+    .design-card {
+      background: #fefaf6;
+      border: 1px solid #d4b896;
+      padding: 36px 32px;
+      text-align: center;
+      text-decoration: none;
+      color: #5c3d2e;
+      flex: 1;
+      min-width: 220px;
+      max-width: 260px;
+      transition: transform .2s, box-shadow .2s;
+      position: relative;
+    }
+    .design-card::before, .design-card::after {
+      content: '';
+      position: absolute;
+      width: 14px; height: 14px;
+      border-color: #c9a96e;
+      border-style: solid;
+    }
+    .design-card::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+    .design-card::after  { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+    .design-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(92,61,46,.1); }
+    .design-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c9a96e;
+      margin-bottom: 10px;
+    }
+    .design-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .design-desc {
+      font-size: 12px;
+      color: #8a6552;
+      line-height: 1.7;
+    }
+    .palette {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 18px;
+    }
+    .dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .note {
+      margin-top: 50px;
+      font-size: 12px;
+      color: #8a6552;
+      text-align: center;
+      max-width: 500px;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="ornament">囍</div>
+  <h1>Nine &amp; Tom</h1>
+  <p class="sub">Design Preview · July 11, 2027</p>
+
+  <div class="designs">
+    <a class="design-card" href="design1.html">
+      <div class="design-num">Design 01</div>
+      <div class="design-name">Lotus &amp; Gold</div>
+      <div class="design-desc">Warm peach tones, ornate Thai-inspired details, floating petals</div>
+      <div class="palette">
+        <div class="dot" style="background:#f5e6d8"></div>
+        <div class="dot" style="background:#c9a96e"></div>
+        <div class="dot" style="background:#f2b5c0"></div>
+        <div class="dot" style="background:#8fa884"></div>
+        <div class="dot" style="background:#5c3d2e"></div>
+      </div>
+    </a>
+
+    <a class="design-card" href="design2.html">
+      <div class="design-num">Design 02</div>
+      <div class="design-name">Champagne Dusk</div>
+      <div class="design-desc">Editorial typography, animated gradient hero, terracotta accents</div>
+      <div class="palette">
+        <div class="dot" style="background:#f8f4ee"></div>
+        <div class="dot" style="background:#c4a97d"></div>
+        <div class="dot" style="background:#c4785a"></div>
+        <div class="dot" style="background:#8fa884"></div>
+        <div class="dot" style="background:#4a3526"></div>
+      </div>
+    </a>
+
+    <a class="design-card" href="design3.html">
+      <div class="design-num">Design 03</div>
+      <div class="design-name">Garden Romance</div>
+      <div class="design-desc">Airy white base, sage green, botanical corners, confetti on RSVP</div>
+      <div class="palette">
+        <div class="dot" style="background:#fefefe"></div>
+        <div class="dot" style="background:#7a9b72"></div>
+        <div class="dot" style="background:#e8c4c0"></div>
+        <div class="dot" style="background:#c9a87c"></div>
+        <div class="dot" style="background:#2d3a2e"></div>
+      </div>
+    </a>
+  </div>
+
+  <p class="note">Once you pick a design, this page will be replaced by the chosen design as the homepage.</p>
+</body>
+</html>
