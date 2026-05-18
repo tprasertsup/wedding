@@ -15,16 +15,19 @@ function doGet(e) {
 }
 
 function doPost(e) {
-  let data;
   try {
-    data = JSON.parse(e.postData.contents);
-  } catch (_) {
-    return jsonOut({ error: 'Invalid JSON.' }, 400);
+    let data;
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch (_) {
+      return jsonOut({ error: 'Invalid JSON body.' });
+    }
+    if (data.action === 'blessing') return createBlessing(data);
+    if (data.action === 'update')  return updateRSVP(data);
+    return createRSVP(data);
+  } catch (err) {
+    return jsonOut({ error: 'Server error: ' + err.message });
   }
-
-  if (data.action === 'blessing') return createBlessing(data);
-  if (data.action === 'update')  return updateRSVP(data);
-  return createRSVP(data);
 }
 
 // --------------- RSVP Operations ---------------

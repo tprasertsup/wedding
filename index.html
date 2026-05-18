@@ -674,11 +674,33 @@
     .session-label:hover { border-color: var(--gold); }
 
     /* Plus one */
-    .radio-inline-group { display: flex; gap: 1.5rem; align-items: center; margin-top: 0.3rem; }
-    .radio-inline { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
-    .radio-inline input[type="radio"] { accent-color: var(--gold-dark); width: 16px; height: 16px; cursor: pointer; }
-    .radio-inline span { font-family: 'Lato', sans-serif; font-size: 0.88rem; color: var(--brown-light); }
-    #plusone-name-wrap { display: none; margin-top: 0.8rem; }
+    .plusone-toggle { display: flex; gap: 12px; margin-top: 0.4rem; }
+    .plusone-btn {
+      flex: 1;
+      padding: 14px 16px;
+      border: 1px solid var(--gold-border);
+      background: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .plusone-btn:hover { border-color: var(--gold); color: var(--brown); }
+    .plusone-btn.active {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.12);
+      color: var(--gold-dark);
+    }
+    #plusone-name-wrap {
+      display: none;
+      margin-top: 0.8rem;
+      overflow: hidden;
+    }
 
     .btn-submit {
       display: block;
@@ -1208,15 +1230,9 @@
 
           <div class="form-group">
             <label>Will you be bringing a plus one?</label>
-            <div class="radio-inline-group">
-              <label class="radio-inline">
-                <input type="radio" name="plusone" value="yes" onchange="togglePlusOne(true)" />
-                <span>Yes, I will!</span>
-              </label>
-              <label class="radio-inline">
-                <input type="radio" name="plusone" value="no" checked onchange="togglePlusOne(false)" />
-                <span>No, just me</span>
-              </label>
+            <div class="plusone-toggle">
+              <button type="button" class="plusone-btn active" id="btn-no"  onclick="setPlusOne('no')">No, just me</button>
+              <button type="button" class="plusone-btn"        id="btn-yes" onclick="setPlusOne('yes')">Yes, I will!</button>
             </div>
             <div id="plusone-name-wrap">
               <input type="text" id="rsvp-plusone-name" name="plusone-name" placeholder="Guest's full name" style="margin-top:0.6rem;" />
@@ -1371,8 +1387,10 @@
     }, { passive: true });
 
     /* ── PLUS ONE TOGGLE ────────────────────────────────────────────── */
-    function togglePlusOne(show) {
-      document.getElementById('plusone-name-wrap').style.display = show ? 'block' : 'none';
+    function setPlusOne(val) {
+      document.getElementById('btn-no').classList.toggle('active',  val === 'no');
+      document.getElementById('btn-yes').classList.toggle('active', val === 'yes');
+      document.getElementById('plusone-name-wrap').style.display = val === 'yes' ? 'block' : 'none';
     }
 
     /* ── RSVP SUBMIT ────────────────────────────────────────────────── */
@@ -1392,8 +1410,7 @@
       btn.disabled = true;
       btn.textContent = 'Sending…';
 
-      const plusoneRadio = document.querySelector('input[name="plusone"]:checked');
-      const plusoneVal   = plusoneRadio ? plusoneRadio.value : 'no';
+      const plusoneVal = document.getElementById('btn-yes').classList.contains('active') ? 'yes' : 'no';
 
       const payload = {
         name:        nameVal,
@@ -1436,7 +1453,7 @@
           btn.textContent = 'Confirm My RSVP';
         }
       } catch (err) {
-        alert('Could not connect. Please check your connection and try again.');
+        alert('Could not reach the server. Please try again in a moment, or contact Nine & Tom directly if this keeps happening.');
         btn.disabled = false;
         btn.textContent = 'Confirm My RSVP';
       }
