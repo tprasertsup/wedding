@@ -6,7 +6,7 @@
   <title>Nine &amp; Tom — July 11, 2027</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
 
   <style>
     /* ═══════════════════════════════════════════════
@@ -17,7 +17,7 @@
     body {
       background-color: var(--peach);
       color: var(--brown);
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-weight: 400;
       line-height: 1.7;
       overflow-x: hidden;
@@ -150,7 +150,7 @@
       list-style: none;
     }
     .nav-links a {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.14em;
@@ -215,7 +215,7 @@
       text-shadow: 0 2px 14px rgba(201,169,110,0.28);
     }
     .hero-eyebrow {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: clamp(0.68rem, 2vw, 0.82rem);
       font-weight: 500;
       letter-spacing: 0.22em;
@@ -286,7 +286,7 @@
       text-align: center;
     }
     .countdown-label {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.6rem;
       font-weight: 600;
       letter-spacing: 0.18em;
@@ -304,7 +304,7 @@
     }
 
     .hero-scroll-link {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.68rem;
       font-weight: 500;
       letter-spacing: 0.18em;
@@ -359,7 +359,7 @@
 
     .couple-icon { font-size: 2.4rem; margin-bottom: 0.9rem; display: block; }
     .couple-role {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.66rem;
       font-weight: 600;
       letter-spacing: 0.22em;
@@ -383,7 +383,7 @@
     }
     .couple-divider { width: 38px; height: 1px; background: var(--gold); margin: 0.9rem auto; }
     .couple-desc {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.88rem;
       color: var(--brown-light);
       line-height: 1.78;
@@ -431,7 +431,7 @@
       letter-spacing: 0.04em;
     }
     .program-period {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.62rem;
       font-weight: 600;
       letter-spacing: 0.18em;
@@ -456,7 +456,7 @@
     }
     .program-gold-line { width: 36px; height: 1px; background: var(--gold); margin-bottom: 1rem; }
     .program-desc {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.86rem;
       color: var(--brown-light);
       line-height: 1.82;
@@ -467,52 +467,47 @@
     ═══════════════════════════════════════════════ */
     #dresscode { background: var(--peach-light); }
 
-    .dresscode-display {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 300;
-      font-size: clamp(1.8rem, 6vw, 4rem);
-      letter-spacing: 0.22em;
-      color: var(--brown);
-      text-align: center;
-      margin: 0.5rem 0 2rem;
-      line-height: 1.1;
-    }
-    .dresscode-display span { color: var(--gold); }
-
-    /* Swatch strip — wider rectangles */
+    /* Swatch strip — hover-expand pills */
     .swatch-strip {
       display: flex;
-      gap: 0;
-      max-width: 860px;
-      margin: 0 auto 0.6rem;
-      border: 1px solid rgba(212,184,150,0.4);
-      overflow: hidden;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 2rem auto 0.6rem;
+      max-width: 700px;
     }
-    .swatch-rect {
-      flex: 1;
+    .swatch-pill {
       display: flex;
-      flex-direction: column;
       align-items: center;
-    }
-    .swatch-color {
-      width: 100%;
-      height: 64px;
-      transition: height 0.3s ease;
-    }
-    .swatch-rect:hover .swatch-color { height: 90px; }
-    .swatch-color-name {
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.52rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--brown-light);
-      text-align: center;
-      padding: 0.4rem 0.2rem 0.5rem;
+      height: 44px;
+      width: 44px;
+      border-radius: 22px;
       background: var(--cream);
-      width: 100%;
-      line-height: 1.3;
+      border: 1px solid var(--gold-border);
+      overflow: hidden;
+      transition: width 0.38s cubic-bezier(0.25, 1.0, 0.5, 1);
+      cursor: default;
+      flex-shrink: 0;
     }
+    .swatch-pill:hover { width: 148px; }
+    .swatch-dot {
+      width: 42px;
+      min-width: 42px;
+      height: 42px;
+      border-radius: 50%;
+    }
+    .swatch-name {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      color: var(--brown-light);
+      white-space: nowrap;
+      opacity: 0;
+      padding-left: 10px;
+      transition: opacity 0.15s ease 0.18s;
+    }
+    .swatch-pill:hover .swatch-name { opacity: 1; }
 
     .dresscode-note-wrap {
       max-width: 680px;
@@ -520,7 +515,7 @@
       text-align: center;
     }
     .dresscode-note-para {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.9rem;
       color: var(--brown-light);
       line-height: 1.85;
@@ -576,7 +571,7 @@
       background: transparent;
       border: 1.5px solid var(--gold);
       color: var(--gold-dark);
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.14em;
@@ -610,7 +605,7 @@
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
     .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
     .form-group label {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.14em;
@@ -624,7 +619,7 @@
       background: #fff;
       border: 1px solid var(--gold-border);
       color: var(--brown);
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.88rem;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -659,7 +654,7 @@
       cursor: pointer;
       text-align: center;
       transition: all 0.22s;
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.8rem;
       color: var(--brown-light);
       line-height: 1.4;
@@ -682,7 +677,7 @@
     .radio-inline-group { display: flex; gap: 1.5rem; align-items: center; margin-top: 0.3rem; }
     .radio-inline { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
     .radio-inline input[type="radio"] { accent-color: var(--gold-dark); width: 16px; height: 16px; cursor: pointer; }
-    .radio-inline span { font-family: 'Raleway', sans-serif; font-size: 0.88rem; color: var(--brown-light); }
+    .radio-inline span { font-family: 'Lato', sans-serif; font-size: 0.88rem; color: var(--brown-light); }
     #plusone-name-wrap { display: none; margin-top: 0.8rem; }
 
     .btn-submit {
@@ -692,7 +687,7 @@
       background: var(--gold-dark);
       color: var(--cream);
       border: none;
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Lato', sans-serif;
       font-size: 0.76rem;
       font-weight: 600;
       letter-spacing: 0.2em;
@@ -838,9 +833,8 @@
       .form-row { grid-template-columns: 1fr; }
       .session-grid { grid-template-columns: 1fr; }
 
-      .dresscode-display { letter-spacing: 0.1em; }
-      .swatch-strip { max-width: 100%; }
-      .swatch-color-name { font-size: 0.46rem; }
+      .swatch-strip { gap: 8px; }
+      .swatch-pill:hover { width: 130px; }
     }
 
     @media (max-width: 480px) {
@@ -848,7 +842,8 @@
       .countdown-number { font-size: 2rem; }
       .countdown-sep { font-size: 1.4rem; }
       .program-card-body { padding: 1.5rem; }
-      .swatch-color { height: 48px; }
+      .swatch-pill { width: 38px; height: 38px; border-radius: 19px; }
+      .swatch-dot { width: 36px; min-width: 36px; height: 36px; }
     }
   </style>
 </head>
@@ -869,7 +864,6 @@
         <li><a href="#dresscode" onclick="closeNav()">Dress Code</a></li>
         <li><a href="#venue"     onclick="closeNav()">Venue</a></li>
         <li><a href="#rsvp"      onclick="closeNav()">RSVP</a></li>
-        <li><a href="#blessings" onclick="closeNav()">Blessings</a></li>
       </ul>
     </div>
   </nav>
@@ -1046,44 +1040,16 @@
       </div>
       <p class="section-subtitle fade-in" style="margin-top:-1.5rem;"><em>Come as you are — in soft, earthy tones</em></p>
 
-      <div class="dresscode-display fade-in">
-        NEUTRAL&nbsp;<span>·</span>&nbsp;EARTH&nbsp;<span>·</span>&nbsp;PASTEL
-      </div>
-
-      <!-- Swatch strip -->
+      <!-- Swatch strip — hover to reveal name -->
       <div class="swatch-strip fade-in fade-in-delay-1">
-        <div class="swatch-rect">
-          <div class="swatch-color" style="background:#f5e6d8;"></div>
-          <div class="swatch-color-name">Blush<br>Peach</div>
-        </div>
-        <div class="swatch-rect">
-          <div class="swatch-color" style="background:#e8d5c0;"></div>
-          <div class="swatch-color-name">Warm<br>Linen</div>
-        </div>
-        <div class="swatch-rect">
-          <div class="swatch-color" style="background:#c4a882;"></div>
-          <div class="swatch-color-name">Cham&shy;pagne</div>
-        </div>
-        <div class="swatch-rect">
-          <div class="swatch-color" style="background:#b09070;"></div>
-          <div class="swatch-color-name">Taupe</div>
-        </div>
-        <div class="swatch-rect">
-          <div class="swatch-color" style="background:#8fa884;"></div>
-          <div class="swatch-color-name">Sage</div>
-        </div>
-        <div class="swatch-rect">
-          <div class="swatch-color" style="background:#e8b4b8;"></div>
-          <div class="swatch-color-name">Dusty<br>Rose</div>
-        </div>
-        <div class="swatch-rect">
-          <div class="swatch-color" style="background:#d4c5b2;"></div>
-          <div class="swatch-color-name">Sand</div>
-        </div>
-        <div class="swatch-rect">
-          <div class="swatch-color" style="background:#c4b5a5;"></div>
-          <div class="swatch-color-name">Stone</div>
-        </div>
+        <div class="swatch-pill"><div class="swatch-dot" style="background:#f5e6d8;"></div><span class="swatch-name">Blush Peach</span></div>
+        <div class="swatch-pill"><div class="swatch-dot" style="background:#e8d5c0;"></div><span class="swatch-name">Warm Linen</span></div>
+        <div class="swatch-pill"><div class="swatch-dot" style="background:#c4a882;"></div><span class="swatch-name">Champagne</span></div>
+        <div class="swatch-pill"><div class="swatch-dot" style="background:#b09070;"></div><span class="swatch-name">Taupe</span></div>
+        <div class="swatch-pill"><div class="swatch-dot" style="background:#8fa884;"></div><span class="swatch-name">Sage</span></div>
+        <div class="swatch-pill"><div class="swatch-dot" style="background:#e8b4b8;"></div><span class="swatch-name">Dusty Rose</span></div>
+        <div class="swatch-pill"><div class="swatch-dot" style="background:#d4c5b2;"></div><span class="swatch-name">Sand</span></div>
+        <div class="swatch-pill"><div class="swatch-dot" style="background:#c4b5a5;"></div><span class="swatch-name">Stone</span></div>
       </div>
 
       <!-- Relaxed note -->
@@ -1262,6 +1228,11 @@
             <textarea id="rsvp-notes" name="notes" rows="3" placeholder="Any questions, accessibility needs, or special requests…"></textarea>
           </div>
 
+          <div class="form-group">
+            <label for="rsvp-blessing">✦ A Blessing for Nine &amp; Tom</label>
+            <textarea id="rsvp-blessing" name="blessing" rows="5" class="blessing-textarea-gold" placeholder="Share a wish, a memory, or words of love for the couple on their special day…" style="min-height:130px;"></textarea>
+          </div>
+
           <button type="submit" class="btn-submit">Confirm My RSVP</button>
           <p class="rsvp-deadline-note">Kindly RSVP by <strong>June 1, 2027</strong></p>
         </form>
@@ -1281,75 +1252,6 @@
             <em>Nine &amp; Tom can't wait to celebrate with you.</em>
           </p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════
-       BLESSING WALL
-  ═══════════════════════════════ -->
-  <section id="blessings" class="section">
-    <div class="container">
-      <h2 class="section-title fade-in">Leave a Blessing</h2>
-      <div class="ornament fade-in">
-        <div class="ornament-line"></div>
-        <div class="ornament-diamond-sm"></div>
-        <div class="ornament-diamond"></div>
-        <div class="ornament-diamond-sm"></div>
-        <div class="ornament-line right"></div>
-      </div>
-      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;"><em>A note of love for Nine &amp; Tom — open to everyone, whether you can join us or not</em></p>
-
-      <div class="blessing-wrap fade-in">
-
-        <!-- Blessing Form -->
-        <form id="blessing-form" onsubmit="handleBlessing(event)" novalidate>
-
-          <div class="form-group">
-            <label for="blessing-name">Your Name *</label>
-            <input type="text" id="blessing-name" name="name" placeholder="Your full name" required />
-          </div>
-
-          <div class="form-group">
-            <label for="blessing-relationship">Your Relationship</label>
-            <select id="blessing-relationship" name="relationship">
-              <option value="">— Select if you'd like —</option>
-              <option value="friend-nine">Friend of Nine</option>
-              <option value="friend-tom">Friend of Tom</option>
-              <option value="friend-both">Friend of both</option>
-              <option value="family-nine">Family of Nine</option>
-              <option value="family-tom">Family of Tom</option>
-              <option value="colleague">Colleague</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="blessing-message">Your Blessing *</label>
-            <textarea
-              id="blessing-message"
-              name="message"
-              rows="6"
-              class="blessing-textarea-gold"
-              placeholder="Share a wish, a memory, or words of love…"
-              required
-              style="min-height:160px;"
-            ></textarea>
-          </div>
-
-          <button type="submit" class="btn-submit">Send My Blessing</button>
-        </form>
-
-        <!-- Blessing Success -->
-        <div id="blessing-success">
-          <span class="blessing-success-icon">✦</span>
-          <div class="blessing-success-title">Received with love</div>
-          <p class="blessing-success-msg">
-            Thank you — your blessing has been received with love.<br>
-            Nine &amp; Tom will treasure your words always.
-          </p>
-        </div>
-
       </div>
     </div>
   </section>
@@ -1501,7 +1403,8 @@
         dietary:     document.getElementById('rsvp-dietary')?.value || '',
         plusone:     plusoneVal,
         plusoneName: plusoneVal === 'yes' ? (document.getElementById('rsvp-plusone-name')?.value || '').trim() : '',
-        notes:       (document.getElementById('rsvp-notes')?.value || '').trim()
+        notes:       (document.getElementById('rsvp-notes')?.value || '').trim(),
+        blessing:    (document.getElementById('rsvp-blessing')?.value || '').trim()
       };
 
       try {
@@ -1539,53 +1442,6 @@
       }
     }
 
-    /* ── BLESSING SUBMIT ────────────────────────────────────────────── */
-    async function handleBlessing(e) {
-      e.preventDefault();
-      const form        = document.getElementById('blessing-form');
-      const nameVal     = document.getElementById('blessing-name').value.trim();
-      const messageVal  = document.getElementById('blessing-message').value.trim();
-      const relationship = document.getElementById('blessing-relationship').value;
-
-      if (!nameVal || !messageVal) {
-        alert('Please share your name and a blessing message.');
-        return;
-      }
-
-      const btn = form.querySelector('button[type="submit"]');
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
-
-      try {
-        const res  = await fetch(APPS_SCRIPT_URL, {
-          method:  'POST',
-          body:    JSON.stringify({ action: 'blessing', name: nameVal, relationship, message: messageVal }),
-          headers: { 'Content-Type': 'text/plain' }
-        });
-        const data = await res.json();
-
-        if (data.success) {
-          form.style.opacity = '0';
-          form.style.transition = 'opacity 0.4s ease';
-          setTimeout(() => {
-            form.style.display = 'none';
-            const success = document.getElementById('blessing-success');
-            success.style.display = 'block';
-            success.style.opacity = '0';
-            success.style.transition = 'opacity 0.6s ease';
-            setTimeout(() => success.style.opacity = '1', 30);
-          }, 400);
-        } else {
-          alert(data.error || 'Something went wrong. Please try again.');
-          btn.disabled = false;
-          btn.textContent = 'Send My Blessing';
-        }
-      } catch (err) {
-        alert('Could not connect. Please check your connection and try again.');
-        btn.disabled = false;
-        btn.textContent = 'Send My Blessing';
-      }
-    }
   </script>
 </body>
 </html>
