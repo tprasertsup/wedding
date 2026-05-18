@@ -907,7 +907,6 @@
       }
       .nav-links.open { display: flex; }
       .nav-toggle { display: flex; }
-      .lang-switcher { display: none; }
       .nav-links .nav-rsvp-cta a {
         background: none;
         color: var(--gold-dark) !important;
@@ -947,9 +946,12 @@
       .swatch-dot { width: 36px; min-width: 36px; height: 36px; }
     }
 
+    @media (min-width: 769px) {
+      .lang-switcher { display: flex; align-items: center; gap: 6px; margin-left: 1.5rem; }
+    }
+
     /* ── Language toggle ── */
     .nav-lang-item { display: none; } /* shown only in mobile dropdown */
-    .lang-switcher { display: flex; align-items: center; gap: 6px; margin-left: 1.5rem; }
     .lang-btn {
       background: none; border: none;
       font-family: 'Lato', sans-serif;
