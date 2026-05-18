@@ -160,6 +160,15 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--gold-dark); }
+    .nav-links .nav-rsvp-cta a {
+      background: var(--gold-dark);
+      color: #fff !important;
+      padding: 7px 18px;
+      border-radius: 2px;
+      letter-spacing: 0.16em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links .nav-rsvp-cta a:hover { background: #7a5c10 !important; color: #fff !important; }
 
     /* Hamburger */
     .nav-toggle {
@@ -302,6 +311,24 @@
       margin-top: 0.1rem;
       line-height: 1;
     }
+
+    .hero-cta-btn {
+      display: inline-block;
+      background: var(--gold-dark);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 40px;
+      border-radius: 2px;
+      margin-bottom: 1.6rem;
+      transition: background 0.2s;
+    }
+    .hero-cta-btn:hover { background: #7a5c10; }
+    body.lang-th .hero-cta-btn { font-family: 'Sarabun', sans-serif; letter-spacing: 0.06em; }
 
     .hero-scroll-link {
       font-family: 'Lato', sans-serif;
@@ -582,6 +609,23 @@
     .btn-map:hover { background: var(--gold); color: var(--cream); }
     .venue-map { border: 1px solid var(--gold-border); overflow: hidden; }
     .venue-map iframe { display: block; width: 100%; height: 380px; border: none; }
+    .venue-logistics {
+      margin-top: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--gold-border);
+    }
+    .venue-logistics-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: 0.88rem;
+      color: var(--brown-light);
+      line-height: 1.5;
+    }
+    .venue-logistics-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
 
     /* ═══════════════════════════════════════════════
        RSVP
@@ -923,7 +967,7 @@
         <li><a href="#program"   onclick="closeNav()" data-i18n="nav.program">Program</a></li>
         <li><a href="#dresscode" onclick="closeNav()" data-i18n="nav.dresscode">Dress Code</a></li>
         <li><a href="#venue"     onclick="closeNav()" data-i18n="nav.venue">Venue</a></li>
-        <li><a href="#rsvp"      onclick="closeNav()" data-i18n="nav.rsvp">RSVP</a></li>
+        <li class="nav-rsvp-cta"><a href="#rsvp" onclick="closeNav()" data-i18n="nav.rsvp">RSVP</a></li>
       </ul>
       <div class="lang-switcher">
         <button class="lang-btn active" id="btn-lang-en" onclick="setLang('en')">EN</button>
@@ -980,6 +1024,7 @@
         </div>
       </div>
 
+      <a href="#rsvp" class="hero-cta-btn fade-in fade-in-delay-4" data-i18n="hero.cta">RSVP Now</a>
       <a href="#couple" class="hero-scroll-link fade-in fade-in-delay-4" data-i18n="hero.scroll">Scroll to explore ↓</a>
     </div>
   </section>
@@ -1169,6 +1214,17 @@
           <a href="https://maps.google.com/?q=Le+Pansiri+Nonthaburi+Thailand" target="_blank" rel="noopener" class="btn-map">
             <span>📍</span> <span data-i18n="venue.maplink">Open in Google Maps</span>
           </a>
+
+          <div class="venue-logistics">
+            <div class="venue-logistics-item">
+              <span class="venue-logistics-icon">🚗</span>
+              <span data-i18n="venue.parking">180 parking spots available on-site — feel free to drive</span>
+            </div>
+            <div class="venue-logistics-item">
+              <span class="venue-logistics-icon">♿</span>
+              <span data-i18n="venue.access">Wheelchair accessible · Elevator available</span>
+            </div>
+          </div>
         </div>
 
         <div class="venue-map fade-in fade-in-delay-2">
@@ -1240,14 +1296,14 @@
               <div class="session-option">
                 <input type="radio" name="session" id="s-both" value="both" />
                 <label class="session-label" for="s-both">
-                  <span class="session-time" data-i18n="session.both.time">All Day 🎉</span>
+                  <span class="session-time" data-i18n="session.both.time">🎉</span>
                   <span data-i18n="rsvp.session.both">Both Sessions — Full Celebration</span>
                 </label>
               </div>
               <div class="session-option">
                 <input type="radio" name="session" id="s-none" value="unable" />
                 <label class="session-label" for="s-none">
-                  <span class="session-time" style="color:var(--brown-light);" data-i18n="session.none.time">Unable</span>
+                  <span class="session-time" style="color:var(--brown-light);" data-i18n="session.none.time">🤍</span>
                   <span data-i18n="rsvp.session.none">Unable to Attend — Sending Love</span>
                 </label>
               </div>
@@ -1503,7 +1559,7 @@
     const T = {
       en: {
         'nav.story':'Our Story','nav.program':'Program','nav.dresscode':'Dress Code','nav.venue':'Venue','nav.rsvp':'RSVP',
-        'hero.eyebrow':'Please join us for the wedding of','hero.scroll':'Scroll to explore ↓',
+        'hero.eyebrow':'Please join us for the wedding of','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
         'about.title':'The Couple','about.subtitle':'Two hearts, one beautiful journey',
         'about.bride.role':'The Bride','about.bride.fullname':'Thananun Prasertsup',
         'about.bride.bio':'Born under the warm Bangkok sky on November 10, 1997, Nine brings grace, warmth, and an infectious smile to every room she enters. A proud daughter of Thailand.',
@@ -1519,12 +1575,14 @@
         'dress.avoid':'We only ask that you kindly avoid white, ivory, and black.',
         'venue.title':'The Venue','venue.subtitle':'Where our love story continues',
         'venue.afternoon':'Afternoon Ceremony','venue.evening':'Evening Reception','venue.maplink':'Open in Google Maps',
+        'venue.parking':'180 parking spots available on-site — feel free to drive',
+        'venue.access':'Wheelchair accessible · Elevator available',
         'rsvp.title':'RSVP','rsvp.subtitle':'Please respond by June 1, 2027',
         'rsvp.name.label':'Your Name','rsvp.email.label':'Email Address','rsvp.phone.label':'Phone Number',
         'rsvp.session.label':'Which session will you attend?',
         'rsvp.session.pm':'Khan Maak & Tea Ceremony','rsvp.session.eve':'Reception & Dinner',
         'rsvp.session.both':'Both Sessions — Full Celebration','rsvp.session.none':'Unable to Attend — Sending Love',
-        'session.pm.time':'15:30','session.eve.time':'18:00','session.both.time':'All Day 🎉','session.none.time':'Unable',
+        'session.pm.time':'15:30','session.eve.time':'18:00','session.both.time':'🎉','session.none.time':'🤍',
         'rsvp.dietary.label':'Dietary Restrictions',
         'diet.none':'None','diet.veg':'Vegetarian','diet.vegan':'Vegan','diet.halal':'Halal',
         'diet.gluten':'Gluten-Free','diet.nut':'Nut Allergy','diet.seafood':'Seafood Allergy','diet.other':'Other (specify in notes)',
@@ -1542,7 +1600,7 @@
       },
       th: {
         'nav.story':'เรื่องราวของเรา','nav.program':'กำหนดการ','nav.dresscode':'การแต่งกาย','nav.venue':'สถานที่จัดงาน','nav.rsvp':'ยืนยันการเข้าร่วม',
-        'hero.eyebrow':'ขอเรียนเชิญร่วมงานแต่งงานของ','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
+        'hero.eyebrow':'ขอเรียนเชิญร่วมงานแต่งงานของ','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
         'about.title':'คู่บ่าวสาว','about.subtitle':'สองหัวใจ บนเส้นทางแห่งความรัก',
         'about.bride.role':'เจ้าสาว','about.bride.fullname':'ธนนันท์ ประเสริฐทรัพย์',
         'about.bride.bio':'เกิดและเติบโตในกรุงเทพมหานคร เมื่อวันที่ 10 พฤศจิกายน 2540 ไนน์มีรอยยิ้มที่อบอุ่นและหัวใจที่เต็มเปี่ยมด้วยความรัก เธอภาคภูมิใจในความเป็นไทยและพร้อมเปิดใจสู่ชีวิตใหม่ที่สวยงาม',
@@ -1558,12 +1616,14 @@
         'dress.avoid':'ขอเพียงหลีกเลี่ยงสีขาว สีครีม และสีดำ',
         'venue.title':'สถานที่จัดงาน','venue.subtitle':'สถานที่ที่เรื่องราวความรักของเราดำเนินต่อไป',
         'venue.afternoon':'พิธีช่วงบ่าย','venue.evening':'งานเลี้ยงช่วงเย็น','venue.maplink':'เปิดใน Google Maps',
+        'venue.parking':'มีที่จอดรถ 180 คัน — สามารถขับรถมาได้เลย',
+        'venue.access':'รองรับรถเข็น · มีลิฟต์บริการ',
         'rsvp.title':'ยืนยันการเข้าร่วม','rsvp.subtitle':'กรุณาตอบรับภายใน 1 มิถุนายน 2570',
         'rsvp.name.label':'ชื่อ-นามสกุล','rsvp.email.label':'อีเมล','rsvp.phone.label':'เบอร์โทรศัพท์',
         'rsvp.session.label':'จะเข้าร่วมงานช่วงใด?',
         'rsvp.session.pm':'ขันหมาก & พิธียกน้ำชา','rsvp.session.eve':'งานเลี้ยงรับรอง & อาหารค่ำ',
         'rsvp.session.both':'ทั้งสองช่วง — ร่วมงานทั้งวัน','rsvp.session.none':'ไม่สามารถมาได้ — ส่งความรักมาให้',
-        'session.pm.time':'15:30','session.eve.time':'18:00','session.both.time':'ทั้งวัน 🎉','session.none.time':'ไม่สะดวก',
+        'session.pm.time':'15:30','session.eve.time':'18:00','session.both.time':'🎉','session.none.time':'🤍',
         'rsvp.dietary.label':'ข้อจำกัดด้านอาหาร',
         'diet.none':'ไม่มี','diet.veg':'มังสวิรัติ','diet.vegan':'วีแกน','diet.halal':'ฮาลาล',
         'diet.gluten':'ปราศจากกลูเตน','diet.nut':'แพ้ถั่ว','diet.seafood':'แพ้อาหารทะเล','diet.other':'อื่นๆ (ระบุในหมายเหตุ)',
