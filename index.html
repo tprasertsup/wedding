@@ -6,7 +6,7 @@
   <title>Nine &amp; Tom — July 11, 2027</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     /* ═══════════════════════════════════════════════
@@ -876,6 +876,35 @@
       .swatch-pill { width: 38px; height: 38px; border-radius: 19px; }
       .swatch-dot { width: 36px; min-width: 36px; height: 36px; }
     }
+
+    /* ── Language toggle ── */
+    .lang-switcher { display: flex; align-items: center; gap: 6px; margin-left: 1.5rem; }
+    .lang-btn {
+      background: none; border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--brown-light); cursor: pointer;
+      padding: 2px 4px; transition: color 0.2s;
+    }
+    .lang-btn:hover { color: var(--brown); }
+    .lang-btn.active { color: var(--gold-dark); border-bottom: 1.5px solid var(--gold); }
+    .lang-sep { color: var(--gold-border); font-size: 0.65rem; user-select: none; }
+
+    /* ── Thai font override ── */
+    body.lang-th {
+      font-family: 'Sarabun', sans-serif;
+    }
+    body.lang-th h1, body.lang-th h2, body.lang-th h3, body.lang-th h4,
+    body.lang-th .section-title, body.lang-th .section-subtitle,
+    body.lang-th .hero-name-nine, body.lang-th .hero-name-tom,
+    body.lang-th .hero-amp, body.lang-th .hero-double-happiness {
+      font-family: 'Sarabun', sans-serif;
+      letter-spacing: 0.01em;
+    }
+    body.lang-th .hero-eyebrow,
+    body.lang-th .nav-links a,
+    body.lang-th .lang-btn { font-family: 'Sarabun', sans-serif; }
   </style>
 </head>
 <body>
@@ -890,12 +919,17 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#couple"    onclick="closeNav()">Our Story</a></li>
-        <li><a href="#program"   onclick="closeNav()">Program</a></li>
-        <li><a href="#dresscode" onclick="closeNav()">Dress Code</a></li>
-        <li><a href="#venue"     onclick="closeNav()">Venue</a></li>
-        <li><a href="#rsvp"      onclick="closeNav()">RSVP</a></li>
+        <li><a href="#couple"    onclick="closeNav()" data-i18n="nav.story">Our Story</a></li>
+        <li><a href="#program"   onclick="closeNav()" data-i18n="nav.program">Program</a></li>
+        <li><a href="#dresscode" onclick="closeNav()" data-i18n="nav.dresscode">Dress Code</a></li>
+        <li><a href="#venue"     onclick="closeNav()" data-i18n="nav.venue">Venue</a></li>
+        <li><a href="#rsvp"      onclick="closeNav()" data-i18n="nav.rsvp">RSVP</a></li>
       </ul>
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-lang-en" onclick="setLang('en')">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" id="btn-lang-th" onclick="setLang('th')">ไทย</button>
+      </div>
     </div>
   </nav>
 
@@ -911,7 +945,7 @@
     <div class="hero-content">
       <div class="hero-double-happiness fade-in">囍</div>
 
-      <p class="hero-eyebrow fade-in fade-in-delay-1">Please join us for the wedding of</p>
+      <p class="hero-eyebrow fade-in fade-in-delay-1" data-i18n="hero.eyebrow">Please join us for the wedding of</p>
 
       <div class="hero-names-block fade-in fade-in-delay-2">
         <span class="hero-name-nine">NINE</span>
@@ -946,7 +980,7 @@
         </div>
       </div>
 
-      <a href="#couple" class="hero-scroll-link fade-in fade-in-delay-4">Scroll to explore ↓</a>
+      <a href="#couple" class="hero-scroll-link fade-in fade-in-delay-4" data-i18n="hero.scroll">Scroll to explore ↓</a>
     </div>
   </section>
 
@@ -955,7 +989,7 @@
   ═══════════════════════════════ -->
   <section id="couple" class="section">
     <div class="container">
-      <h2 class="section-title fade-in">The Couple</h2>
+      <h2 class="section-title fade-in" data-i18n="about.title">The Couple</h2>
       <div class="ornament fade-in">
         <div class="ornament-line"></div>
         <div class="ornament-diamond-sm"></div>
@@ -963,18 +997,18 @@
         <div class="ornament-diamond-sm"></div>
         <div class="ornament-line right"></div>
       </div>
-      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;">"Two hearts, two cultures, one beautiful love story"</p>
+      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;" data-i18n="about.subtitle">"Two hearts, two cultures, one beautiful love story"</p>
 
       <div class="couple-grid">
         <!-- BRIDE -->
         <div class="couple-card fade-in">
           <div class="couple-card-inner">
             <span class="couple-icon">🌸</span>
-            <div class="couple-role">The Bride</div>
+            <div class="couple-role" data-i18n="about.bride.role">The Bride</div>
             <div class="couple-name-main">Nine</div>
-            <div class="couple-name-full">Thananun Prasertsup</div>
+            <div class="couple-name-full" data-i18n="about.bride.fullname">Thananun Prasertsup</div>
             <div class="couple-divider"></div>
-            <p class="couple-desc">
+            <p class="couple-desc" data-i18n="about.bride.bio">
               Born beneath the warm skies of Bangkok, Nine carries within her the grace and quiet radiance of Thailand. Gentle in spirit, luminous in heart, she brings colour and joy to every moment she inhabits. Her warmth is the kind that draws people in and makes them feel, without any effort at all, entirely at home.
             </p>
             <p class="couple-origin">Bangkok, Thailand &nbsp;·&nbsp; November 10, 1997</p>
@@ -985,11 +1019,11 @@
         <div class="couple-card fade-in fade-in-delay-2">
           <div class="couple-card-inner">
             <span class="couple-icon">🌿</span>
-            <div class="couple-role">The Groom</div>
+            <div class="couple-role" data-i18n="about.groom.role">The Groom</div>
             <div class="couple-name-main">Tom</div>
-            <div class="couple-name-full">Thomas La Pham</div>
+            <div class="couple-name-full" data-i18n="about.groom.fullname">Thomas La Pham</div>
             <div class="couple-divider"></div>
-            <p class="couple-desc">
+            <p class="couple-desc" data-i18n="about.groom.bio">
               Raised in Washington with Vietnamese roots running quietly and proudly through everything he does, Tom brings steadfast warmth, a grounded sense of self, and a heart with room enough for two worlds. He found in Nine not just a partner, but his greatest adventure — and the place he most feels like himself.
             </p>
             <p class="couple-origin">Washington, USA &nbsp;·&nbsp; October 3, 1995</p>
@@ -1004,7 +1038,7 @@
   ═══════════════════════════════ -->
   <section id="program" class="section">
     <div class="container">
-      <h2 class="section-title fade-in">The Celebration</h2>
+      <h2 class="section-title fade-in" data-i18n="program.title">The Celebration</h2>
       <div class="ornament fade-in">
         <div class="ornament-line"></div>
         <div class="ornament-diamond-sm"></div>
@@ -1012,7 +1046,7 @@
         <div class="ornament-diamond-sm"></div>
         <div class="ornament-line right"></div>
       </div>
-      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;">July 11, 2027 &nbsp;·&nbsp; Le Pansiri, Nonthaburi</p>
+      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;" data-i18n="program.subtitle">July 11, 2027 &nbsp;·&nbsp; Le Pansiri, Nonthaburi</p>
 
       <div class="program-cards">
 
@@ -1025,10 +1059,10 @@
             </div>
           </div>
           <div class="program-card-body">
-            <div class="program-event-title">Thai Khan Maak Procession</div>
-            <div class="program-event-subtitle">&amp; Tea Ceremony</div>
+            <div class="program-event-title" data-i18n="program.pm.title">Thai Khan Maak Procession</div>
+            <div class="program-event-subtitle" data-i18n="program.pm.subtitle">&amp; Tea Ceremony</div>
             <div class="program-gold-line"></div>
-            <p class="program-desc">
+            <p class="program-desc" data-i18n="program.pm.desc">
               The afternoon begins with the Khan Maak — a joyful, music-filled Thai bridal procession in which the groom and his party carry beautifully arranged ceremonial gifts and offerings to the bride's family, symbolising respect, abundance, and the formal request for her hand. Elders offer their blessings during the sacred sai monkhon thread ceremony, a looped cord of white thread that crowns the couple and joins them in a single, unbroken circle of love. The water-pouring blessing follows, with family and guests gently pouring lustral water over the couple's hands as a wish for a life of goodness and grace. The afternoon closes with the tea ceremony — Nine and Tom kneel before their families, offering tea as a gesture of deep honour and gratitude to the elders who shaped them.
             </p>
           </div>
@@ -1043,10 +1077,10 @@
             </div>
           </div>
           <div class="program-card-body">
-            <div class="program-event-title">Evening Reception</div>
-            <div class="program-event-subtitle">&amp; Dinner</div>
+            <div class="program-event-title" data-i18n="program.eve.title">Evening Reception</div>
+            <div class="program-event-subtitle" data-i18n="program.eve.subtitle">&amp; Dinner</div>
             <div class="program-gold-line"></div>
-            <p class="program-desc">
+            <p class="program-desc" data-i18n="program.eve.desc">
               As the golden hour fades over Nonthaburi, the celebration opens into an elegant evening of candlelight, cuisine, and pure joy. Begin with cocktails and the warmth of reunion — friends and family from Thailand, the United States, and beyond, all gathered in one room for the first time. A long, beautiful dinner follows, with toasts from those who know Nine and Tom best, words that will make the room laugh and cry in equal measure. Music fills the night as the dance floor opens, and two families — one from Bangkok, one from Washington — find their way to each other, step by step, until it feels like they were always one.
             </p>
           </div>
@@ -1061,7 +1095,7 @@
   ═══════════════════════════════ -->
   <section id="dresscode" class="section">
     <div class="container">
-      <h2 class="section-title fade-in">Dress Code</h2>
+      <h2 class="section-title fade-in" data-i18n="dress.title">Dress Code</h2>
       <div class="ornament fade-in">
         <div class="ornament-line"></div>
         <div class="ornament-diamond-sm"></div>
@@ -1069,7 +1103,7 @@
         <div class="ornament-diamond-sm"></div>
         <div class="ornament-line right"></div>
       </div>
-      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;"><em>Come as you are — in soft, earthy tones</em></p>
+      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;"><em data-i18n="dress.subtitle">Come as you are — in soft, earthy tones</em></p>
 
       <!-- Swatch strip — hover to reveal name -->
       <div class="swatch-strip fade-in fade-in-delay-1">
@@ -1085,13 +1119,13 @@
 
       <!-- Relaxed note -->
       <div class="dresscode-note-wrap fade-in fade-in-delay-2">
-        <p class="dresscode-note-para">
+        <p class="dresscode-note-para" data-i18n="dress.note1">
           This is a gentle guideline, not a strict rule. Wear whatever you already own and feel your most comfortable, beautiful self in. Soft neutrals, warm earth tones, and pastel shades all complement the setting beautifully.
         </p>
-        <p class="dresscode-note-para">
+        <p class="dresscode-note-para" data-i18n="dress.note2">
           If you're joining us for both the afternoon and evening celebrations, one outfit is absolutely perfect — no need to change. Traditional Thai dress is warmly welcomed and celebrated.
         </p>
-        <p class="dresscode-avoid">
+        <p class="dresscode-avoid" data-i18n="dress.avoid">
           We only ask that you kindly avoid white, ivory, and black.
         </p>
       </div>
@@ -1103,7 +1137,7 @@
   ═══════════════════════════════ -->
   <section id="venue" class="section">
     <div class="container">
-      <h2 class="section-title fade-in">The Venue</h2>
+      <h2 class="section-title fade-in" data-i18n="venue.title">The Venue</h2>
       <div class="ornament fade-in">
         <div class="ornament-line"></div>
         <div class="ornament-diamond-sm"></div>
@@ -1111,7 +1145,7 @@
         <div class="ornament-diamond-sm"></div>
         <div class="ornament-line right"></div>
       </div>
-      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;">An elegant setting for an unforgettable day</p>
+      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;" data-i18n="venue.subtitle">An elegant setting for an unforgettable day</p>
 
       <div class="venue-grid">
         <div class="fade-in">
@@ -1124,11 +1158,11 @@
           </div>
           <div class="venue-detail">
             <span class="venue-detail-icon">🌺</span>
-            <div class="venue-detail-text"><strong>Afternoon Ceremony</strong><br>15:30 — Thai Khan Maak Procession &amp; Tea Ceremony</div>
+            <div class="venue-detail-text"><strong data-i18n="venue.afternoon">Afternoon Ceremony</strong><br>15:30 — Thai Khan Maak Procession &amp; Tea Ceremony</div>
           </div>
           <div class="venue-detail">
             <span class="venue-detail-icon">✨</span>
-            <div class="venue-detail-text"><strong>Evening Reception</strong><br>18:00 — Reception &amp; Dinner</div>
+            <div class="venue-detail-text"><strong data-i18n="venue.evening">Evening Reception</strong><br>18:00 — Reception &amp; Dinner</div>
           </div>
           <div class="venue-detail">
             <span class="venue-detail-icon">📍</span>
@@ -1136,7 +1170,7 @@
           </div>
 
           <a href="https://maps.google.com/?q=Le+Pansiri+Nonthaburi+Thailand" target="_blank" rel="noopener" class="btn-map">
-            <span>📍</span> Open in Google Maps
+            <span>📍</span> <span data-i18n="venue.maplink">Open in Google Maps</span>
           </a>
         </div>
 
@@ -1157,7 +1191,7 @@
   ═══════════════════════════════ -->
   <section id="rsvp" class="section">
     <div class="container">
-      <h2 class="section-title fade-in">RSVP</h2>
+      <h2 class="section-title fade-in" data-i18n="rsvp.title">RSVP</h2>
       <div class="ornament fade-in">
         <div class="ornament-line"></div>
         <div class="ornament-diamond-sm"></div>
@@ -1165,7 +1199,7 @@
         <div class="ornament-diamond-sm"></div>
         <div class="ornament-line right"></div>
       </div>
-      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;">Kindly respond by June 1, 2027</p>
+      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;" data-i18n="rsvp.subtitle">Kindly respond by June 1, 2027</p>
 
       <div class="rsvp-wrap fade-in">
         <div class="rsvp-corners-extra"></div>
@@ -1175,91 +1209,91 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="rsvp-name">Full Name *</label>
-              <input type="text" id="rsvp-name" name="name" placeholder="Your full name" required />
+              <label for="rsvp-name" data-i18n="rsvp.name.label">Full Name *</label>
+              <input type="text" id="rsvp-name" name="name" placeholder="Your full name" data-i18n-placeholder="ph.name" required />
             </div>
             <div class="form-group">
-              <label for="rsvp-email">Email Address *</label>
-              <input type="email" id="rsvp-email" name="email" placeholder="your@email.com" required />
+              <label for="rsvp-email" data-i18n="rsvp.email.label">Email Address *</label>
+              <input type="email" id="rsvp-email" name="email" placeholder="your@email.com" data-i18n-placeholder="ph.email" required />
             </div>
           </div>
 
           <div class="form-group">
-            <label for="rsvp-phone">Phone Number</label>
-            <input type="tel" id="rsvp-phone" name="phone" placeholder="+66 or +1..." />
+            <label for="rsvp-phone" data-i18n="rsvp.phone.label">Phone Number</label>
+            <input type="tel" id="rsvp-phone" name="phone" placeholder="+66 or +1..." data-i18n-placeholder="ph.phone" />
           </div>
 
           <div class="form-group">
-            <label>Which session will you attend? *</label>
+            <label data-i18n="rsvp.session.label">Which session will you attend? *</label>
             <div class="session-grid">
               <div class="session-option">
                 <input type="radio" name="session" id="s-afternoon" value="afternoon" />
                 <label class="session-label" for="s-afternoon">
-                  <span class="session-time">15:30</span>
-                  Thai Khan Maak &amp; Tea Ceremony
+                  <span class="session-time" data-i18n="session.pm.time">15:30</span>
+                  <span data-i18n="rsvp.session.pm">Thai Khan Maak &amp; Tea Ceremony</span>
                 </label>
               </div>
               <div class="session-option">
                 <input type="radio" name="session" id="s-evening" value="evening" />
                 <label class="session-label" for="s-evening">
-                  <span class="session-time">18:00</span>
-                  Reception &amp; Dinner
+                  <span class="session-time" data-i18n="session.eve.time">18:00</span>
+                  <span data-i18n="rsvp.session.eve">Reception &amp; Dinner</span>
                 </label>
               </div>
               <div class="session-option">
                 <input type="radio" name="session" id="s-both" value="both" />
                 <label class="session-label" for="s-both">
-                  <span class="session-time">All Day 🎉</span>
-                  Both Sessions — Full Celebration
+                  <span class="session-time" data-i18n="session.both.time">All Day 🎉</span>
+                  <span data-i18n="rsvp.session.both">Both Sessions — Full Celebration</span>
                 </label>
               </div>
               <div class="session-option">
                 <input type="radio" name="session" id="s-none" value="unable" />
                 <label class="session-label" for="s-none">
-                  <span class="session-time" style="color:var(--brown-light);">Unable</span>
-                  Unable to Attend — Sending Love
+                  <span class="session-time" style="color:var(--brown-light);" data-i18n="session.none.time">Unable</span>
+                  <span data-i18n="rsvp.session.none">Unable to Attend — Sending Love</span>
                 </label>
               </div>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="rsvp-dietary">Dietary Restrictions</label>
+            <label for="rsvp-dietary" data-i18n="rsvp.dietary.label">Dietary Restrictions</label>
             <select id="rsvp-dietary" name="dietary">
-              <option value="none">None</option>
-              <option value="vegetarian">Vegetarian</option>
-              <option value="vegan">Vegan</option>
-              <option value="halal">Halal</option>
-              <option value="gluten-free">Gluten-Free</option>
-              <option value="nut-allergy">Nut Allergy</option>
-              <option value="seafood-allergy">Seafood Allergy</option>
-              <option value="other">Other (please note below)</option>
+              <option value="none" data-i18n-opt="diet.none">None</option>
+              <option value="vegetarian" data-i18n-opt="diet.veg">Vegetarian</option>
+              <option value="vegan" data-i18n-opt="diet.vegan">Vegan</option>
+              <option value="halal" data-i18n-opt="diet.halal">Halal</option>
+              <option value="gluten-free" data-i18n-opt="diet.gluten">Gluten-Free</option>
+              <option value="nut-allergy" data-i18n-opt="diet.nut">Nut Allergy</option>
+              <option value="seafood-allergy" data-i18n-opt="diet.seafood">Seafood Allergy</option>
+              <option value="other" data-i18n-opt="diet.other">Other (please note below)</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>Will you be bringing a plus one?</label>
+            <label data-i18n="rsvp.plusone.label">Will you be bringing a plus one?</label>
             <div class="plusone-toggle">
-              <button type="button" class="plusone-btn active" id="btn-no"  onclick="setPlusOne('no')">No, just me</button>
-              <button type="button" class="plusone-btn"        id="btn-yes" onclick="setPlusOne('yes')">Yes, I will!</button>
+              <button type="button" class="plusone-btn active" id="btn-no"  onclick="setPlusOne('no')" data-i18n="rsvp.plusone.no">No, just me</button>
+              <button type="button" class="plusone-btn"        id="btn-yes" onclick="setPlusOne('yes')" data-i18n="rsvp.plusone.yes">Yes, I will!</button>
             </div>
             <div id="plusone-name-wrap">
-              <input type="text" id="rsvp-plusone-name" name="plusone-name" placeholder="Guest's full name" style="margin-top:0.6rem;" />
+              <input type="text" id="rsvp-plusone-name" name="plusone-name" placeholder="Guest's full name" data-i18n-placeholder="ph.plusname" style="margin-top:0.6rem;" />
             </div>
           </div>
 
           <div class="form-group">
-            <label for="rsvp-notes">Additional Notes</label>
-            <textarea id="rsvp-notes" name="notes" rows="3" placeholder="Any questions, accessibility needs, or special requests…"></textarea>
+            <label for="rsvp-notes" data-i18n="rsvp.notes.label">Additional Notes</label>
+            <textarea id="rsvp-notes" name="notes" rows="3" placeholder="Any questions, accessibility needs, or special requests…" data-i18n-placeholder="ph.notes"></textarea>
           </div>
 
           <div class="form-group">
-            <label for="rsvp-blessing">✦ A Blessing for Nine &amp; Tom</label>
-            <textarea id="rsvp-blessing" name="blessing" rows="5" class="blessing-textarea-gold" placeholder="Share a wish, a memory, or words of love for the couple on their special day…" style="min-height:130px;"></textarea>
+            <label for="rsvp-blessing" data-i18n="rsvp.blessing.label">✦ A Blessing for Nine &amp; Tom</label>
+            <textarea id="rsvp-blessing" name="blessing" rows="5" class="blessing-textarea-gold" placeholder="Share a wish, a memory, or words of love for the couple on their special day…" data-i18n-placeholder="ph.blessing" style="min-height:130px;"></textarea>
           </div>
 
-          <button type="submit" class="btn-submit">Confirm My RSVP</button>
-          <p class="rsvp-deadline-note">Kindly RSVP by <strong>June 1, 2027</strong></p>
+          <button type="submit" class="btn-submit" data-i18n="rsvp.submit">Confirm My RSVP</button>
+          <p class="rsvp-deadline-note" data-i18n="rsvp.deadline">Kindly RSVP by <strong>June 1, 2027</strong></p>
         </form>
 
         <!-- Success -->
@@ -1270,8 +1304,8 @@
             <div class="ornament-diamond"></div>
             <div class="ornament-line right" style="width:50px;"></div>
           </div>
-          <div class="success-title-rsvp">Thank you!</div>
-          <p class="success-msg-rsvp">
+          <div class="success-title-rsvp" data-i18n="success.title">Thank you!</div>
+          <p class="success-msg-rsvp" data-i18n="success.msg">
             Your RSVP has been received with so much joy.<br>
             Check your email for a link to update your details anytime.<br><br>
             <em>Nine &amp; Tom can't wait to celebrate with you.</em>
@@ -1289,7 +1323,7 @@
     <div class="footer-names">Nine <span class="footer-amp">&amp;</span> Tom</div>
     <div class="footer-date">Saturday · July 11, 2027</div>
     <div class="footer-line"></div>
-    <div class="footer-tagline">Celebrating Our Love and New Beginning</div>
+    <div class="footer-tagline" data-i18n="footer.tagline">Celebrating Our Love and New Beginning</div>
   </footer>
 
   <!-- ═══════════════════════════════
@@ -1467,6 +1501,128 @@
         btn.textContent = 'Confirm My RSVP';
       }
     }
+
+    /* ── TRANSLATIONS ───────────────────────────────────────────── */
+    const T = {
+      en: {
+        'nav.story':'Our Story','nav.program':'Program','nav.dresscode':'Dress Code','nav.venue':'Venue','nav.rsvp':'RSVP',
+        'hero.eyebrow':'Please join us for the wedding of','hero.scroll':'Scroll to explore ↓',
+        'about.title':'The Couple','about.subtitle':'Two hearts, one beautiful journey',
+        'about.bride.role':'The Bride','about.bride.fullname':'Thananun Prasertsup',
+        'about.bride.bio':'Born under the warm Bangkok sky on November 10, 1997, Nine brings grace, warmth, and an infectious smile to every room she enters. A proud daughter of Thailand.',
+        'about.groom.role':'The Groom','about.groom.fullname':'Thomas La Pham',
+        'about.groom.bio':"Born October 3, 1995 in Washington, USA, Tom carries the vibrant spirit of Vietnamese American heritage. His steady love and adventurous heart captured Nine's forever.",
+        'program.title':'The Celebration','program.subtitle':'A day filled with love, tradition, and joy',
+        'program.pm.title':'Thai Khan Maak Procession','program.pm.subtitle':'& Tea Ceremony',
+        'program.pm.desc':"The afternoon begins with the Khan Maak — a joyful, music-filled Thai bridal procession in which the groom and his party carry beautifully arranged ceremonial gifts and offerings to the bride's family, symbolising respect, abundance, and the formal request for her hand. Elders offer their blessings during the sacred sai monkhon thread ceremony, a looped cord of white thread that crowns the couple and joins them in a single, unbroken circle of love. The water-pouring blessing follows, with family and guests gently pouring lustral water over the couple's hands as a wish for a life of goodness and grace. The afternoon closes with the tea ceremony — Nine and Tom kneel before their families, offering tea as a gesture of deep honour and gratitude to the elders who shaped them.",
+        'program.eve.title':'Evening Reception','program.eve.subtitle':'& Dinner',
+        'program.eve.desc':"The evening celebration opens with a cocktail hour beneath the stars, followed by an elegant dinner where laughter, toasts, and heartfelt speeches fill the room. Music weaves through the evening as Nine and Tom are surrounded by the two families — Thai and Vietnamese American — who raised them, loved them, and now joyfully watch them become one. Dance the night away with us in a celebration of love, culture, and the beautiful new chapter that begins here.",
+        'dress.title':'Dress Code','dress.subtitle':'Come as you are — in soft, earthy tones',
+        'dress.note1':'This is a gentle guideline, not a strict rule. Wear whatever you already own and feel your most comfortable, beautiful self in. Soft neutrals, warm earth tones, and pastel shades all complement the setting beautifully.',
+        'dress.note2':"If you're joining us for both the afternoon and evening celebrations, one outfit is absolutely perfect — no need to change. Traditional Thai dress is warmly welcomed and celebrated.",
+        'dress.avoid':'We only ask that you kindly avoid white, ivory, and black.',
+        'venue.title':'The Venue','venue.subtitle':'Where our love story continues',
+        'venue.afternoon':'Afternoon Ceremony','venue.evening':'Evening Reception','venue.maplink':'Open in Google Maps',
+        'rsvp.title':'RSVP','rsvp.subtitle':'Please respond by June 1, 2027',
+        'rsvp.name.label':'Your Name','rsvp.email.label':'Email Address','rsvp.phone.label':'Phone Number',
+        'rsvp.session.label':'Which session will you attend?',
+        'rsvp.session.pm':'Khan Maak & Tea Ceremony','rsvp.session.eve':'Reception & Dinner',
+        'rsvp.session.both':'Both Sessions — Full Celebration','rsvp.session.none':'Unable to Attend — Sending Love',
+        'session.pm.time':'15:30','session.eve.time':'18:00','session.both.time':'All Day 🎉','session.none.time':'Unable',
+        'rsvp.dietary.label':'Dietary Restrictions',
+        'diet.none':'None','diet.veg':'Vegetarian','diet.vegan':'Vegan','diet.halal':'Halal',
+        'diet.gluten':'Gluten-Free','diet.nut':'Nut Allergy','diet.seafood':'Seafood Allergy','diet.other':'Other (specify in notes)',
+        'rsvp.plusone.label':'Plus One','rsvp.plusone.no':'No, just me','rsvp.plusone.yes':'Yes, I will!',
+        'rsvp.notes.label':'Additional Notes',
+        'rsvp.blessing.label':'✦ A Blessing for Nine & Tom',
+        'rsvp.submit':'Confirm My RSVP',
+        'rsvp.deadline':'Kindly RSVP by <strong>June 1, 2027</strong>',
+        'ph.name':"Your full name",'ph.email':'your@email.com','ph.phone':'+66 or international',
+        'ph.plusname':"Guest's full name",'ph.notes':'Any questions, accessibility needs, or special requests…',
+        'ph.blessing':'Share a wish, a memory, or words of love for the couple on their special day…',
+        'success.title':'Thank you!',
+        'success.msg':"Your RSVP has been received with so much joy.<br>Check your email for a link to update your details anytime.<br><br><em>Nine & Tom can't wait to celebrate with you.</em>",
+        'footer.tagline':'Celebrating Our Love and New Beginning',
+      },
+      th: {
+        'nav.story':'เรื่องราวของเรา','nav.program':'กำหนดการ','nav.dresscode':'การแต่งกาย','nav.venue':'สถานที่จัดงาน','nav.rsvp':'ยืนยันการเข้าร่วม',
+        'hero.eyebrow':'ขอเรียนเชิญร่วมงานแต่งงานของ','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
+        'about.title':'คู่บ่าวสาว','about.subtitle':'สองหัวใจ บนเส้นทางแห่งความรัก',
+        'about.bride.role':'เจ้าสาว','about.bride.fullname':'ธนนันท์ ประเสริฐทรัพย์',
+        'about.bride.bio':'เกิดและเติบโตในกรุงเทพมหานคร เมื่อวันที่ 10 พฤศจิกายน 2540 ไนน์มีรอยยิ้มที่อบอุ่นและหัวใจที่เต็มเปี่ยมด้วยความรัก เธอภาคภูมิใจในความเป็นไทยและพร้อมเปิดใจสู่ชีวิตใหม่ที่สวยงาม',
+        'about.groom.role':'เจ้าบ่าว','about.groom.fullname':'โทมัส ลา ฝาม',
+        'about.groom.bio':'เกิดเมื่อวันที่ 3 ตุลาคม 2538 ที่รัฐวอชิงตัน สหรัฐอเมริกา ทอมเติบโตมาพร้อมกับรากเหง้าวัฒนธรรมเวียดนาม-อเมริกัน เขามีหัวใจที่มั่นคงและอ่อนโยน ความรักที่แน่วแน่ของเขาทำให้ไนน์ยอมมอบใจให้ตลอดไป',
+        'program.title':'กำหนดการงาน','program.subtitle':'วันแห่งความรัก ประเพณี และความสุข',
+        'program.pm.title':'พิธีขันหมาก','program.pm.subtitle':'& พิธีชงชา',
+        'program.pm.desc':'ช่วงบ่ายเริ่มต้นด้วยพิธีขันหมาก ขบวนเจ้าบ่าวจะนำของขวัญและขันหมากไปสู่ขอต่อครอบครัวเจ้าสาวอย่างสมเกียรติ ผู้ใหญ่ให้พรด้วยการสวมสายสิญจน์บนศีรษะของทั้งคู่ เป็นวงที่ไม่ขาด สัญลักษณ์แห่งความรักนิรันดร์ จากนั้นเป็นพิธีรดน้ำสังข์ ที่แขกผู้มีเกียรติร่วมรดน้ำพรที่มือทั้งสองข้าง และปิดท้ายด้วยพิธีชงชา ที่ไนน์และทอมคุกเข่าถวายชาแก่ผู้ใหญ่ทั้งสองฝ่าย แสดงถึงความกตัญญูและความเคารพ',
+        'program.eve.title':'งานเลี้ยงต้อนรับ','program.eve.subtitle':'& อาหารค่ำ',
+        'program.eve.desc':'งานเย็นเริ่มต้นด้วยช่วงค็อกเทลโฮร์ ก่อนเข้าสู่งานเลี้ยงอาหารค่ำอันอบอุ่น พร้อมดนตรีสด การกล่าวอวยพร และเสียงหัวเราะจากคนที่รัก ร่วมฉลองการรวมใจของสองครอบครัว ไทยและเวียดนาม-อเมริกัน สู่ครอบครัวเดียวกัน ปิดท้ายด้วยการเต้นรำและช่วงเวลาแห่งความสุขที่จะฝังใจตลอดไป',
+        'dress.title':'การแต่งกาย','dress.subtitle':'แต่งกายตามสบาย ในโทนสีธรรมชาติ',
+        'dress.note1':'นี่เป็นเพียงแนวทาง ไม่ใช่กฎที่เคร่งครัด แต่งกายด้วยเสื้อผ้าที่มีอยู่แล้วและรู้สึกสบายใจที่สุด โทนสีธรรมชาติ สีดิน และสีพาสเทลจะเข้ากับบรรยากาศงานได้อย่างลงตัว',
+        'dress.note2':'หากท่านร่วมงานทั้งช่วงบ่ายและช่วงเย็น ใส่ชุดเดียวได้เลย ไม่จำเป็นต้องเปลี่ยน ชุดไทยยินดีต้อนรับและชื่นชมเป็นอย่างยิ่ง',
+        'dress.avoid':'ขอเพียงหลีกเลี่ยงสีขาว สีครีม และสีดำ',
+        'venue.title':'สถานที่จัดงาน','venue.subtitle':'สถานที่ที่เรื่องราวความรักของเราดำเนินต่อไป',
+        'venue.afternoon':'พิธีช่วงบ่าย','venue.evening':'งานเลี้ยงช่วงเย็น','venue.maplink':'เปิดใน Google Maps',
+        'rsvp.title':'ยืนยันการเข้าร่วม','rsvp.subtitle':'กรุณาตอบรับภายใน 1 มิถุนายน 2570',
+        'rsvp.name.label':'ชื่อ-นามสกุล','rsvp.email.label':'อีเมล','rsvp.phone.label':'เบอร์โทรศัพท์',
+        'rsvp.session.label':'จะเข้าร่วมงานช่วงใด?',
+        'rsvp.session.pm':'ขันหมาก & พิธีชงชา','rsvp.session.eve':'งานเลี้ยงรับรอง & อาหารค่ำ',
+        'rsvp.session.both':'ทั้งสองช่วง — ร่วมงานทั้งวัน','rsvp.session.none':'ไม่สามารถมาได้ — ส่งความรักมาให้',
+        'session.pm.time':'15:30','session.eve.time':'18:00','session.both.time':'ทั้งวัน 🎉','session.none.time':'ไม่สะดวก',
+        'rsvp.dietary.label':'ข้อจำกัดด้านอาหาร',
+        'diet.none':'ไม่มี','diet.veg':'มังสวิรัติ','diet.vegan':'วีแกน','diet.halal':'ฮาลาล',
+        'diet.gluten':'ปราศจากกลูเตน','diet.nut':'แพ้ถั่ว','diet.seafood':'แพ้อาหารทะเล','diet.other':'อื่นๆ (ระบุในหมายเหตุ)',
+        'rsvp.plusone.label':'แขกติดตาม','rsvp.plusone.no':'ไม่มีแขกติดตาม','rsvp.plusone.yes':'มีแขกติดตาม',
+        'rsvp.notes.label':'หมายเหตุเพิ่มเติม',
+        'rsvp.blessing.label':'✦ คำอวยพรสำหรับไนน์ & ทอม',
+        'rsvp.submit':'ยืนยันการเข้าร่วม',
+        'rsvp.deadline':'กรุณาตอบรับภายใน <strong>1 มิถุนายน 2570</strong>',
+        'ph.name':'ชื่อ-นามสกุลของท่าน','ph.email':'อีเมลของท่าน','ph.phone':'เบอร์โทรศัพท์',
+        'ph.plusname':'ชื่อแขกติดตาม','ph.notes':'ข้อความถึงเจ้าภาพ ความต้องการพิเศษ หรือข้อสงสัย',
+        'ph.blessing':'ส่งคำอวยพร ความปรารถนาดี หรือข้อความแห่งความรักให้ไนน์ & ทอม',
+        'success.title':'ขอบคุณ!',
+        'success.msg':'เราได้รับการยืนยันของท่านแล้วด้วยความยินดียิ่ง<br>กรุณาตรวจสอบอีเมลเพื่อรับลิงก์แก้ไขข้อมูลของท่านได้ทุกเมื่อ<br><br><em>ไนน์ & ทอม รอต้อนรับท่านด้วยใจ</em>',
+        'footer.tagline':'ฉลองความรักและการเริ่มต้นชีวิตใหม่',
+      }
+    };
+
+    let currentLang = localStorage.getItem('wedding-lang') || 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('wedding-lang', lang);
+
+      // Swap text content
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+      });
+
+      // Swap placeholder attributes
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (T[lang][key] !== undefined) el.placeholder = T[lang][key];
+      });
+
+      // Swap select option text
+      document.querySelectorAll('[data-i18n-opt]').forEach(el => {
+        const key = el.getAttribute('data-i18n-opt');
+        if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+      });
+
+      // Toggle active state on lang buttons
+      document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-lang-th').classList.toggle('active', lang === 'th');
+
+      // Toggle Thai font class on body
+      document.body.classList.toggle('lang-th', lang === 'th');
+
+      // Update html lang attribute
+      document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+    }
+
+    // Init on load
+    setLang(currentLang);
 
   </script>
 </body>
