@@ -735,6 +735,21 @@
     }
     .session-label:hover { border-color: var(--gold); }
 
+    .field-error {
+      display: none;
+      margin-top: 0.3rem;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.76rem;
+      color: #a54747;
+      letter-spacing: 0.02em;
+    }
+    .field-error.show { display: block; }
+    .form-group input.input-invalid {
+      border-color: #a54747;
+      box-shadow: 0 0 0 3px rgba(165,71,71,0.12);
+    }
+    .session-grid.session-invalid .session-label { border-color: #a54747; }
+
     /* Plus one */
     .plusone-toggle { display: flex; gap: 12px; margin-top: 0.4rem; }
     .plusone-btn {
@@ -1302,21 +1317,23 @@
           <div class="form-row">
             <div class="form-group">
               <label for="rsvp-name" data-i18n="rsvp.name.label">Full Name *</label>
+              <p class="field-error" id="name-error" data-i18n="rsvp.error.name">Please enter your full name.</p>
               <input type="text" id="rsvp-name" name="name" placeholder="Your full name" data-i18n-placeholder="ph.name" required />
             </div>
             <div class="form-group">
               <label for="rsvp-email" data-i18n="rsvp.email.label">Email Address *</label>
+              <p class="field-error" id="email-error" data-i18n="rsvp.error.email">Please enter a valid email address.</p>
               <input type="email" id="rsvp-email" name="email" placeholder="your@email.com" data-i18n-placeholder="ph.email" required />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="rsvp-preferred-name" data-i18n="rsvp.preferred.label">Preferred Name (Optional)</label>
+              <label for="rsvp-preferred-name" data-i18n="rsvp.preferred.label">Preferred Name</label>
               <input type="text" id="rsvp-preferred-name" name="preferred-name" placeholder="Nickname / ชื่อเล่น" data-i18n-placeholder="ph.preferred" />
             </div>
             <div class="form-group">
-              <label for="rsvp-lineid" data-i18n="rsvp.lineid.label">LINE ID (Optional)</label>
+              <label for="rsvp-lineid" data-i18n="rsvp.lineid.label">LINE ID</label>
               <input type="text" id="rsvp-lineid" name="lineid" placeholder="yourlineid" data-i18n-placeholder="ph.lineid" />
             </div>
           </div>
@@ -1334,6 +1351,7 @@
 
           <div class="form-group">
             <label data-i18n="rsvp.session.label">Which session will you attend? *</label>
+            <p class="field-error" id="session-error" data-i18n="rsvp.error.session">Please select a session.</p>
             <div class="session-grid">
               <div class="session-option">
                 <input type="radio" name="session" id="s-afternoon" value="afternoon" />
@@ -1549,12 +1567,27 @@
     async function handleRSVP(e) {
       e.preventDefault();
       const form     = document.getElementById('rsvp-form');
-      const nameVal  = document.getElementById('rsvp-name').value.trim();
-      const emailVal = document.getElementById('rsvp-email').value.trim();
+      const nameInput = document.getElementById('rsvp-name');
+      const emailInput = document.getElementById('rsvp-email');
+      const sessionGrid = document.querySelector('.session-grid');
+      const nameVal  = nameInput.value.trim();
+      const emailVal = emailInput.value.trim();
       const session  = document.querySelector('input[name="session"]:checked');
 
-      if (!nameVal || !emailVal || !session) {
-        alert('Please fill in your name, email, and session preference.');
+      const nameInvalid = !nameVal;
+      const emailInvalid = !emailVal || !emailInput.checkValidity();
+      const sessionInvalid = !session;
+
+      nameInput.classList.toggle('input-invalid', nameInvalid);
+      emailInput.classList.toggle('input-invalid', emailInvalid);
+      sessionGrid.classList.toggle('session-invalid', sessionInvalid);
+      document.getElementById('name-error').classList.toggle('show', nameInvalid);
+      document.getElementById('email-error').classList.toggle('show', emailInvalid);
+      document.getElementById('session-error').classList.toggle('show', sessionInvalid);
+
+      if (nameInvalid || emailInvalid || sessionInvalid) {
+        (nameInvalid ? nameInput : emailInvalid ? emailInput : sessionGrid).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        (nameInvalid ? nameInput : emailInput).focus();
         return;
       }
 
@@ -1637,7 +1670,7 @@
         'venue.parking':'180 parking spots available on-site',
         'venue.access':'Wheelchair accessible · Elevator available',
         'rsvp.title':'RSVP','rsvp.subtitle':'Please respond by 1 June 2027',
-        'rsvp.name.label':'Your Name','rsvp.email.label':'Email Address','rsvp.preferred.label':'Preferred Name (Optional)','rsvp.lineid.label':'LINE ID (Optional)','rsvp.phone.label':'Phone Number',
+        'rsvp.name.label':'Your Name *','rsvp.email.label':'Email Address *','rsvp.preferred.label':'Preferred Name','rsvp.lineid.label':'LINE ID','rsvp.phone.label':'Phone Number',
         'rsvp.session.label':'Which session will you attend?',
         'rsvp.session.pm':'Khan Maak & Tea Ceremony','rsvp.session.eve':'Reception & Dinner',
         'rsvp.session.both':'Both Sessions — Full Celebration','rsvp.session.none':'Unable to Attend — Sending Love',
@@ -1648,7 +1681,7 @@
         'rsvp.plusone.label':'Plus One','rsvp.plusone.no':'No, just me','rsvp.plusone.yes':'Yes, I will!',
         'rsvp.notes.label':'Additional Notes',
         'rsvp.blessing.label':'✦ A Blessing for Nine & Tom',
-        'rsvp.submit':'Confirm My RSVP',
+        'rsvp.submit':'Confirm My RSVP','rsvp.error.name':'Please enter your full name.','rsvp.error.email':'Please enter a valid email address.','rsvp.error.session':'Please select a session.',
         'rsvp.deadline':'Kindly RSVP by <strong>1 June 2027</strong>',
         'ph.name':'Your full name','ph.email':'your@email.com','ph.preferred':'Nickname / preferred name','ph.lineid':'yourlineid','ph.phone':'Phone number',
         'ph.plusname':"Guest's full name",'ph.notes':'Questions, accessibility needs, or special requests…',
@@ -1678,7 +1711,7 @@
         'venue.parking':'มีที่จอดรถ 180 คัน',
         'venue.access':'รองรับรถเข็น · มีลิฟต์บริการ',
         'rsvp.title':'ยืนยันการเข้าร่วม','rsvp.subtitle':'กรุณาตอบรับภายใน 1 มิถุนายน 2570',
-        'rsvp.name.label':'ชื่อ-นามสกุล','rsvp.email.label':'อีเมล','rsvp.preferred.label':'ชื่อเล่น (ไม่บังคับ)','rsvp.lineid.label':'Line ID (ไม่บังคับ)','rsvp.phone.label':'เบอร์โทรศัพท์',
+        'rsvp.name.label':'ชื่อ-นามสกุล *','rsvp.email.label':'อีเมล *','rsvp.preferred.label':'ชื่อเล่น','rsvp.lineid.label':'Line ID','rsvp.phone.label':'เบอร์โทรศัพท์',
         'rsvp.session.label':'จะมาร่วมงานช่วงไหน?',
         'rsvp.session.pm':'ขันหมาก & พิธียกน้ำชา','rsvp.session.eve':'งานเลี้ยงรับรอง & อาหารค่ำ',
         'rsvp.session.both':'ทั้งสองช่วง — ร่วมงานทั้งวัน','rsvp.session.none':'ไม่สะดวกมา — ส่งความรักไปให้',
@@ -1689,7 +1722,7 @@
         'rsvp.plusone.label':'แขกติดตาม','rsvp.plusone.no':'มาคนเดียว','rsvp.plusone.yes':'มีคนมาด้วย',
         'rsvp.notes.label':'หมายเหตุเพิ่มเติม',
         'rsvp.blessing.label':'✦ คำอวยพรสำหรับไนน์ & ทอม',
-        'rsvp.submit':'ยืนยันการเข้าร่วม',
+        'rsvp.submit':'ยืนยันการเข้าร่วม','rsvp.error.name':'กรุณากรอกชื่อ-นามสกุล','rsvp.error.email':'กรุณากรอกอีเมลให้ถูกต้อง','rsvp.error.session':'กรุณาเลือกช่วงเวลาที่จะมาร่วมงาน',
         'rsvp.deadline':'กรุณาตอบรับภายใน <strong>1 มิถุนายน 2570</strong>',
         'ph.name':'ชื่อ-นามสกุลของท่าน','ph.email':'อีเมลของท่าน','ph.preferred':'ชื่อเล่น','ph.lineid':'line id','ph.phone':'เบอร์โทรศัพท์',
         'ph.plusname':'ชื่อแขกติดตาม','ph.notes':'บอกเราได้เลยถ้ามีความต้องการพิเศษหรือข้อสงสัย',
@@ -1701,6 +1734,21 @@
     };
 
     let currentLang = localStorage.getItem('wedding-lang') || 'en';
+
+
+    ['rsvp-name', 'rsvp-email'].forEach((id) => {
+      const input = document.getElementById(id);
+      input?.addEventListener('input', () => {
+        input.classList.remove('input-invalid');
+        document.getElementById(id === 'rsvp-name' ? 'name-error' : 'email-error')?.classList.remove('show');
+      });
+    });
+    document.querySelectorAll('input[name="session"]').forEach((radio) => {
+      radio.addEventListener('change', () => {
+        document.querySelector('.session-grid')?.classList.remove('session-invalid');
+        document.getElementById('session-error')?.classList.remove('show');
+      });
+    });
 
     function setLang(lang) {
       currentLang = lang;
