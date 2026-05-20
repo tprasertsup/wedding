@@ -57,18 +57,21 @@ function createRSVP(data) {
     data.name.trim(),
     email,
     (data.phone || '').trim(),
+    (data.preferredName || '').trim(),
+    (data.lineId || '').trim(),
     data.session,
     data.dietary || '',
     data.plusone || 'no',
     (data.plusoneName || '').trim(),
     (data.notes || '').trim(),
     (data.blessing || '').trim(),
-    'active',     // L: status
-    '',           // M: updated_at
-    lang          // N: lang
+    'active',     // N: status
+    '',           // O: updated_at
+    lang          // P: lang
   ]);
 
   sendEditEmail(email, data.name.trim(), token, lang);
+  rebuildGuestLists();
 
   return jsonOut({ success: true });
 }
@@ -88,14 +91,17 @@ function updateRSVP(data) {
 
   if (data.name)       sheet.getRange(r, 3).setValue(data.name.trim());
   if (data.phone !== undefined) sheet.getRange(r, 5).setValue(data.phone.trim());
-  if (data.session)    sheet.getRange(r, 6).setValue(data.session);
-  if (data.dietary !== undefined) sheet.getRange(r, 7).setValue(data.dietary);
-  if (data.plusone)    sheet.getRange(r, 8).setValue(data.plusone);
-  if (data.plusoneName !== undefined) sheet.getRange(r, 9).setValue(data.plusoneName.trim());
-  if (data.notes !== undefined) sheet.getRange(r, 10).setValue(data.notes.trim());
-  if (data.blessing !== undefined) sheet.getRange(r, 11).setValue(data.blessing.trim());
-  sheet.getRange(r, 13).setValue(new Date().toISOString());
+  if (data.preferredName !== undefined) sheet.getRange(r, 6).setValue(data.preferredName.trim());
+  if (data.lineId !== undefined) sheet.getRange(r, 7).setValue(data.lineId.trim());
+  if (data.session)    sheet.getRange(r, 8).setValue(data.session);
+  if (data.dietary !== undefined) sheet.getRange(r, 9).setValue(data.dietary);
+  if (data.plusone)    sheet.getRange(r, 10).setValue(data.plusone);
+  if (data.plusoneName !== undefined) sheet.getRange(r, 11).setValue(data.plusoneName.trim());
+  if (data.notes !== undefined) sheet.getRange(r, 12).setValue(data.notes.trim());
+  if (data.blessing !== undefined) sheet.getRange(r, 13).setValue(data.blessing.trim());
+  sheet.getRange(r, 15).setValue(new Date().toISOString());
 
+  rebuildGuestLists();
   return jsonOut({ success: true });
 }
 
@@ -108,12 +114,14 @@ function getRSVP(token) {
     name:        d[2],
     email:       d[3],
     phone:       d[4],
-    session:     d[5],
-    dietary:     d[6],
-    plusone:     d[7],
-    plusoneName: d[8],
-    notes:       d[9],
-    blessing:    d[10]
+    preferredName:d[5],
+    lineId:      d[6],
+    session:     d[7],
+    dietary:     d[8],
+    plusone:     d[9],
+    plusoneName: d[10],
+    notes:       d[11],
+    blessing:    d[12]
   });
 }
 
@@ -127,13 +135,13 @@ function getSheet() {
     sheet = ss.insertSheet(SHEET_NAME);
     sheet.appendRow([
       'created_at', 'token', 'name', 'email', 'phone',
-      'session', 'dietary', 'plusone', 'plusone_name',
+      'preferred_name', 'line_id', 'session', 'dietary', 'plusone', 'plusone_name',
       'notes', 'blessing', 'status', 'updated_at', 'lang'
     ]);
     sheet.setFrozenRows(1);
 
-    sheet.getRange(1, 1, 1, 14).setFontWeight('bold');
-    sheet.setColumnWidths(1, 14, 160);
+    sheet.getRange(1, 1, 1, 16).setFontWeight('bold');
+    sheet.setColumnWidths(1, 16, 160);
     sheet.getRange(1, 2, 1, 1).setColumnWidth(280);
   }
 
@@ -144,7 +152,7 @@ function findRowByToken(token) {
   const sheet = getSheet();
   const data = sheet.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
-    if (data[i][1] === token && data[i][11] === 'active') {
+    if (data[i][1] === token && data[i][13] === 'active') {
       return { rowIndex: i + 1, data: data[i] };
     }
   }
@@ -155,7 +163,7 @@ function findRowByEmail(email) {
   const sheet = getSheet();
   const data = sheet.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
-    if (data[i][3] === email && data[i][11] === 'active') {
+    if (data[i][3] === email && data[i][13] === 'active') {
       return { rowIndex: i + 1, data: data[i] };
     }
   }
@@ -273,6 +281,62 @@ function getBlessingSheet() {
   }
 
   return sheet;
+}
+
+
+function rebuildGuestLists() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = getSheet();
+  const data = sheet.getDataRange().getValues();
+
+  const afternoon = ensureListSheet_(ss, 'GuestList_Afternoon', ['name', 'preferred_name', 'phone', 'line_id', 'source']);
+  const evening = ensureListSheet_(ss, 'GuestList_Evening', ['name', 'preferred_name', 'phone', 'line_id', 'dietary', 'source']);
+  clearListSheet_(afternoon);
+  clearListSheet_(evening);
+
+  const afternoonRows = [];
+  const eveningRows = [];
+
+  for (let i = 1; i < data.length; i++) {
+    const r = data[i];
+    if (r[13] !== 'active') continue;
+    const guest = [r[2], r[5], r[4], r[6]];
+    const session = r[7];
+    const dietary = r[8] || '';
+    const hasPlus = r[9] === 'yes' && r[10];
+
+    if (session === 'afternoon' || session === 'both') afternoonRows.push([...guest, 'primary']);
+    if (session === 'evening' || session === 'both') eveningRows.push([...guest, dietary, 'primary']);
+
+    if (hasPlus) {
+      const plus = [r[10], '', '', ''];
+      if (session === 'afternoon' || session === 'both') afternoonRows.push([...plus, 'plus_one']);
+      if (session === 'evening' || session === 'both') eveningRows.push([...plus, dietary, 'plus_one']);
+    }
+  }
+
+  writeListRows_(afternoon, afternoonRows);
+  writeListRows_(evening, eveningRows);
+}
+
+function ensureListSheet_(ss, name, headers) {
+  let sh = ss.getSheetByName(name);
+  if (!sh) sh = ss.insertSheet(name);
+  sh.clear();
+  sh.appendRow(headers);
+  sh.setFrozenRows(1);
+  sh.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+  return sh;
+}
+
+function clearListSheet_(sheet) {
+  const last = sheet.getLastRow();
+  if (last > 1) sheet.getRange(2, 1, last - 1, sheet.getLastColumn()).clearContent();
+}
+
+function writeListRows_(sheet, rows) {
+  if (!rows.length) return;
+  sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
 }
 
 // --------------- Utility ---------------
