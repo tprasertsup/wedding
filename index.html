@@ -684,6 +684,9 @@
       box-shadow: 0 0 0 3px rgba(201,169,110,0.1);
     }
     .form-group textarea { resize: vertical; }
+    .phone-row { display:flex; gap:0.65rem; }
+    .phone-code { max-width: 170px; }
+
     .form-group select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b6914' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
@@ -1307,9 +1310,26 @@
             </div>
           </div>
 
+          <div class="form-row">
+            <div class="form-group">
+              <label for="rsvp-preferred-name" data-i18n="rsvp.preferred.label">Preferred Name (Optional)</label>
+              <input type="text" id="rsvp-preferred-name" name="preferred-name" placeholder="Nickname / ชื่อเล่น" data-i18n-placeholder="ph.preferred" />
+            </div>
+            <div class="form-group">
+              <label for="rsvp-lineid" data-i18n="rsvp.lineid.label">LINE ID (Optional)</label>
+              <input type="text" id="rsvp-lineid" name="lineid" placeholder="yourlineid" data-i18n-placeholder="ph.lineid" />
+            </div>
+          </div>
+
           <div class="form-group">
             <label for="rsvp-phone" data-i18n="rsvp.phone.label">Phone Number</label>
-            <input type="tel" id="rsvp-phone" name="phone" placeholder="+66 or +1..." data-i18n-placeholder="ph.phone" />
+            <div class="phone-row">
+              <select id="rsvp-phone-country" name="phone-country" class="phone-code">
+                <option value="+66" selected>🇹🇭 +66</option>
+                <option value="+1">🇺🇸 +1</option>
+              </select>
+              <input type="tel" id="rsvp-phone" name="phone" placeholder="Phone number" data-i18n-placeholder="ph.phone" />
+            </div>
           </div>
 
           <div class="form-group">
@@ -1547,7 +1567,9 @@
       const payload = {
         name:        nameVal,
         email:       emailVal,
-        phone:       (document.getElementById('rsvp-phone')?.value || '').trim(),
+        phone:       ((document.getElementById('rsvp-phone-country')?.value || '+66') + ' ' + (document.getElementById('rsvp-phone')?.value || '').trim()).trim(),
+        preferredName:(document.getElementById('rsvp-preferred-name')?.value || '').trim(),
+        lineId:      (document.getElementById('rsvp-lineid')?.value || '').trim(),
         session:     session.value,
         dietary:     document.getElementById('rsvp-dietary')?.value || '',
         plusone:     plusoneVal,
@@ -1615,7 +1637,7 @@
         'venue.parking':'180 parking spots available on-site',
         'venue.access':'Wheelchair accessible · Elevator available',
         'rsvp.title':'RSVP','rsvp.subtitle':'Please respond by 1 June 2027',
-        'rsvp.name.label':'Your Name','rsvp.email.label':'Email Address','rsvp.phone.label':'Phone Number',
+        'rsvp.name.label':'Your Name','rsvp.email.label':'Email Address','rsvp.preferred.label':'Preferred Name (Optional)','rsvp.lineid.label':'LINE ID (Optional)','rsvp.phone.label':'Phone Number',
         'rsvp.session.label':'Which session will you attend?',
         'rsvp.session.pm':'Khan Maak & Tea Ceremony','rsvp.session.eve':'Reception & Dinner',
         'rsvp.session.both':'Both Sessions — Full Celebration','rsvp.session.none':'Unable to Attend — Sending Love',
@@ -1628,7 +1650,7 @@
         'rsvp.blessing.label':'✦ A Blessing for Nine & Tom',
         'rsvp.submit':'Confirm My RSVP',
         'rsvp.deadline':'Kindly RSVP by <strong>1 June 2027</strong>',
-        'ph.name':'Your full name','ph.email':'your@email.com','ph.phone':'+66 or international',
+        'ph.name':'Your full name','ph.email':'your@email.com','ph.preferred':'Nickname / preferred name','ph.lineid':'yourlineid','ph.phone':'Phone number',
         'ph.plusname':"Guest's full name",'ph.notes':'Questions, accessibility needs, or special requests…',
         'ph.blessing':'Share a wish, a memory, or words of love for the couple…',
         'success.title':'Thank you!',
@@ -1656,7 +1678,7 @@
         'venue.parking':'มีที่จอดรถ 180 คัน',
         'venue.access':'รองรับรถเข็น · มีลิฟต์บริการ',
         'rsvp.title':'ยืนยันการเข้าร่วม','rsvp.subtitle':'กรุณาตอบรับภายใน 1 มิถุนายน 2570',
-        'rsvp.name.label':'ชื่อ-นามสกุล','rsvp.email.label':'อีเมล','rsvp.phone.label':'เบอร์โทรศัพท์',
+        'rsvp.name.label':'ชื่อ-นามสกุล','rsvp.email.label':'อีเมล','rsvp.preferred.label':'ชื่อเล่น (ไม่บังคับ)','rsvp.lineid.label':'Line ID (ไม่บังคับ)','rsvp.phone.label':'เบอร์โทรศัพท์',
         'rsvp.session.label':'จะมาร่วมงานช่วงไหน?',
         'rsvp.session.pm':'ขันหมาก & พิธียกน้ำชา','rsvp.session.eve':'งานเลี้ยงรับรอง & อาหารค่ำ',
         'rsvp.session.both':'ทั้งสองช่วง — ร่วมงานทั้งวัน','rsvp.session.none':'ไม่สะดวกมา — ส่งความรักไปให้',
@@ -1669,7 +1691,7 @@
         'rsvp.blessing.label':'✦ คำอวยพรสำหรับไนน์ & ทอม',
         'rsvp.submit':'ยืนยันการเข้าร่วม',
         'rsvp.deadline':'กรุณาตอบรับภายใน <strong>1 มิถุนายน 2570</strong>',
-        'ph.name':'ชื่อ-นามสกุลของท่าน','ph.email':'อีเมลของท่าน','ph.phone':'เบอร์โทรศัพท์',
+        'ph.name':'ชื่อ-นามสกุลของท่าน','ph.email':'อีเมลของท่าน','ph.preferred':'ชื่อเล่น','ph.lineid':'line id','ph.phone':'เบอร์โทรศัพท์',
         'ph.plusname':'ชื่อแขกติดตาม','ph.notes':'บอกเราได้เลยถ้ามีความต้องการพิเศษหรือข้อสงสัย',
         'ph.blessing':'เขียนคำอวยพร ความปรารถนา หรือบอกรักไนน์และทอมได้เลย',
         'success.title':'ขอบคุณมากนะคะ!',

@@ -55,7 +55,9 @@ Click **Save** again.
 
 ## Step 5 — Add the URL to your website
 
-Open each of your HTML design files (`design1.html`, `design2.html`, `design3.html`, `edit.html`).
+Open the main website file (`index.html`) and the edit page (`edit.html`).
+
+If you keep alternative mockups in `design/`, update those too only if you plan to use them.
 
 Near the top of the `<script>` section, find:
 
@@ -112,14 +114,17 @@ Just open the Google Sheet. The `RSVPs` tab will be created automatically on the
 | C | Guest name |
 | D | Email |
 | E | Phone |
-| F | Session (afternoon / evening / both / none) |
-| G | Dietary restrictions |
-| H | Plus one (yes/no) |
-| I | Plus one name |
-| J | Notes |
-| K | Blessing message |
-| L | Status (active) |
-| M | Last updated timestamp |
+| F | Preferred name (optional) |
+| G | LINE ID (optional) |
+| H | Session (afternoon / evening / both / unable) |
+| I | Dietary restrictions |
+| J | Plus one (yes/no) |
+| K | Plus one name |
+| L | Notes |
+| M | Blessing message |
+| N | Status (active) |
+| O | Last updated timestamp |
+| P | Language |
 
 ---
 
