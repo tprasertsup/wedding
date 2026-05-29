@@ -225,6 +225,7 @@
       z-index: 0;
       pointer-events: none;
       will-change: opacity;
+      animation: heroBgFadeIn 2.8s ease-out both;
     }
     .hero-bg-illustration img {
       width: 100%;
@@ -407,9 +408,11 @@
 
     /* Theatrical name slide-up */
     .hero-name-slot { display: block; overflow: hidden; }
-    .hero-name-nine { display: block; animation: nameSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.38s both; }
-    .hero-amp       {                 animation: ampFadeIn  0.9s cubic-bezier(0.16,1,0.3,1) 0.56s both; }
-    .hero-name-tom  { display: block; animation: nameSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.62s both; }
+    .hero-name-nine { display: block; animation: nameSlideUp 2.0s cubic-bezier(0.16,1,0.3,1) 2.0s both; }
+    .hero-amp       {                 animation: ampFadeIn  1.6s cubic-bezier(0.16,1,0.3,1) 2.4s both; }
+    .hero-name-tom  { display: block; animation: nameSlideUp 2.0s cubic-bezier(0.16,1,0.3,1) 2.6s both; }
+    /* Slow down hero fade-in elements to match the cinematic pace */
+    #hero .fade-in { transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
 
     /* Illustration frame */
     .hero-illustration-wrap {
@@ -425,7 +428,7 @@
       overflow: hidden;
       background: linear-gradient(175deg, #faf3ec 0%, #f5e6d8 55%, #eedacc 100%);
       box-shadow: 0 16px 64px rgba(130,90,40,0.18), 0 4px 20px rgba(130,90,40,0.1);
-      animation: illustrationReveal 1.6s cubic-bezier(0.16,1,0.3,1) 0.80s both;
+      animation: illustrationReveal 2.4s cubic-bezier(0.16,1,0.3,1) 1.6s both;
     }
     .hero-frame::before {
       content: '';
@@ -467,6 +470,10 @@
       0%, 100% { transform: translateY(0)     rotate(0deg); }
       35%       { transform: translateY(-11px) rotate(2.5deg); }
       70%       { transform: translateY(-5px)  rotate(-1deg); }
+    }
+    @keyframes heroBgFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
     @keyframes nameSlideUp {
       from { transform: translateY(105%); }
@@ -2306,9 +2313,9 @@
         }, { threshold: 0.05 }).observe(tlEl);
       }
 
-      // Hero elements visible on page load (staggered) — names animate via CSS keyframes
+      // Hero elements: start after background image fades in, staggered slowly
       document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
-        setTimeout(() => el.classList.add('visible'), 120 + i * 200);
+        setTimeout(() => el.classList.add('visible'), 2800 + i * 320);
       });
 
       // Wiggle envelope once when it enters the viewport
