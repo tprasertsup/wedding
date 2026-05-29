@@ -180,8 +180,8 @@ function sendEditEmail(email, name, token, lang) {
   const isThai = (lang === 'th');
 
   const subject = isThai
-    ? 'เจอกันวันที่ 11 กรกฎาคมนะ! 🌸 — ไนน์ & ทอม'
-    : "You're in! 🌸 See you July 11th — Nine & Tom";
+    ? 'ยืนยัน RSVP งานแต่งงานไนน์ & ทอม — 11 กรกฎาคม 2570'
+    : "RSVP Confirmation — Nine & Tom's Wedding · July 11, 2027";
 
   const html = isThai ? `
   <div style="font-family:'Sarabun',sans-serif;max-width:580px;margin:0 auto;background:#faf3ec;padding:0;border:1px solid #d4b896;">
