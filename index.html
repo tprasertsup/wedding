@@ -224,7 +224,6 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      will-change: opacity;
     }
     .hero-bg-illustration img {
       width: 100%;
@@ -233,12 +232,18 @@
       object-position: center center;
       display: block;
     }
-    /* Very light peach veil so text stays legible */
+    /* Overlay fades in slowly so text becomes easy to read as wording appears */
     .hero-bg-illustration::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(250, 243, 236, 0.22);
+      background: rgba(250, 243, 236, 0.52);
+      opacity: 0;
+      animation: overlayReveal 3.0s ease-out 0.4s forwards;
+    }
+    @keyframes overlayReveal {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     .hero-bg-circle {
@@ -407,9 +412,11 @@
 
     /* Theatrical name slide-up */
     .hero-name-slot { display: block; overflow: hidden; }
-    .hero-name-nine { display: block; animation: nameSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.38s both; }
-    .hero-amp       {                 animation: ampFadeIn  0.9s cubic-bezier(0.16,1,0.3,1) 0.56s both; }
-    .hero-name-tom  { display: block; animation: nameSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.62s both; }
+    .hero-name-nine { display: block; animation: nameSlideUp 2.0s cubic-bezier(0.16,1,0.3,1) 2.0s both; }
+    .hero-amp       {                 animation: ampFadeIn  1.6s cubic-bezier(0.16,1,0.3,1) 2.4s both; }
+    .hero-name-tom  { display: block; animation: nameSlideUp 2.0s cubic-bezier(0.16,1,0.3,1) 2.6s both; }
+    /* Slow down hero fade-in elements to match the cinematic pace */
+    #hero .fade-in { transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
 
     /* Illustration frame */
     .hero-illustration-wrap {
@@ -425,7 +432,7 @@
       overflow: hidden;
       background: linear-gradient(175deg, #faf3ec 0%, #f5e6d8 55%, #eedacc 100%);
       box-shadow: 0 16px 64px rgba(130,90,40,0.18), 0 4px 20px rgba(130,90,40,0.1);
-      animation: illustrationReveal 1.6s cubic-bezier(0.16,1,0.3,1) 0.80s both;
+      animation: illustrationReveal 2.4s cubic-bezier(0.16,1,0.3,1) 1.6s both;
     }
     .hero-frame::before {
       content: '';
@@ -598,6 +605,21 @@
       margin-bottom: 1rem;
     }
     .couple-divider { width: 38px; height: 1px; background: var(--gold); margin: 0.9rem auto; }
+    .couple-photo-slot {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      border: 1.5px dashed var(--gold-border);
+      background: rgba(201,169,110,0.05);
+      margin: 0 auto 1rem;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .couple-photo-slot img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .couple-photo-slot:not(:has(img))::after {
+      content: '🤍';
+      font-size: 1.4rem;
+      opacity: 0.35;
+    }
     .couple-desc {
       font-family: 'Lato', sans-serif;
       font-size: 0.88rem;
@@ -1216,11 +1238,16 @@
       position: relative;
       perspective: 900px;
       filter: drop-shadow(0 8px 24px rgba(139,105,20,0.18));
-      transition: filter 0.3s, transform 0.3s;
+      transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
     }
     .env-stage:not(.opened):hover .envelope {
       transform: translateY(-5px);
       filter: drop-shadow(0 16px 32px rgba(139,105,20,0.26));
+    }
+    /* When opened: envelope sinks down as if pressing the form up */
+    .env-stage.opened .envelope {
+      transform: translateY(18px);
+      filter: drop-shadow(0 4px 12px rgba(139,105,20,0.12));
     }
     .env-body {
       position: absolute; inset: 0;
@@ -1355,6 +1382,13 @@
       transition: max-height 1.2s cubic-bezier(0.4,0,0.2,1), opacity 0.6s ease 0.48s;
     }
     .rsvp-form-reveal.open { max-height: 5000px; opacity: 1; }
+    .rsvp-form-reveal .rsvp-wrap {
+      transform: translateY(36px);
+      transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+    }
+    .rsvp-form-reveal.open .rsvp-wrap { transform: translateY(0); }
+    .env-stage.submitted { cursor: default; }
+    .env-stage.submitted .envelope { pointer-events: none; }
     @keyframes envWiggle {
       0%,100% { transform: rotate(0deg) translateY(0); }
       20%     { transform: rotate(-1.4deg) translateY(-3px); }
@@ -1650,6 +1684,9 @@
           <div class="couple-flipper">
             <!-- front -->
             <div class="couple-card-front">
+              <div class="couple-photo-slot">
+                <img src="images/nine-kid.jpg" alt="Nine as a kid" loading="lazy" />
+              </div>
               <span class="couple-icon">🌸</span>
               <div class="couple-role" data-i18n="about.bride.role">The Bride</div>
               <div class="couple-name-main">Nine</div>
@@ -1675,6 +1712,9 @@
           <div class="couple-flipper">
             <!-- front -->
             <div class="couple-card-front">
+              <div class="couple-photo-slot">
+                <img src="images/tom-kid.jpg" alt="Tom as a kid" loading="lazy" />
+              </div>
               <span class="couple-icon">🌿</span>
               <div class="couple-role" data-i18n="about.groom.role">The Groom</div>
               <div class="couple-name-main">Tom</div>
@@ -2273,9 +2313,9 @@
         }, { threshold: 0.05 }).observe(tlEl);
       }
 
-      // Hero elements visible on page load (staggered) — names animate via CSS keyframes
+      // Hero elements: start after background image fades in, staggered slowly
       document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
-        setTimeout(() => el.classList.add('visible'), 120 + i * 200);
+        setTimeout(() => el.classList.add('visible'), 2800 + i * 320);
       });
 
       // Wiggle envelope once when it enters the viewport
@@ -2414,7 +2454,7 @@
         if (revealed && shownEl) shownEl.textContent = active.length;
         // Hint: swap scroll hint for swipe hint once all are in
         if (revealed && hint) {
-          const lang = localStorage.getItem('lang') || 'en';
+          const lang = localStorage.getItem('wedding-lang') || 'en';
           const hints = {
             en: { remove: '← swipe left to remove', restore: 'swipe right to restore →', both: '← remove · restore →' },
             th: { remove: '← เลื่อนซ้ายเพื่อเอาออก', restore: 'เลื่อนขวาเพื่อดึงกลับ →', both: '← เอาออก · ดึงกลับ →' }
@@ -2532,6 +2572,9 @@
       // Watch class changes as photos drop in during scroll
       const mo = new MutationObserver(markTop);
       photos.forEach(p => mo.observe(p, { attributes: true, attributeFilter: ['class'] }));
+
+      // Re-apply swipe hint text whenever language changes (setLang overwrites data-i18n elements)
+      document.addEventListener('langchange', markTop);
     })();
 
     /* ── COUPLE CARD FLIP ───────────────────────────────────────────── */
@@ -2632,11 +2675,11 @@
             reveal.style.transition = 'max-height 0.75s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease';
             reveal.style.opacity = '0';
             reveal.style.maxHeight = '0';
-            // 3) re-seal the envelope at the same time
+            // 3) re-seal just the flap; keep 'opened' so the prompt stays hidden
             const env   = document.getElementById('envelope');
             const stage = document.getElementById('env-stage');
             env.classList.remove('open');
-            stage.classList.remove('opened');
+            stage.classList.add('submitted'); // blocks re-opening + disables hover
             // 4) after the flap finishes closing (~750ms), show success message
             setTimeout(() => {
               const envSuccess = document.getElementById('env-success');
@@ -2827,6 +2870,9 @@
 
       // Update html lang attribute
       document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+
+      // Notify dynamic components that read lang independently (e.g. swipe hint)
+      document.dispatchEvent(new Event('langchange'));
     }
 
     // Init on load
