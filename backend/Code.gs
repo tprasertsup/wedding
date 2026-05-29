@@ -180,8 +180,8 @@ function sendEditEmail(email, name, token, lang) {
   const isThai = (lang === 'th');
 
   const subject = isThai
-    ? 'ยืนยันการเข้าร่วมงานแต่งงานไนน์ & ทอม ✨'
-    : "Your RSVP for Nine & Tom's Wedding ✨";
+    ? 'เจอกันวันที่ 11 กรกฎาคมนะ! 🌸 — ไนน์ & ทอม'
+    : "You're in! 🌸 See you July 11th — Nine & Tom";
 
   const html = isThai ? `
   <div style="font-family:'Sarabun',sans-serif;max-width:580px;margin:0 auto;background:#faf3ec;padding:0;border:1px solid #d4b896;">
@@ -191,24 +191,24 @@ function sendEditEmail(email, name, token, lang) {
       <p style="color:#8a6552;font-size:13px;letter-spacing:2px;margin:6px 0 0;">11 กรกฎาคม 2570</p>
     </div>
     <div style="padding:40px;">
-      <p style="color:#5c3d2e;font-size:16px;">เรียน คุณ${name},</p>
-      <p style="color:#6b4c3b;line-height:1.9;">ขอบคุณมากนะคะที่ยืนยันการเข้าร่วม — ดีใจมากที่จะได้เจอกัน!</p>
-      <p style="color:#6b4c3b;line-height:1.9;">ใช้ลิงก์ด้านล่างเพื่อดูหรือแก้ไขข้อมูลได้ตลอดเวลา กรุณาเก็บอีเมลนี้ไว้ด้วยนะคะ</p>
+      <p style="color:#5c3d2e;font-size:16px;">${name}! 🌸</p>
+      <p style="color:#6b4c3b;line-height:1.9;">ได้รับการยืนยันแล้วนะคะ — ดีใจมากเลยที่จะได้เจอกันในวันที่ 11 กรกฎาคม!</p>
+      <p style="color:#6b4c3b;line-height:1.9;">ถ้าอยากแก้ไขข้อมูลอะไรก็ตาม ไม่ว่าจะเป็นเรื่องอาหาร คนมาด้วย หรืออะไรก็ได้ — กดลิงก์ด้านล่างได้เลยนะคะ เก็บอีเมลนี้ไว้ด้วย เพราะเป็นลิงก์ส่วนตัวของคุณ</p>
       <div style="text-align:center;margin:35px 0;">
         <a href="${editUrl}"
            style="display:inline-block;background:#8b6914;color:#fff;padding:14px 36px;
                   text-decoration:none;font-size:12px;letter-spacing:2px;
                   text-transform:uppercase;font-family:Arial,sans-serif;">
-          ดูหรือแก้ไข RSVP
+          อัปเดต RSVP ของฉัน
         </a>
       </div>
       <p style="color:#8a6552;font-size:12px;line-height:1.8;text-align:center;">
-        กรุณาตอบรับภายใน <strong>1 มิถุนายน 2570</strong><br>
-        หากมีข้อสงสัย สามารถติดต่อไนน์หรือทอมได้โดยตรง
+        ขอให้แก้ไขภายใน <strong>1 มิถุนายน 2570</strong> นะคะ เผื่อมีอะไรเปลี่ยนแปลง<br>
+        มีคำถามอะไรก็ทักหาไนน์หรือทอมได้เลยค่ะ 😊
       </p>
       <hr style="border:none;border-top:1px solid #d4b896;margin:30px 0;">
       <p style="color:#5c3d2e;font-size:14px;font-style:italic;text-align:center;">
-        ฉลองรักและบทใหม่ของชีวิต
+        รอเจอคุณนะคะ 🌸<br>— ไนน์ & ทอม
       </p>
     </div>
   </div>` : `
@@ -219,24 +219,24 @@ function sendEditEmail(email, name, token, lang) {
       <p style="color:#8a6552;font-size:13px;letter-spacing:3px;text-transform:uppercase;margin:6px 0 0;">July 11, 2027</p>
     </div>
     <div style="padding:40px;">
-      <p style="color:#5c3d2e;font-size:16px;">Dear ${name},</p>
-      <p style="color:#6b4c3b;line-height:1.8;">Thank you for your RSVP — we're so glad you'll be part of our special day!</p>
-      <p style="color:#6b4c3b;line-height:1.8;">Use the link below any time to update your details. Keep this email safe as it's your personal access link.</p>
+      <p style="color:#5c3d2e;font-size:16px;">${name}! 🌸</p>
+      <p style="color:#6b4c3b;line-height:1.8;">You're officially on the list — we are SO excited to see you on July 11th!</p>
+      <p style="color:#6b4c3b;line-height:1.8;">If anything changes between now and then — plus one, dietary needs, anything at all — just use the button below to update your RSVP. Hang onto this email, it's your personal link and always yours to use.</p>
       <div style="text-align:center;margin:35px 0;">
         <a href="${editUrl}"
            style="display:inline-block;background:#8b6914;color:#fff;padding:14px 36px;
                   text-decoration:none;font-size:12px;letter-spacing:3px;
                   text-transform:uppercase;font-family:Arial,sans-serif;">
-          View / Edit My RSVP
+          Update My RSVP
         </a>
       </div>
       <p style="color:#8a6552;font-size:12px;line-height:1.7;text-align:center;">
-        Please update by <strong>June 1, 2027</strong>.<br>
-        If you have any questions, reach out to Nine or Tom directly.
+        Kindly update by <strong>June 1, 2027</strong> if anything changes.<br>
+        Questions? Just reach out to Nine or Tom directly — we don't bite 😊
       </p>
       <hr style="border:none;border-top:1px solid #d4b896;margin:30px 0;">
       <p style="color:#5c3d2e;font-size:14px;font-style:italic;text-align:center;">
-        Celebrating love, family, and a beautiful new beginning
+        Can't wait to celebrate with you 🌸<br>— Nine &amp; Tom
       </p>
     </div>
   </div>`;
