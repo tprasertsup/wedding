@@ -104,14 +104,32 @@
     /* Fade-in */
     .fade-in {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transform: translateY(48px);
+      transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1);
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
-    .fade-in-delay-1 { transition-delay: 0.1s; }
-    .fade-in-delay-2 { transition-delay: 0.2s; }
-    .fade-in-delay-3 { transition-delay: 0.3s; }
-    .fade-in-delay-4 { transition-delay: 0.4s; }
+
+    /* Slide from sides */
+    .slide-left  { opacity: 0; transform: translateX(-70px); transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
+    .slide-right { opacity: 0; transform: translateX(70px);  transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
+    .slide-left.visible  { opacity: 1; transform: translateX(0); }
+    .slide-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* Scale reveal */
+    .scale-up { opacity: 0; transform: scale(0.88) translateY(30px); transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
+    .scale-up.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+    /* Stagger delays */
+    .fade-in-delay-1 { transition-delay: 0.12s; }
+    .fade-in-delay-2 { transition-delay: 0.26s; }
+    .fade-in-delay-3 { transition-delay: 0.40s; }
+    .fade-in-delay-4 { transition-delay: 0.54s; }
+    .fade-in-delay-5 { transition-delay: 0.68s; }
+    .fade-in-delay-6 { transition-delay: 0.82s; }
+    .slide-left.d1, .slide-right.d1, .scale-up.d1 { transition-delay: 0.14s; }
+    .slide-left.d2, .slide-right.d2, .scale-up.d2 { transition-delay: 0.30s; }
+    .slide-left.d3, .slide-right.d3, .scale-up.d3 { transition-delay: 0.46s; }
+    .slide-left.d4, .slide-right.d4, .scale-up.d4 { transition-delay: 0.62s; }
 
     /* ═══════════════════════════════════════════════
        NAVIGATION
@@ -206,9 +224,9 @@
       border: 1px solid rgba(201, 169, 110, 0.18);
       pointer-events: none;
     }
-    .hero-bg-circle:nth-child(1) { width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-    .hero-bg-circle:nth-child(2) { width: 640px; height: 640px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-    .hero-bg-circle:nth-child(3) { width: 860px; height: 860px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .hero-bg-circle:nth-child(1) { width: 400px; height: 400px; top: 50%; left: 50%; animation: circlePulse  6s ease-in-out       infinite; }
+    .hero-bg-circle:nth-child(2) { width: 640px; height: 640px; top: 50%; left: 50%; animation: circlePulse  8s ease-in-out 0.7s  infinite; }
+    .hero-bg-circle:nth-child(3) { width: 860px; height: 860px; top: 50%; left: 50%; animation: circlePulse 10s ease-in-out 1.4s  infinite; }
     #petals-container {
       position: absolute; inset: 0;
       overflow: hidden; pointer-events: none; z-index: 0;
@@ -347,6 +365,107 @@
       transition: color 0.2s;
     }
     .hero-scroll-link:hover { color: var(--gold-dark); }
+
+    /* ═══════════════════════════════════════════════
+       SCROLL PROGRESS BAR
+    ═══════════════════════════════════════════════ */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 2px; width: 0%;
+      background: linear-gradient(to right, var(--lotus), var(--gold), var(--rose));
+      z-index: 2000;
+      transition: width 0.12s linear;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════════
+       HERO — ILLUSTRATION & NAME MOTION
+    ═══════════════════════════════════════════════ */
+
+    /* Theatrical name slide-up */
+    .hero-name-slot { display: block; overflow: hidden; }
+    .hero-name-nine { display: block; animation: nameSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.38s both; }
+    .hero-amp       {                 animation: ampFadeIn  0.9s cubic-bezier(0.16,1,0.3,1) 0.56s both; }
+    .hero-name-tom  { display: block; animation: nameSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.62s both; }
+
+    /* Illustration frame */
+    .hero-illustration-wrap {
+      position: relative;
+      width: min(280px, 74vw);
+      margin: 1.8rem auto 2.2rem;
+    }
+    .hero-frame {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      border: 1.5px solid var(--gold-border);
+      border-radius: 48% 48% 10px 10px / 14% 14% 10px 10px;
+      overflow: hidden;
+      background: linear-gradient(175deg, #faf3ec 0%, #f5e6d8 55%, #eedacc 100%);
+      box-shadow: 0 16px 64px rgba(130,90,40,0.18), 0 4px 20px rgba(130,90,40,0.1);
+      animation: illustrationReveal 1.6s cubic-bezier(0.16,1,0.3,1) 0.80s both;
+    }
+    .hero-frame::before {
+      content: '';
+      position: absolute; inset: 6px;
+      border: 1px solid rgba(212,184,150,0.32);
+      border-radius: inherit;
+      z-index: 2; pointer-events: none;
+    }
+    .hero-couple-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .hero-lotus-deco {
+      position: absolute; bottom: 12%;
+      font-size: 2.2rem;
+      animation: ambientFloat 5.5s ease-in-out infinite;
+      filter: drop-shadow(0 4px 10px rgba(180,100,100,0.22));
+      user-select: none; pointer-events: none;
+    }
+    .hero-lotus-deco.left  { left:  -2.2rem; animation-delay: 0s; }
+    .hero-lotus-deco.right { right: -2.2rem; animation-delay: 2.2s; }
+
+    @media (max-width: 480px) {
+      .hero-illustration-wrap { width: min(240px, 82vw); }
+      .hero-lotus-deco { font-size: 1.6rem; }
+      .hero-lotus-deco.left  { left:  -1.4rem; }
+      .hero-lotus-deco.right { right: -1.4rem; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       MOTION KEYFRAMES
+    ═══════════════════════════════════════════════ */
+    @keyframes circlePulse {
+      0%, 100% { transform: translate(-50%,-50%) scale(1);    opacity: 0.18; }
+      50%       { transform: translate(-50%,-50%) scale(1.08); opacity: 0.30; }
+    }
+    @keyframes ambientFloat {
+      0%, 100% { transform: translateY(0)     rotate(0deg); }
+      35%       { transform: translateY(-11px) rotate(2.5deg); }
+      70%       { transform: translateY(-5px)  rotate(-1deg); }
+    }
+    @keyframes nameSlideUp {
+      from { transform: translateY(105%); }
+      to   { transform: translateY(0); }
+    }
+    @keyframes ampFadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.85); }
+      to   { opacity: 1; transform: translateY(0)    scale(1); }
+    }
+    @keyframes illustrationReveal {
+      from { clip-path: inset(100% 0 0 0); opacity: 0.5; }
+      to   { clip-path: inset(0%   0 0 0); opacity: 1; }
+    }
+
+    /* Reduced motion — honour OS preference */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
 
     /* Petals */
     @keyframes petalFall {
@@ -1000,6 +1119,8 @@
 </head>
 <body>
 
+  <div id="scroll-progress" aria-hidden="true"></div>
+
   <!-- ═══════════════════════════════
        NAVIGATION
   ═══════════════════════════════ -->
@@ -1043,10 +1164,20 @@
 
       <p class="hero-eyebrow fade-in fade-in-delay-1" data-i18n="hero.eyebrow">Please join us as we celebrate the marriage of</p>
 
-      <div class="hero-names-block fade-in fade-in-delay-2">
-        <span class="hero-name-nine">NINE</span>
+      <div class="hero-names-block">
+        <div class="hero-name-slot"><span class="hero-name-nine">NINE</span></div>
         <span class="hero-amp">&amp;</span>
-        <span class="hero-name-tom">TOM</span>
+        <div class="hero-name-slot"><span class="hero-name-tom">TOM</span></div>
+      </div>
+
+      <!-- Couple illustration — save your image as images/couple.png -->
+      <div class="hero-illustration-wrap">
+        <div class="hero-frame">
+          <img src="images/couple.png" alt="Nine & Tom" class="hero-couple-img"
+               onerror="this.style.display='none'" />
+        </div>
+        <span class="hero-lotus-deco left"  aria-hidden="true">🪷</span>
+        <span class="hero-lotus-deco right" aria-hidden="true">🪷</span>
       </div>
 
       <div class="hero-divider fade-in fade-in-delay-3"></div>
@@ -1100,7 +1231,7 @@
 
       <div class="couple-grid">
         <!-- BRIDE -->
-        <div class="couple-card fade-in">
+        <div class="couple-card slide-left">
           <div class="couple-card-inner">
             <span class="couple-icon">🌸</span>
             <div class="couple-role" data-i18n="about.bride.role">The Bride</div>
@@ -1115,7 +1246,7 @@
         </div>
 
         <!-- GROOM -->
-        <div class="couple-card fade-in fade-in-delay-2">
+        <div class="couple-card slide-right d2">
           <div class="couple-card-inner">
             <span class="couple-icon">🌿</span>
             <div class="couple-role" data-i18n="about.groom.role">The Groom</div>
@@ -1150,7 +1281,7 @@
       <div class="program-cards">
 
         <!-- AFTERNOON -->
-        <div class="program-card fade-in">
+        <div class="program-card scale-up">
           <div class="program-card-band band-afternoon">
             <div>
               <div class="program-time">15.30</div>
@@ -1168,7 +1299,7 @@
         </div>
 
         <!-- EVENING -->
-        <div class="program-card fade-in fade-in-delay-2">
+        <div class="program-card scale-up d3">
           <div class="program-card-band band-evening">
             <div>
               <div class="program-time">18.00</div>
@@ -1244,7 +1375,7 @@
       <p class="section-subtitle fade-in" style="margin-top:-1.5rem;" data-i18n="venue.subtitle">An elegant setting for an unforgettable day</p>
 
       <div class="venue-grid">
-        <div class="fade-in">
+        <div class="slide-left">
           <h3 class="venue-name">Le Pansiri</h3>
           <p class="venue-location">Nonthaburi, Thailand</p>
 
@@ -1281,7 +1412,7 @@
           </div>
         </div>
 
-        <div class="venue-map fade-in fade-in-delay-2">
+        <div class="venue-map slide-right d2">
           <iframe
             src="https://maps.google.com/maps?q=Le+Pansiri+Nonthaburi+Thailand&output=embed"
             allowfullscreen
@@ -1465,7 +1596,7 @@
     (function () {
       const container = document.getElementById('petals-container');
       const colors = ['#f2b5c0', '#e8968a', '#f5d5dc', '#d4b896', '#f0c8b0', '#e8d0bc'];
-      const count  = 15;
+      const count  = 28;
 
       for (let i = 0; i < count; i++) {
         const petal    = document.createElement('div');
@@ -1530,14 +1661,14 @@
             }
           });
         },
-        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        { threshold: 0.10, rootMargin: '0px 0px -50px 0px' }
       );
 
-      document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+      document.querySelectorAll('.fade-in, .slide-left, .slide-right, .scale-up').forEach((el) => observer.observe(el));
 
-      // Hero elements visible on page load (staggered)
+      // Hero elements visible on page load (staggered) — names animate via CSS keyframes
       document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
-        setTimeout(() => el.classList.add('visible'), 100 + i * 160);
+        setTimeout(() => el.classList.add('visible'), 120 + i * 200);
       });
     })();
 
@@ -1550,10 +1681,23 @@
     }
 
     window.addEventListener('scroll', () => {
-      const nav = document.getElementById('nav');
-      nav.style.background = window.scrollY > 60
+      const y = window.scrollY;
+
+      // Nav background
+      document.getElementById('nav').style.background = y > 60
         ? 'rgba(250,243,236,0.96)'
         : 'rgba(245,230,216,0.88)';
+
+      // Scroll progress bar
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      document.getElementById('scroll-progress').style.width =
+        totalScroll > 0 ? (y / totalScroll * 100) + '%' : '0%';
+
+      // Parallax — hero illustration drifts up slightly slower than scroll
+      if (y < window.innerHeight * 1.6) {
+        const illus = document.querySelector('.hero-illustration-wrap');
+        if (illus) illus.style.transform = 'translateY(' + (y * 0.14) + 'px)';
+      }
     }, { passive: true });
 
     /* ── PLUS ONE TOGGLE ────────────────────────────────────────────── */
