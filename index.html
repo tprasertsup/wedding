@@ -509,28 +509,69 @@
       max-width: 900px;
       margin: 0 auto;
     }
-    .couple-card {
+
+    /* ── Flip card shell ─────────────────────────────────────────── */
+    .couple-card { perspective: 1200px; cursor: pointer; }
+
+    .couple-flipper {
+      position: relative;
+      min-height: 420px;
+      transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform-style: preserve-3d;
+    }
+    .couple-card.flipped .couple-flipper { transform: rotateY(180deg); }
+
+    .couple-card-front,
+    .couple-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       background: var(--cream);
       border: 1px solid var(--gold-border);
+      overflow: hidden;
+    }
+    /* Corner bracket helpers */
+    .couple-card-front::before, .couple-card-front::after,
+    .couple-card-back::before,  .couple-card-back::after {
+      content: ''; position: absolute; width: 20px; height: 20px;
+    }
+    .couple-card-front::before { top: 10px;    left: 10px;    border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+    .couple-card-front::after  { bottom: 10px; right: 10px;   border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+    .couple-card-back::before  { top: 10px;    right: 10px;   border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+    .couple-card-back::after   { bottom: 10px; left: 10px;    border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+
+    /* Front — centered, decorative */
+    .couple-card-front {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       padding: 2.8rem 2.2rem;
-      position: relative;
       text-align: center;
     }
-    .couple-card::before, .couple-card::after {
-      content: '';
-      position: absolute;
-      width: 22px; height: 22px;
+    /* Back — facts list */
+    .couple-card-back {
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2.2rem 2.2rem 2rem;
     }
-    .couple-card::before { top: 10px; left: 10px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
-    .couple-card::after  { bottom: 10px; right: 10px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
-    .couple-card-inner { position: relative; }
-    .couple-card-inner::before, .couple-card-inner::after {
-      content: '';
-      position: absolute;
-      width: 22px; height: 22px;
+
+    /* Tap hint at bottom of each face */
+    .flip-hint {
+      margin-top: auto;
+      padding-top: 1.2rem;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      opacity: 0.6;
+      text-align: center;
     }
-    .couple-card-inner::before { top: -10px; right: -10px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
-    .couple-card-inner::after  { bottom: -10px; left: -10px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
 
     .couple-icon { font-size: 2.4rem; margin-bottom: 0.9rem; display: block; }
     .couple-role {
@@ -1439,39 +1480,57 @@
       <p class="section-subtitle fade-in" style="margin-top:-1.5rem;" data-i18n="about.subtitle">Two cultures, two hearts, one love story</p>
 
       <div class="couple-grid">
+
         <!-- BRIDE -->
         <div class="couple-card slide-left">
-          <div class="couple-card-inner">
-            <span class="couple-icon">🌸</span>
-            <div class="couple-role" data-i18n="about.bride.role">The Bride</div>
-            <div class="couple-name-main">Nine</div>
-            <div class="couple-name-full" data-i18n="about.bride.fullname">Thananun Prasertsup</div>
-            <div class="couple-divider"></div>
-            <ul class="couple-facts">
-              <li class="couple-fact"><span class="fact-icon">📍</span><span data-i18n="about.bride.f1">Bangkok → Brown University → Seattle → wherever Tom is driving her next</span></li>
-              <li class="couple-fact"><span class="fact-icon">🐾</span><span data-i18n="about.bride.f2">Has stopped to pet every dog, cat, and mystery animal she has ever encountered</span></li>
-              <li class="couple-fact"><span class="fact-icon">📺</span><span data-i18n="about.bride.f3">Has rewatched Bojack Horseman and Young Sheldon more than ten times each. No shame, and no — she sees no contradiction in this.</span></li>
-              <li class="couple-fact"><span class="fact-icon">🧩</span><span data-i18n="about.bride.f4">Does not play games she might lose. Puzzles only. This is a very deliberate choice.</span></li>
-            </ul>
+          <div class="couple-flipper">
+            <!-- front -->
+            <div class="couple-card-front">
+              <span class="couple-icon">🌸</span>
+              <div class="couple-role" data-i18n="about.bride.role">The Bride</div>
+              <div class="couple-name-main">Nine</div>
+              <div class="couple-name-full" data-i18n="about.bride.fullname">Thananun Prasertsup</div>
+              <div class="couple-divider"></div>
+              <div class="flip-hint" data-i18n="about.flip">tap to reveal ↻</div>
+            </div>
+            <!-- back -->
+            <div class="couple-card-back">
+              <ul class="couple-facts">
+                <li class="couple-fact"><span class="fact-icon">📍</span><span data-i18n="about.bride.f1">Bangkok → Brown University → Seattle → wherever Tom is driving her next</span></li>
+                <li class="couple-fact"><span class="fact-icon">🐾</span><span data-i18n="about.bride.f2">Has stopped to pet every dog, cat, and mystery animal she has ever encountered</span></li>
+                <li class="couple-fact"><span class="fact-icon">📺</span><span data-i18n="about.bride.f3">Has rewatched Bojack Horseman and Young Sheldon more than ten times each. No shame, and no — she sees no contradiction in this.</span></li>
+                <li class="couple-fact"><span class="fact-icon">🧩</span><span data-i18n="about.bride.f4">Does not play games she might lose. Puzzles only. This is a very deliberate choice.</span></li>
+              </ul>
+              <div class="flip-hint" data-i18n="about.flipback">↺ tap to go back</div>
+            </div>
           </div>
         </div>
 
         <!-- GROOM -->
         <div class="couple-card slide-right d2">
-          <div class="couple-card-inner">
-            <span class="couple-icon">🌿</span>
-            <div class="couple-role" data-i18n="about.groom.role">The Groom</div>
-            <div class="couple-name-main">Tom</div>
-            <div class="couple-name-full" data-i18n="about.groom.fullname">Thomas La Pham</div>
-            <div class="couple-divider"></div>
-            <ul class="couple-facts">
-              <li class="couple-fact"><span class="fact-icon">📍</span><span data-i18n="about.groom.f1">Washington-born · Vietnamese American · middle child of six · evolved into the world's most agreeable person as a survival strategy</span></li>
-              <li class="couple-fact"><span class="fact-icon">🗣️</span><span data-i18n="about.groom.f2">Fluent in Turkish but conversational in Vietnamese. Secretly studied Thai for Nine's parents — still too shy to say สวัสดี to them.</span></li>
-              <li class="couple-fact"><span class="fact-icon">📱</span><span data-i18n="about.groom.f3">Very easy-going about most things in life. His Instagram feed, however, is a strictly moderated space.</span></li>
-              <li class="couple-fact"><span class="fact-icon">🎾</span><span data-i18n="about.groom.f4">High school tennis. College badminton. Recently retired from all sport. The muscles did not get the memo.</span></li>
-            </ul>
+          <div class="couple-flipper">
+            <!-- front -->
+            <div class="couple-card-front">
+              <span class="couple-icon">🌿</span>
+              <div class="couple-role" data-i18n="about.groom.role">The Groom</div>
+              <div class="couple-name-main">Tom</div>
+              <div class="couple-name-full" data-i18n="about.groom.fullname">Thomas La Pham</div>
+              <div class="couple-divider"></div>
+              <div class="flip-hint" data-i18n="about.flip">tap to reveal ↻</div>
+            </div>
+            <!-- back -->
+            <div class="couple-card-back">
+              <ul class="couple-facts">
+                <li class="couple-fact"><span class="fact-icon">📍</span><span data-i18n="about.groom.f1">Washington-born · Vietnamese American · middle child of six · evolved into the world's most agreeable person as a survival strategy</span></li>
+                <li class="couple-fact"><span class="fact-icon">🗣️</span><span data-i18n="about.groom.f2">Fluent in Turkish but conversational in Vietnamese. Secretly studied Thai for Nine's parents — still too shy to say สวัสดี to them.</span></li>
+                <li class="couple-fact"><span class="fact-icon">📱</span><span data-i18n="about.groom.f3">Very easy-going about most things in life. His Instagram feed, however, is a strictly moderated space.</span></li>
+                <li class="couple-fact"><span class="fact-icon">🎾</span><span data-i18n="about.groom.f4">High school tennis. College badminton. Recently retired from all sport. The muscles did not get the memo.</span></li>
+              </ul>
+              <div class="flip-hint" data-i18n="about.flipback">↺ tap to go back</div>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -1549,7 +1608,7 @@
       <div class="deck-counter">
         <strong id="deck-shown">0</strong> / 10
       </div>
-      <div class="deck-scroll-hint" id="deck-hint">↓ scroll to reveal all</div>
+      <div class="deck-scroll-hint" id="deck-hint" data-i18n="journey.hint">↓ scroll to reveal all</div>
     </div>
 
   </section>
@@ -2145,11 +2204,13 @@
         if (revealed && shownEl) shownEl.textContent = active.length;
         // Hint: swap scroll hint for swipe hint once all are in
         if (revealed && hint) {
-          hint.textContent = dismissed.length === 0
-            ? '← swipe left to remove'
-            : active.length === 1
-              ? 'swipe right to restore →'
-              : '← remove · restore →';
+          const lang = localStorage.getItem('lang') || 'en';
+          const hints = {
+            en: { remove: '← swipe left to remove', restore: 'swipe right to restore →', both: '← remove · restore →' },
+            th: { remove: '← เลื่อนซ้ายเพื่อเอาออก', restore: 'เลื่อนขวาเพื่อดึงกลับ →', both: '← เอาออก · ดึงกลับ →' }
+          };
+          const t = hints[lang] || hints.en;
+          hint.textContent = dismissed.length === 0 ? t.remove : active.length === 1 ? t.restore : t.both;
           hint.classList.remove('hidden');
         }
       }
@@ -2263,6 +2324,29 @@
       photos.forEach(p => mo.observe(p, { attributes: true, attributeFilter: ['class'] }));
     })();
 
+    /* ── COUPLE CARD FLIP ───────────────────────────────────────────── */
+    (function () {
+      document.querySelectorAll('.couple-card').forEach(card => {
+        const flipper = card.querySelector('.couple-flipper');
+        const back    = card.querySelector('.couple-card-back');
+        if (!flipper || !back) return;
+        // Set height to whichever face is taller
+        requestAnimationFrame(() => {
+          const front = card.querySelector('.couple-card-front');
+          back.style.transform   = 'none';
+          back.style.position    = 'relative';
+          back.style.visibility  = 'hidden';
+          const backH  = back.scrollHeight;
+          const frontH = front.scrollHeight;
+          back.style.transform  = '';
+          back.style.position   = '';
+          back.style.visibility = '';
+          flipper.style.minHeight = Math.max(backH, frontH, 380) + 'px';
+        });
+        card.addEventListener('click', () => card.classList.toggle('flipped'));
+      });
+    })();
+
     /* ── PLUS ONE TOGGLE ────────────────────────────────────────────── */
     function setPlusOne(val) {
       document.getElementById('btn-no').classList.toggle('active',  val === 'no');
@@ -2360,6 +2444,7 @@
         'nav.story':'Our Story','nav.program':'Program','nav.dresscode':'Dress Code','nav.venue':'Venue','nav.rsvp':'RSVP',
         'hero.eyebrow':'Please join us as we celebrate the marriage of','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
         'about.title':'The Couple','about.subtitle':'Two cultures, two hearts, one love story',
+        'about.flip':'tap to reveal ↻','about.flipback':'↺ tap to go back',
         'about.bride.role':'The Bride','about.bride.fullname':'Thananun Prasertsup',
         'about.bride.f1':'Bangkok → Brown University → Seattle → wherever Tom is driving her next',
         'about.bride.f2':'Has stopped to pet every dog, cat, and mystery animal she has ever encountered',
@@ -2370,7 +2455,7 @@
         'about.groom.f2':'Fluent in Turkish but conversational in Vietnamese. Secretly studied Thai for Nine\'s parents — still too shy to say สวัสดี to them.',
         'about.groom.f3':'Very easy-going about most things in life. His Instagram feed, however, is a strictly moderated space.',
         'about.groom.f4':'High school tennis. College badminton. Recently retired from all sport. The muscles did not get the memo.',
-        'journey.title':'Our Journey','journey.subtitle':'Moments from the adventure that led us here',
+        'journey.title':'Our Journey','journey.subtitle':'Moments from the adventure that led us here','journey.hint':'↓ scroll to reveal all',
         'program.title':'The Celebration','program.subtitle':'A day of love, tradition, and joy',
         'program.afternoon':'Afternoon','program.evening':'Evening',
         'program.m1.title':'Khan Maak Procession','program.m1.desc':'The groom leads a joyful, music-filled procession bearing ceremonial gifts to the bride\'s family — a festive, formal request for her hand.',
@@ -2413,6 +2498,7 @@
         'nav.story':'เรื่องราวของเรา','nav.program':'กำหนดการ','nav.dresscode':'การแต่งกาย','nav.venue':'สถานที่จัดงาน','nav.rsvp':'ยืนยันการเข้าร่วม',
         'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
         'about.title':'คู่บ่าวสาว','about.subtitle':'สองวัฒนธรรม สองหัวใจ หนึ่งเรื่องราวความรัก',
+        'about.flip':'แตะเพื่อดู ↻','about.flipback':'↺ แตะเพื่อกลับ',
         'about.bride.role':'เจ้าสาว','about.bride.fullname':'ธนนันท์ ประเสริฐทรัพย์',
         'about.bride.f1':'กรุงเทพฯ → มหาวิทยาลัยบราวน์ → ซีแอตเทิล → ไปกับรถที่ทอมขับพาไป',
         'about.bride.f2':'หยุดทักทายสุนัข แมว และสัตว์ประหลาดทุกตัวที่เจอ ไม่มีข้อยกเว้น',
@@ -2423,7 +2509,7 @@
         'about.groom.f2':'พูดตุรกีได้คล่อง แต่เวียดนามได้แค่พอคุย แอบเรียนภาษาไทยเพื่อคุยกับพ่อแม่ไนน์ — แต่ยังขี้อายเกินกว่าจะพูดสวัสดีกับพวกเขา',
         'about.groom.f3':'ใจเย็นและปล่อยวางกับแทบทุกเรื่องในชีวิต ยกเว้นฟีด Instagram ที่บริหารจัดการอย่างเข้มงวดเป็นพิเศษ',
         'about.groom.f4':'เทนนิสมัธยม แบดมินตันมหาวิทยาลัย เพิ่งประกาศเลิกเล่นกีฬา แต่กล้ามเนื้อยังไม่รับทราบ',
-        'journey.title':'เส้นทางของเรา','journey.subtitle':'ช่วงเวลาพิเศษที่พาเรามาถึงวันนี้',
+        'journey.title':'เส้นทางของเรา','journey.subtitle':'ช่วงเวลาพิเศษที่พาเรามาถึงวันนี้','journey.hint':'↓ เลื่อนเพื่อดูทั้งหมด',
         'program.title':'กำหนดการงาน','program.subtitle':'วันที่เต็มไปด้วยความรัก ประเพณี และความสุข',
         'program.afternoon':'บ่าย','program.evening':'เย็น',
         'program.m1.title':'ขบวนขันหมาก','program.m1.desc':'เจ้าบ่าวนำขบวนแห่ที่สนุกสนานพร้อมดนตรีและของขวัญสู่บ้านเจ้าสาว เป็นการแสดงความเคารพและขอคู่ครองอย่างเป็นทางการ',
