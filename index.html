@@ -570,6 +570,18 @@
       color: var(--gold-dark);
       margin-top: 0.8rem;
     }
+    .couple-facts { margin: 0; padding: 0; list-style: none; text-align: left; }
+    .couple-fact {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 0.7rem;
+      font-size: 0.84rem;
+      color: var(--brown-light);
+      line-height: 1.55;
+    }
+    .couple-fact:last-child { margin-bottom: 0; }
+    .fact-icon { flex-shrink: 0; width: 1.3rem; text-align: center; font-style: normal; }
 
     /* ═══════════════════════════════════════════════
        OUR JOURNEY — STICKY SCROLL DECK
@@ -1435,10 +1447,12 @@
             <div class="couple-name-main">Nine</div>
             <div class="couple-name-full" data-i18n="about.bride.fullname">Thananun Prasertsup</div>
             <div class="couple-divider"></div>
-            <p class="couple-desc" data-i18n="about.bride.bio">
-              Born beneath the warm skies of Bangkok, Nine carries within her the grace and quiet radiance of Thailand. Gentle in spirit, luminous in heart, she brings colour and joy wherever she goes. Her warmth is the kind that draws people in and makes them feel, without any effort at all, entirely at home.
-            </p>
-            <p class="couple-origin">Bangkok, Thailand &nbsp;·&nbsp; November 10, 1997</p>
+            <ul class="couple-facts">
+              <li class="couple-fact"><span class="fact-icon">📍</span><span data-i18n="about.bride.f1">Bangkok → Brown University → Seattle → wherever Tom is driving her next</span></li>
+              <li class="couple-fact"><span class="fact-icon">🐾</span><span data-i18n="about.bride.f2">Has stopped to pet every dog, cat, and mystery animal she has ever encountered</span></li>
+              <li class="couple-fact"><span class="fact-icon">😭</span><span data-i18n="about.bride.f3">Cries at Pixar movies. Other people's Pixar movies. Pixar trailers. No shame.</span></li>
+              <li class="couple-fact"><span class="fact-icon">🧩</span><span data-i18n="about.bride.f4">Undefeated at puzzles. Do not challenge her to anything else.</span></li>
+            </ul>
           </div>
         </div>
 
@@ -1450,10 +1464,12 @@
             <div class="couple-name-main">Tom</div>
             <div class="couple-name-full" data-i18n="about.groom.fullname">Thomas La Pham</div>
             <div class="couple-divider"></div>
-            <p class="couple-desc" data-i18n="about.groom.bio">
-              Raised in Washington with Vietnamese roots woven quietly but proudly through everything he does, Tom brings steadfast warmth, a grounded sense of self, and a heart with room enough for two worlds. He found in Nine not just a partner, but his greatest adventure — and the place where he feels most like himself.
-            </p>
-            <p class="couple-origin">Washington, USA &nbsp;·&nbsp; October 3, 1995</p>
+            <ul class="couple-facts">
+              <li class="couple-fact"><span class="fact-icon">📍</span><span data-i18n="about.groom.f1">Washington-born · Vietnamese American · one of six kids · somehow the most relaxed person in any room</span></li>
+              <li class="couple-fact"><span class="fact-icon">🛍️</span><span data-i18n="about.groom.f2">Has strong opinions about thrift store finds. Will not tell you where he wants to eat.</span></li>
+              <li class="couple-fact"><span class="fact-icon">💪</span><span data-i18n="about.groom.f3">Has never exercised a day in his life. Inexplicably strong. We don't talk about it.</span></li>
+              <li class="couple-fact"><span class="fact-icon">🤝</span><span data-i18n="about.groom.f4">Says he doesn't like people. Is the first one everyone wants to call.</span></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -2345,9 +2361,15 @@
         'hero.eyebrow':'Please join us as we celebrate the marriage of','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
         'about.title':'The Couple','about.subtitle':'Two cultures, two hearts, one love story',
         'about.bride.role':'The Bride','about.bride.fullname':'Thananun Prasertsup',
-        'about.bride.bio':'Born beneath the warm skies of Bangkok, Nine carries the grace and quiet radiance of Thailand. She brings colour and joy wherever she goes — her warmth the kind that makes everyone around her feel entirely at home.',
+        'about.bride.f1':'Bangkok → Brown University → Seattle → wherever Tom is driving her next',
+        'about.bride.f2':'Has stopped to pet every dog, cat, and mystery animal she has ever encountered',
+        'about.bride.f3':'Cries at Pixar movies. Other people\'s Pixar movies. Pixar trailers. No shame.',
+        'about.bride.f4':'Undefeated at puzzles. Do not challenge her to anything else.',
         'about.groom.role':'The Groom','about.groom.fullname':'Thomas La Pham',
-        'about.groom.bio':"Raised in Washington with Vietnamese roots woven quietly but proudly through everything he does, Tom brings steadfast warmth and a heart with room enough for two worlds. He found in Nine his greatest adventure — and the place where he feels most like himself.",
+        'about.groom.f1':'Washington-born · Vietnamese American · one of six kids · somehow the most relaxed person in any room',
+        'about.groom.f2':'Has strong opinions about thrift store finds. Will not tell you where he wants to eat.',
+        'about.groom.f3':'Has never exercised a day in his life. Inexplicably strong. We don\'t talk about it.',
+        'about.groom.f4':'Says he doesn\'t like people. Is the first one everyone wants to call.',
         'journey.title':'Our Journey','journey.subtitle':'Moments from the adventure that led us here',
         'program.title':'The Celebration','program.subtitle':'A day of love, tradition, and joy',
         'program.afternoon':'Afternoon','program.evening':'Evening',
@@ -2392,9 +2414,15 @@
         'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
         'about.title':'คู่บ่าวสาว','about.subtitle':'สองวัฒนธรรม สองหัวใจ หนึ่งเรื่องราวความรัก',
         'about.bride.role':'เจ้าสาว','about.bride.fullname':'ธนนันท์ ประเสริฐทรัพย์',
-        'about.bride.bio':'ไนน์เกิดและโตในกรุงเทพฯ เมื่อ 10 พฤศจิกายน 2540 เธอมีความอบอุ่นแบบที่ทำให้ใคร ๆ ก็อยากอยู่ใกล้ ภาคภูมิในรากเหง้าไทย และตื่นเต้นกับชีวิตใหม่ที่กำลังจะเริ่ม',
+        'about.bride.f1':'กรุงเทพฯ → มหาวิทยาลัยบราวน์ → ซีแอตเทิล → ไปกับรถที่ทอมขับพาไป',
+        'about.bride.f2':'หยุดทักทายสุนัข แมว และสัตว์ประหลาดทุกตัวที่เจอ ไม่มีข้อยกเว้น',
+        'about.bride.f3':'ร้องไห้กับหนัง Pixar ทุกเรื่อง หนังของคนอื่นก็ร้อง ดูแค่ตัวอย่างก็ยังร้อง ไม่อายเลย',
+        'about.bride.f4':'ไม่เคยแพ้ใครเรื่องต่อจิ๊กซอว์ อย่าท้าเธอเล่นอะไรอื่น',
         'about.groom.role':'เจ้าบ่าว','about.groom.fullname':'โทมัส ลา ฟั่ม',
-        'about.groom.bio':'ทอมเกิดที่รัฐวอชิงตัน เมื่อ 3 ตุลาคม 2538 เขาเติบโตมาพร้อมกับความภูมิใจในรากเหง้าเวียดนามของตัวเอง และหัวใจที่กว้างพอสำหรับสองโลก เขาพบในไนน์ทั้งคู่ชีวิตและที่ที่รู้สึกว่าตัวเองเป็นตัวเองมากที่สุด',
+        'about.groom.f1':'เกิดที่วอชิงตัน · ชาวเวียดนามอเมริกัน · ลูกคนกลางในบ้านหกคน · ยังคงสงบที่สุดในทุกห้องที่เข้าไป',
+        'about.groom.f2':'มีความเห็นชัดเจนเรื่องของมือสองในตลาด แต่ไม่เคยบอกได้ว่าอยากกินอะไร',
+        'about.groom.f3':'ไม่เคยออกกำลังกาย แต่แข็งแรงผิดปกติ เราไม่พูดเรื่องนี้',
+        'about.groom.f4':'บอกว่าไม่ชอบคน แต่เป็นคนแรกที่ทุกคนอยากโทรหา',
         'journey.title':'เส้นทางของเรา','journey.subtitle':'ช่วงเวลาพิเศษที่พาเรามาถึงวันนี้',
         'program.title':'กำหนดการงาน','program.subtitle':'วันที่เต็มไปด้วยความรัก ประเพณี และความสุข',
         'program.afternoon':'บ่าย','program.evening':'เย็น',
