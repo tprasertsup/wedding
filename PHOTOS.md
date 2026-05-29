@@ -1,18 +1,32 @@
 # Photo Checklist
 
-All photos go in the `images/` folder. Once you add them, paste the filename into the right spot in `index.html`.
+All photos go in the `images/` folder. The HTML is already wired up — just drop the file in with the right name and it appears automatically (except for the couple card slots, which need one small edit).
 
 ---
 
-## 1. Couple Section — Childhood Photos
+## 1. Hero Background — Already Wired ✓
 
-Each card front has a circular placeholder waiting for a photo.
+The full-screen background behind your names on the opening section.
 
-**What to add:** One fun childhood photo of Nine, one of Tom. Candid, not formal — the more personality the better.
+**File name:** `images/couple.png` (jpg or webp also works — just rename accordingly)
 
-**Where to put the files:** `images/nine-kid.jpg` and `images/tom-kid.jpg` (any common format works: jpg, png, webp)
+**What to add:** A beautiful photo of the two of you together. Landscape orientation works best since it covers the full screen. It sits behind a very light peach veil so text stays readable — a photo with some open/soft areas works better than a very busy one.
 
-**How to wire them in** — open `index.html` and find these two blocks (search for `couple-photo-slot`):
+**No code edit needed** — just drop `couple.png` into the `images/` folder and it will appear.
+
+> If you use a different format (e.g. jpg), find `images/couple.png` in `index.html` (line ~1606) and change the extension to match.
+
+---
+
+## 2. Couple Section — Childhood Photos
+
+Each card front has a small circular slot waiting for a photo.
+
+**What to add:** One childhood photo of Nine, one of Tom. Candid and fun — the more personality the better.
+
+**Where to put the files:** `images/nine-kid.jpg` and `images/tom-kid.jpg`
+
+**How to wire them in** — open `index.html` and search for `couple-photo-slot`. You'll find two of them. Edit each one:
 
 For Nine's card:
 ```html
@@ -36,43 +50,38 @@ For Tom's card:
 </div>
 ```
 
-The photo will be automatically cropped into a circle — no extra work needed.
+The photo is automatically cropped into a circle — no extra work needed.
 
 ---
 
-## 2. Our Story — Photo Deck
+## 3. Our Story — Photo Deck
 
-The scroll deck in the "Our Story" section already has 10 photo slots. They currently show placeholder colors. Replace each one with a real photo of the two of you.
+The scroll deck has 10 photo slots currently showing placeholder colors.
 
 **Where to put the files:** `images/story-1.jpg` through `images/story-10.jpg`
 
-**How to wire them in** — in `index.html`, search for `deck-photo`. You'll see elements like:
+**No code edit needed** — just add the files with those exact names and they appear automatically.
 
-```html
-<div class="deck-photo photo-drop" style="...">
-```
-
-Add an `<img>` inside each one:
-
-```html
-<div class="deck-photo photo-drop" style="...">
-  <img src="images/story-1.jpg" alt="" />
-</div>
-```
-
-Do the same for story-2 through story-10 in order.
+> If the deck photos are already wired differently (check `index.html` for `deck-photo` elements), add an `<img>` inside each one:
+> ```html
+> <div class="deck-photo photo-drop" style="...">
+>   <img src="images/story-1.jpg" alt="" />
+> </div>
+> ```
 
 **Photo tips:**
-- Portrait orientation works best (taller than wide)
-- Any candid moment works — trips, everyday life, the proposal, anything that tells your story
-- They don't need to be in chronological order but it's a nice touch if they are
+- Portrait orientation (taller than wide) fills the cards best
+- Candid moments work great — trips, everyday life, the proposal
+- Chronological order tells your story nicely but isn't required
 
 ---
 
 ## Quick Reference
 
-| Placeholder | File to add | Where in index.html |
+| Section | File name | Code edit needed? |
 |---|---|---|
-| Nine's circular photo | `images/nine-kid.jpg` | First `<div class="couple-photo-slot">` |
-| Tom's circular photo | `images/tom-kid.jpg` | Second `<div class="couple-photo-slot">` |
-| Story photo 1–10 | `images/story-1.jpg` … `images/story-10.jpg` | Each `<div class="deck-photo …">` |
+| Hero background | `images/couple.png` | No — just drop the file in |
+| Nine's childhood circle | `images/nine-kid.jpg` | Yes — add `<img>` inside `couple-photo-slot` |
+| Tom's childhood circle | `images/tom-kid.jpg` | Yes — add `<img>` inside `couple-photo-slot` |
+| Our Story photo 1 | `images/story-1.jpg` | Check if `<img>` already inside `deck-photo` |
+| Our Story photos 2–10 | `images/story-2.jpg` … `images/story-10.jpg` | Same as above |
