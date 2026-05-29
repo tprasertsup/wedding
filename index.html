@@ -1355,6 +1355,13 @@
       transition: max-height 1.2s cubic-bezier(0.4,0,0.2,1), opacity 0.6s ease 0.48s;
     }
     .rsvp-form-reveal.open { max-height: 5000px; opacity: 1; }
+    .rsvp-form-reveal .rsvp-wrap {
+      transform: translateY(36px);
+      transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+    }
+    .rsvp-form-reveal.open .rsvp-wrap { transform: translateY(0); }
+    .env-stage.submitted { cursor: default; }
+    .env-stage.submitted .envelope { pointer-events: none; }
     @keyframes envWiggle {
       0%,100% { transform: rotate(0deg) translateY(0); }
       20%     { transform: rotate(-1.4deg) translateY(-3px); }
@@ -2632,11 +2639,11 @@
             reveal.style.transition = 'max-height 0.75s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease';
             reveal.style.opacity = '0';
             reveal.style.maxHeight = '0';
-            // 3) re-seal the envelope at the same time
+            // 3) re-seal just the flap; keep 'opened' so the prompt stays hidden
             const env   = document.getElementById('envelope');
             const stage = document.getElementById('env-stage');
             env.classList.remove('open');
-            stage.classList.remove('opened');
+            stage.classList.add('submitted'); // blocks re-opening + disables hover
             // 4) after the flap finishes closing (~750ms), show success message
             setTimeout(() => {
               const envSuccess = document.getElementById('env-success');
