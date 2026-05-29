@@ -598,6 +598,21 @@
       margin-bottom: 1rem;
     }
     .couple-divider { width: 38px; height: 1px; background: var(--gold); margin: 0.9rem auto; }
+    .couple-photo-slot {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      border: 1.5px dashed var(--gold-border);
+      background: rgba(201,169,110,0.05);
+      margin: 0 auto 1rem;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .couple-photo-slot img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .couple-photo-slot:not(:has(img))::after {
+      content: '🤍';
+      font-size: 1.4rem;
+      opacity: 0.35;
+    }
     .couple-desc {
       font-family: 'Lato', sans-serif;
       font-size: 0.88rem;
@@ -1216,11 +1231,16 @@
       position: relative;
       perspective: 900px;
       filter: drop-shadow(0 8px 24px rgba(139,105,20,0.18));
-      transition: filter 0.3s, transform 0.3s;
+      transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
     }
     .env-stage:not(.opened):hover .envelope {
       transform: translateY(-5px);
       filter: drop-shadow(0 16px 32px rgba(139,105,20,0.26));
+    }
+    /* When opened: envelope sinks down as if pressing the form up */
+    .env-stage.opened .envelope {
+      transform: translateY(18px);
+      filter: drop-shadow(0 4px 12px rgba(139,105,20,0.12));
     }
     .env-body {
       position: absolute; inset: 0;
@@ -1657,6 +1677,7 @@
           <div class="couple-flipper">
             <!-- front -->
             <div class="couple-card-front">
+              <div class="couple-photo-slot"></div>
               <span class="couple-icon">🌸</span>
               <div class="couple-role" data-i18n="about.bride.role">The Bride</div>
               <div class="couple-name-main">Nine</div>
@@ -1682,6 +1703,7 @@
           <div class="couple-flipper">
             <!-- front -->
             <div class="couple-card-front">
+              <div class="couple-photo-slot"></div>
               <span class="couple-icon">🌿</span>
               <div class="couple-role" data-i18n="about.groom.role">The Groom</div>
               <div class="couple-name-main">Tom</div>
@@ -2421,7 +2443,7 @@
         if (revealed && shownEl) shownEl.textContent = active.length;
         // Hint: swap scroll hint for swipe hint once all are in
         if (revealed && hint) {
-          const lang = localStorage.getItem('lang') || 'en';
+          const lang = localStorage.getItem('wedding-lang') || 'en';
           const hints = {
             en: { remove: '← swipe left to remove', restore: 'swipe right to restore →', both: '← remove · restore →' },
             th: { remove: '← เลื่อนซ้ายเพื่อเอาออก', restore: 'เลื่อนขวาเพื่อดึงกลับ →', both: '← เอาออก · ดึงกลับ →' }
@@ -2539,6 +2561,9 @@
       // Watch class changes as photos drop in during scroll
       const mo = new MutationObserver(markTop);
       photos.forEach(p => mo.observe(p, { attributes: true, attributeFilter: ['class'] }));
+
+      // Re-apply swipe hint text whenever language changes (setLang overwrites data-i18n elements)
+      document.addEventListener('langchange', markTop);
     })();
 
     /* ── COUPLE CARD FLIP ───────────────────────────────────────────── */
@@ -2834,6 +2859,9 @@
 
       // Update html lang attribute
       document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+
+      // Notify dynamic components that read lang independently (e.g. swipe hint)
+      document.dispatchEvent(new Event('langchange'));
     }
 
     // Init on load
