@@ -224,8 +224,6 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      will-change: opacity;
-      animation: heroBgFadeIn 2.8s ease-out both;
     }
     .hero-bg-illustration img {
       width: 100%;
@@ -234,12 +232,18 @@
       object-position: center center;
       display: block;
     }
-    /* Very light peach veil so text stays legible */
+    /* Overlay fades in slowly so text becomes easy to read as wording appears */
     .hero-bg-illustration::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(250, 243, 236, 0.22);
+      background: rgba(250, 243, 236, 0.52);
+      opacity: 0;
+      animation: overlayReveal 3.0s ease-out 0.4s forwards;
+    }
+    @keyframes overlayReveal {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     .hero-bg-circle {
@@ -470,10 +474,6 @@
       0%, 100% { transform: translateY(0)     rotate(0deg); }
       35%       { transform: translateY(-11px) rotate(2.5deg); }
       70%       { transform: translateY(-5px)  rotate(-1deg); }
-    }
-    @keyframes heroBgFadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
     }
     @keyframes nameSlideUp {
       from { transform: translateY(105%); }
