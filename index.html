@@ -104,32 +104,32 @@
     /* Fade-in */
     .fade-in {
       opacity: 0;
-      transform: translateY(48px);
-      transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1);
+      transform: translateY(18px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     /* Slide from sides */
-    .slide-left  { opacity: 0; transform: translateX(-70px); transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
-    .slide-right { opacity: 0; transform: translateX(70px);  transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
+    .slide-left  { opacity: 0; transform: translateX(-28px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+    .slide-right { opacity: 0; transform: translateX(28px);  transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
     .slide-left.visible  { opacity: 1; transform: translateX(0); }
     .slide-right.visible { opacity: 1; transform: translateX(0); }
 
     /* Scale reveal */
-    .scale-up { opacity: 0; transform: scale(0.88) translateY(30px); transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
+    .scale-up { opacity: 0; transform: scale(0.95) translateY(14px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
     .scale-up.visible { opacity: 1; transform: scale(1) translateY(0); }
 
     /* Stagger delays */
-    .fade-in-delay-1 { transition-delay: 0.12s; }
-    .fade-in-delay-2 { transition-delay: 0.26s; }
-    .fade-in-delay-3 { transition-delay: 0.40s; }
-    .fade-in-delay-4 { transition-delay: 0.54s; }
-    .fade-in-delay-5 { transition-delay: 0.68s; }
-    .fade-in-delay-6 { transition-delay: 0.82s; }
-    .slide-left.d1, .slide-right.d1, .scale-up.d1 { transition-delay: 0.14s; }
-    .slide-left.d2, .slide-right.d2, .scale-up.d2 { transition-delay: 0.30s; }
-    .slide-left.d3, .slide-right.d3, .scale-up.d3 { transition-delay: 0.46s; }
-    .slide-left.d4, .slide-right.d4, .scale-up.d4 { transition-delay: 0.62s; }
+    .fade-in-delay-1 { transition-delay: 0.08s; }
+    .fade-in-delay-2 { transition-delay: 0.16s; }
+    .fade-in-delay-3 { transition-delay: 0.24s; }
+    .fade-in-delay-4 { transition-delay: 0.32s; }
+    .fade-in-delay-5 { transition-delay: 0.40s; }
+    .fade-in-delay-6 { transition-delay: 0.48s; }
+    .slide-left.d1, .slide-right.d1, .scale-up.d1 { transition-delay: 0.10s; }
+    .slide-left.d2, .slide-right.d2, .scale-up.d2 { transition-delay: 0.20s; }
+    .slide-left.d3, .slide-right.d3, .scale-up.d3 { transition-delay: 0.30s; }
+    .slide-left.d4, .slide-right.d4, .scale-up.d4 { transition-delay: 0.40s; }
 
     /* ═══════════════════════════════════════════════
        NAVIGATION
@@ -218,6 +218,29 @@
       text-align: center;
       padding: 7rem 2rem 5rem;
     }
+    /* ── HERO BACKGROUND ILLUSTRATION ── */
+    .hero-bg-illustration {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      will-change: opacity;
+    }
+    .hero-bg-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+    /* Very light peach veil so text stays legible */
+    .hero-bg-illustration::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(250, 243, 236, 0.22);
+    }
+
     .hero-bg-circle {
       position: absolute;
       border-radius: 50%;
@@ -549,102 +572,136 @@
     }
 
     /* ═══════════════════════════════════════════════
-       OUR JOURNEY — PHOTO GALLERY
+       OUR JOURNEY — STICKY SCROLL DECK
     ═══════════════════════════════════════════════ */
-    #journey { background: var(--peach); }
 
-    .story-gallery {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2.2rem;
-      max-width: 860px;
-      margin: 0 auto;
+    /* Wrapper provides the extra scroll height */
+    #journey-wrapper { height: calc(100vh + 2600px); }
+
+    /* Sticky container — stays pinned while user scrolls through wrapper */
+    #journey {
+      position: sticky;
+      top: 0;
+      height: 100svh;           /* svh = small viewport height (avoids mobile bar jank) */
+      overflow: hidden;
+      background: var(--peach-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;               /* override .section padding */
     }
 
-    .story-photo {
-      position: relative;
-      background: var(--cream);
-      padding: 10px 10px 46px;
-      border: 1px solid var(--gold-border);
-      box-shadow: 0 8px 32px rgba(92,61,46,0.10), 0 2px 8px rgba(92,61,46,0.06);
-      transform: rotate(var(--rot, 0deg));
-      will-change: transform, box-shadow;
-      cursor: default;
-    }
-
-    .story-photo:hover {
-      transform: rotate(0deg) scale(1.05) translateY(-8px) !important;
-      box-shadow: 0 28px 72px rgba(92,61,46,0.22), 0 8px 24px rgba(92,61,46,0.12) !important;
-      z-index: 10;
-    }
-
-    .story-photo img {
-      display: block;
+    .journey-top {
+      flex-shrink: 0;
+      padding: 2.2rem 2rem 0;
+      text-align: center;
       width: 100%;
+    }
+    .journey-top .section-title   { margin-bottom: 0.2rem; }
+    .journey-top .ornament        { margin: 1rem auto 0.8rem; }
+    .journey-top .section-subtitle{ margin-bottom: 0; }
+
+    /* Deck stage — centres the pile */
+    .journey-deck-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+    }
+
+    .photo-deck {
+      position: relative;
+      width: min(260px, 68vw);
       aspect-ratio: 3 / 4;
+    }
+
+    /* Individual cards — all stacked at same position, offset by CSS vars */
+    .deck-photo {
+      position: absolute;
+      inset: 0;
+      background: var(--cream);
+      border: 1px solid var(--gold-border);
+      box-shadow: 0 10px 40px rgba(92,61,46,0.13), 0 2px 10px rgba(92,61,46,0.07);
+      opacity: 0;
+      transform: translate(var(--px,0%), calc(var(--py,0%) - 120vh))
+                 rotate(var(--rot,0deg)) scale(0.88);
+      will-change: transform, opacity;
+    }
+    .deck-photo img {
+      position: absolute;
+      top: 8px; left: 8px; right: 8px;
+      bottom: 42px;
+      width: calc(100% - 16px);
+      height: calc(100% - 50px);
       object-fit: cover;
       object-position: center top;
+      display: block;
     }
-
-    .story-photo.landscape img { aspect-ratio: 4 / 3; object-position: center center; }
-
-    .story-caption {
+    .deck-caption {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      height: 46px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.84rem;
+      font-size: 0.8rem;
       font-style: italic;
       color: var(--brown-light);
-      padding: 0 10px;
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    /* Drop animation — drops from above with bounce */
+    @keyframes deckDrop {
+      0%   { opacity:0;  transform: translate(var(--px,0%), calc(var(--py,0%) - 120vh)) rotate(var(--rot,0deg)) scale(0.86); }
+      55%  { opacity:1;  transform: translate(var(--px,0%), calc(var(--py,0%) + 3%))    rotate(var(--rot,0deg)) scale(1.03); }
+      75%  { opacity:1;  transform: translate(var(--px,0%), calc(var(--py,0%) - 1%))    rotate(var(--rot,0deg)) scale(1);    }
+      100% { opacity:1;  transform: translate(var(--px,0%), var(--py,0%))               rotate(var(--rot,0deg)) scale(1);    }
+    }
+    .deck-photo.dropping {
+      animation: deckDrop 0.9s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    .deck-photo.shown {
+      opacity: 1;
+      transform: translate(var(--px,0%), var(--py,0%)) rotate(var(--rot,0deg));
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.4s ease;
+    }
+    .deck-photo.shown:hover {
+      transform: translate(var(--px,0%), calc(var(--py,0%) - 4%))
+                 rotate(0deg) scale(1.05) !important;
+      box-shadow: 0 28px 72px rgba(92,61,46,0.22), 0 8px 24px rgba(92,61,46,0.12) !important;
+      z-index: 100 !important;
+    }
+
+    /* Bottom counter */
+    .journey-bottom {
+      flex-shrink: 0;
+      padding: 0.8rem 2rem 1.8rem;
       text-align: center;
     }
-
-    /* Cat photo spans both columns, centred */
-    .story-photo.story-center {
-      grid-column: 1 / -1;
-      max-width: 380px;
-      margin: 0 auto;
+    .deck-counter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--brown-light);
+      margin-bottom: 0.4rem;
     }
-
-    /* Drop-in animation */
-    @keyframes photoDrop {
-      0%   { transform: translateY(-90px) rotate(var(--rot, 0deg)) scale(0.82); opacity: 0; }
-      55%  { transform: translateY(10px)  rotate(var(--rot, 0deg)) scale(1.03); opacity: 1; }
-      75%  { transform: translateY(-5px)  rotate(var(--rot, 0deg)) scale(1);    opacity: 1; }
-      100% { transform: translateY(0)     rotate(var(--rot, 0deg)) scale(1);    opacity: 1; }
-    }
-
-    .photo-drop { opacity: 0; }
-
-    .photo-drop.dropping {
-      animation: photoDrop 1s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s) forwards;
-    }
-
-    /* After animation completes — restore hover-friendly transition */
-    .photo-drop.settled {
+    .deck-counter strong { color: var(--brown); font-style: normal; }
+    .deck-scroll-hint {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
       opacity: 1;
-      transform: rotate(var(--rot, 0deg));
-      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+      transition: opacity 0.6s ease;
     }
-
-    @media (max-width: 768px) {
-      .story-gallery { gap: 1.4rem; }
-      .story-photo { padding: 8px 8px 40px; }
-      .story-caption { height: 40px; font-size: 0.78rem; }
-    }
-
-    @media (max-width: 540px) {
-      .story-gallery { grid-template-columns: 1fr; max-width: 320px; }
-      .story-photo { transform: none !important; }
-      .story-photo.settled { transform: none !important; }
-      .story-photo.story-center { max-width: 100%; }
-      .story-photo img,
-      .story-photo.landscape img { aspect-ratio: 4 / 3; }
-    }
+    .deck-scroll-hint.hidden { opacity: 0; }
 
     /* ═══════════════════════════════════════════════
        PROGRAM — SIDE-BY-SIDE CARDS
@@ -1252,6 +1309,11 @@
        HERO
   ═══════════════════════════════ -->
   <section id="hero">
+    <!-- Full-bleed background illustration — save as images/couple.png -->
+    <div class="hero-bg-illustration" id="heroBgIllus">
+      <img src="images/couple.png" alt="" aria-hidden="true" />
+    </div>
+
     <div class="hero-bg-circle"></div>
     <div class="hero-bg-circle"></div>
     <div class="hero-bg-circle"></div>
@@ -1262,20 +1324,10 @@
 
       <p class="hero-eyebrow fade-in fade-in-delay-1" data-i18n="hero.eyebrow">Please join us as we celebrate the marriage of</p>
 
-      <div class="hero-names-block">
+      <div class="hero-names-block" id="heroNames">
         <div class="hero-name-slot"><span class="hero-name-nine">NINE</span></div>
         <span class="hero-amp">&amp;</span>
         <div class="hero-name-slot"><span class="hero-name-tom">TOM</span></div>
-      </div>
-
-      <!-- Couple illustration — save your image as images/couple.png -->
-      <div class="hero-illustration-wrap">
-        <div class="hero-frame">
-          <img src="images/couple.png" alt="Nine & Tom" class="hero-couple-img"
-               onerror="this.style.display='none'" />
-        </div>
-        <span class="hero-lotus-deco left"  aria-hidden="true">🪷</span>
-        <span class="hero-lotus-deco right" aria-hidden="true">🪷</span>
       </div>
 
       <div class="hero-divider fade-in fade-in-delay-3"></div>
@@ -1307,7 +1359,6 @@
 
       <div class="hero-actions fade-in fade-in-delay-4">
         <a href="#rsvp" class="hero-cta-btn" data-i18n="hero.cta">RSVP Now</a>
-        <a href="#couple" class="hero-scroll-link" data-i18n="hero.scroll">Scroll to explore ↓</a>
       </div>
     </div>
   </section>
@@ -1362,87 +1413,83 @@
   </section>
 
   <!-- ═══════════════════════════════
-       OUR JOURNEY — PHOTO GALLERY
+       OUR JOURNEY — STICKY SCROLL DECK
+       Wrapper height = sticky height + scroll-per-photo × 10
   ═══════════════════════════════ -->
-  <section id="journey" class="section">
-    <div class="container">
-      <h2 class="section-title fade-in" data-i18n="journey.title">Our Journey</h2>
-      <div class="ornament fade-in">
+  <div id="journey-wrapper">
+  <section id="journey">
+
+    <div class="journey-top">
+      <h2 class="section-title" data-i18n="journey.title">Our Journey</h2>
+      <div class="ornament">
         <div class="ornament-line"></div>
         <div class="ornament-diamond-sm"></div>
         <div class="ornament-diamond"></div>
         <div class="ornament-diamond-sm"></div>
         <div class="ornament-line right"></div>
       </div>
-      <p class="section-subtitle fade-in" style="margin-top:-1.5rem;">
+      <p class="section-subtitle" style="margin-top:-0.6rem;">
         <em data-i18n="journey.subtitle">Moments from the adventure that led us here</em>
       </p>
+    </div>
 
-      <div class="story-gallery">
+    <div class="journey-deck-area">
+      <div class="photo-deck">
 
-        <!-- Photo 1 — indoor selfie -->
-        <div class="story-photo photo-drop" style="--rot: -2.5deg; --delay: 0s">
+        <!-- z-index increases toward 10 so each new photo lands on top -->
+        <div class="deck-photo" style="z-index:1;  --px:-6%;  --py:4%;  --rot:-3.8deg">
           <img src="images/story-1.jpg" alt="Nine and Tom" loading="lazy" />
-          <div class="story-caption">Home is wherever we're together</div>
+          <div class="deck-caption">Home is wherever we're together</div>
         </div>
-
-        <!-- Photo 2 — forest hike -->
-        <div class="story-photo photo-drop" style="--rot: 2deg; --delay: 0.15s">
-          <img src="images/story-2.jpg" alt="Hiking in the Pacific Northwest" loading="lazy" />
-          <div class="story-caption">Pacific Northwest adventures</div>
+        <div class="deck-photo" style="z-index:2;  --px:7%;   --py:-3%; --rot:2.5deg">
+          <img src="images/story-2.jpg" alt="Pacific Northwest" loading="lazy" />
+          <div class="deck-caption">Pacific Northwest adventures</div>
         </div>
-
-        <!-- Photo 3 — cat, centred feature -->
-        <div class="story-photo story-center landscape photo-drop" style="--rot: -1deg; --delay: 0.28s">
+        <div class="deck-photo" style="z-index:3;  --px:-4%;  --py:5%;  --rot:-2.2deg">
           <img src="images/story-3.jpg" alt="Nine, Tom, and their cat" loading="lazy" />
-          <div class="story-caption">…and then there were three</div>
+          <div class="deck-caption">…and then there were three</div>
         </div>
-
-        <!-- Photo 4 — Chicago Bean -->
-        <div class="story-photo photo-drop" style="--rot: 1.8deg; --delay: 0.40s">
+        <div class="deck-photo" style="z-index:4;  --px:5%;   --py:-4%; --rot:3.2deg">
           <img src="images/story-4.jpg" alt="Chicago Cloud Gate" loading="lazy" />
-          <div class="story-caption">Chicago, Cloud Gate</div>
+          <div class="deck-caption">Chicago, Cloud Gate</div>
         </div>
-
-        <!-- Photo 5 — Alaska glaciers -->
-        <div class="story-photo photo-drop" style="--rot: -1.5deg; --delay: 0.52s">
+        <div class="deck-photo" style="z-index:5;  --px:-7%;  --py:2%;  --rot:-2.8deg">
           <img src="images/story-5.jpg" alt="Alaska glacier cruise" loading="lazy" />
-          <div class="story-caption">Alaska glacier cruise</div>
+          <div class="deck-caption">Alaska glacier cruise</div>
         </div>
-
-        <!-- Photo 6 -->
-        <div class="story-photo photo-drop" style="--rot: 2.2deg; --delay: 0s">
+        <div class="deck-photo" style="z-index:6;  --px:4%;   --py:-1%; --rot:1.5deg">
           <img src="images/story-6.jpg" alt="Nine and Tom" loading="lazy" />
-          <div class="story-caption">Caption six</div>
+          <div class="deck-caption">Caption six</div>
         </div>
-
-        <!-- Photo 7 -->
-        <div class="story-photo photo-drop" style="--rot: -1.8deg; --delay: 0.15s">
+        <div class="deck-photo" style="z-index:7;  --px:-3%;  --py:4%;  --rot:-3.2deg">
           <img src="images/story-7.jpg" alt="Nine and Tom" loading="lazy" />
-          <div class="story-caption">Caption seven</div>
+          <div class="deck-caption">Caption seven</div>
         </div>
-
-        <!-- Photo 8 — second feature / centre -->
-        <div class="story-photo story-center landscape photo-drop" style="--rot: 0.5deg; --delay: 0.28s">
+        <div class="deck-photo" style="z-index:8;  --px:6%;   --py:-2%; --rot:2.0deg">
           <img src="images/story-8.jpg" alt="Nine and Tom" loading="lazy" />
-          <div class="story-caption">Caption eight</div>
+          <div class="deck-caption">Caption eight</div>
         </div>
-
-        <!-- Photo 9 -->
-        <div class="story-photo photo-drop" style="--rot: -2.8deg; --delay: 0.40s">
+        <div class="deck-photo" style="z-index:9;  --px:-2%;  --py:2%;  --rot:-1.5deg">
           <img src="images/story-9.jpg" alt="Nine and Tom" loading="lazy" />
-          <div class="story-caption">Caption nine</div>
+          <div class="deck-caption">Caption nine</div>
         </div>
-
-        <!-- Photo 10 -->
-        <div class="story-photo photo-drop" style="--rot: 1.2deg; --delay: 0.52s">
+        <div class="deck-photo" style="z-index:10; --px:0%;   --py:0%;  --rot:0.8deg">
           <img src="images/story-10.jpg" alt="Nine and Tom" loading="lazy" />
-          <div class="story-caption">Caption ten</div>
+          <div class="deck-caption">Caption ten</div>
         </div>
 
       </div>
     </div>
+
+    <div class="journey-bottom">
+      <div class="deck-counter">
+        <strong id="deck-shown">0</strong> / 10
+      </div>
+      <div class="deck-scroll-hint" id="deck-hint">↓ scroll to reveal all</div>
+    </div>
+
   </section>
+  </div>
 
   <!-- ═══════════════════════════════
        THE CELEBRATION / PROGRAM
@@ -1532,9 +1579,6 @@
       <div class="dresscode-note-wrap fade-in fade-in-delay-2">
         <p class="dresscode-note-para" data-i18n="dress.note1">
           This is a gentle guideline, not a strict rule. Wear whatever you already own and feel your most comfortable, beautiful self in. Soft neutrals, warm earth tones, and pastel shades all complement the setting beautifully.
-        </p>
-        <p class="dresscode-avoid" data-i18n="dress.avoid">
-          We only ask that you kindly avoid white, ivory, and black.
         </p>
       </div>
     </div>
@@ -1732,7 +1776,6 @@
           </div>
 
           <button type="submit" class="btn-submit" data-i18n="rsvp.submit">Confirm My RSVP</button>
-          <p class="rsvp-deadline-note" data-i18n="rsvp.deadline">Kindly RSVP by <strong>June 1, 2027</strong></p>
         </form>
 
         <!-- Success -->
@@ -1886,12 +1929,60 @@
       document.getElementById('scroll-progress').style.width =
         totalScroll > 0 ? (y / totalScroll * 100) + '%' : '0%';
 
-      // Parallax — hero illustration drifts up slightly slower than scroll
-      if (y < window.innerHeight * 1.6) {
-        const illus = document.querySelector('.hero-illustration-wrap');
-        if (illus) illus.style.transform = 'translateY(' + (y * 0.14) + 'px)';
+      // ── HERO: illustration fades 1→0.5, names float upward ──────────
+      const heroEl = document.getElementById('hero');
+      if (heroEl && y < heroEl.offsetHeight * 1.1) {
+        const prog = Math.min(y / (heroEl.offsetHeight * 0.65), 1);
+        const bgIllus = document.getElementById('heroBgIllus');
+        if (bgIllus) bgIllus.style.opacity = (1 - prog * 0.52).toFixed(3);
+        const names = document.getElementById('heroNames');
+        if (names) names.style.transform = 'translateY(' + (-prog * 72) + 'px)';
       }
     }, { passive: true });
+
+    /* ── JOURNEY PHOTO DECK ──────────────────────────────────────────── */
+    (function () {
+      const wrapper  = document.getElementById('journey-wrapper');
+      const photos   = document.querySelectorAll('.deck-photo');
+      const shownEl  = document.getElementById('deck-shown');
+      const hint     = document.getElementById('deck-hint');
+      const PX_PER_PHOTO = 260;   // px of scroll space per photo
+      const animating    = new Set();
+      let   maxShown     = -1;
+
+      function updateDeck() {
+        if (!wrapper || !photos.length) return;
+        const scrolled = -wrapper.getBoundingClientRect().top;
+        if (scrolled < 0) return;
+
+        const target = Math.min(Math.floor(scrolled / PX_PER_PHOTO), photos.length - 1);
+        if (target <= maxShown) return;
+
+        for (let i = maxShown + 1; i <= target; i++) {
+          if (animating.has(i)) continue;
+          animating.add(i);
+          const p = photos[i];
+          const lag = (i - maxShown - 1) * 90;   // stagger rapid scrolls
+          setTimeout(() => {
+            p.classList.add('dropping');
+            setTimeout(() => {
+              p.classList.remove('dropping');
+              p.classList.add('shown');
+              animating.delete(i);
+            }, 950);
+          }, lag);
+        }
+        maxShown = target;
+
+        const count = document.querySelectorAll('.deck-photo.shown, .deck-photo.dropping').length
+                    + animating.size;
+        if (shownEl) shownEl.textContent = Math.min(count, photos.length);
+        if (hint) hint.classList.toggle('hidden', maxShown >= photos.length - 1);
+      }
+
+      window.addEventListener('scroll', updateDeck, { passive: true });
+      updateDeck();
+    })();
 
     /* ── PLUS ONE TOGGLE ────────────────────────────────────────────── */
     function setPlusOne(val) {
@@ -1997,7 +2088,7 @@
         'journey.title':'Our Journey','journey.subtitle':'Moments from the adventure that led us here',
         'program.title':'The Celebration','program.subtitle':'A day of love, tradition, and joy',
         'program.pm.title':'Thai Khan Maak Procession','program.pm.subtitle':'& Tea Ceremony',
-        'program.pm.desc':"The afternoon begins with the Khan Maak — a joyful Thai bridal procession filled with music, laughter, and ceremonial offerings. The groom and his family present gifts to the bride's family as a symbol of respect, abundance, and the formal request for her hand in marriage.<br><br>The procession is followed by the tea ceremony, where Nine and Tom serve tea to their parents and elders on both sides, receiving blessings, words of love, and gifts — one of the most tender and intimate moments of the day.<br><br>A relaxed break follows with family photos and light refreshments before the evening celebration begins.",
+        'program.pm.desc':"The afternoon begins with the Khan Maak — a joyful Thai bridal procession filled with music, laughter, and ceremonial offerings. The groom and his family present gifts to the bride's family as a symbol of respect, abundance, and the formal request for her hand in marriage.<br><br>The procession is followed by the tea ceremony, where Nine and Tom serve tea to their parents and elders on both sides, receiving blessings, words of love, and gifts — one of the most tender and intimate moments of the day.",
         'program.eve.title':'Evening Reception','program.eve.subtitle':'& Dinner',
         'program.eve.desc':"A reception and dinner shared with the people who matter most. Heartfelt speeches from family and friends on both sides, a champagne toast, and the warmth of two families celebrating together — the beautiful chapter that starts right here.",
         'dress.title':'Dress Code','dress.subtitle':'Come as you are — in soft, earthy tones',
@@ -2039,7 +2130,7 @@
         'journey.title':'เส้นทางของเรา','journey.subtitle':'ช่วงเวลาพิเศษที่พาเรามาถึงวันนี้',
         'program.title':'กำหนดการงาน','program.subtitle':'วันที่เต็มไปด้วยความรัก ประเพณี และความสุข',
         'program.pm.title':'พิธีขันหมาก','program.pm.subtitle':'& พิธียกน้ำชา',
-        'program.pm.desc':'ช่วงบ่ายเปิดด้วยขบวนขันหมาก — ขบวนแห่ที่สนุกสนานและอบอวลไปด้วยเสียงดนตรี ฝ่ายเจ้าบ่าวนำขันหมากและของขวัญมายังครอบครัวเจ้าสาว พร้อมเกมประตูที่เพื่อนและญาติเตรียมท้าทายเจ้าบ่าวอย่างอบอุ่นและสนุกสนาน<br><br>ตามด้วยพิธียกน้ำชา ที่ไนน์และทอมถวายชาแก่พ่อแม่และผู้ใหญ่ทั้งสองฝ่าย พร้อมรับคำอวยพรและของขวัญจากคนที่รัก — เป็นช่วงเวลาที่อบอุ่นและซาบซึ้งที่สุดของวัน<br><br>ปิดช่วงบ่ายด้วยการพักผ่อน ถ่ายภาพครอบครัว และรับประทานอาหารว่าง ก่อนเริ่มงานเลี้ยงช่วงเย็น',
+        'program.pm.desc':'ช่วงบ่ายเปิดด้วยขบวนขันหมาก — ขบวนแห่ที่สนุกสนานและอบอวลไปด้วยเสียงดนตรี ฝ่ายเจ้าบ่าวนำขันหมากและของขวัญมายังครอบครัวเจ้าสาว พร้อมเกมประตูที่เพื่อนและญาติเตรียมท้าทายเจ้าบ่าวอย่างอบอุ่นและสนุกสนาน<br><br>ตามด้วยพิธียกน้ำชา ที่ไนน์และทอมถวายชาแก่พ่อแม่และผู้ใหญ่ทั้งสองฝ่าย พร้อมรับคำอวยพรและของขวัญจากคนที่รัก — เป็นช่วงเวลาที่อบอุ่นและซาบซึ้งที่สุดของวัน',
         'program.eve.title':'งานเลี้ยงต้อนรับ','program.eve.subtitle':'& อาหารค่ำ',
         'program.eve.desc':'งานรับรองและอาหารค่ำท่ามกลางคนที่รักที่สุด คำกล่าวจากครอบครัวและเพื่อนทั้งสองฝั่ง — คำพูดที่ทั้งเรียกรอยยิ้มและน้ำตาได้ในเวลาเดียวกัน จากนั้นร่วมดื่มแชมเปญฉลองการเริ่มต้นบทใหม่ที่สวยงามของไนน์และทอม',
         'dress.title':'การแต่งกาย','dress.subtitle':'แต่งกายตามสบาย ในโทนสีธรรมชาติ',
