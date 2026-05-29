@@ -1321,6 +1321,33 @@
       margin-top: 0.55rem;
       opacity: 0.7;
     }
+    .env-success {
+      margin-top: 1.6rem;
+      text-align: center;
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .env-success.show { opacity: 1; transform: translateY(0); }
+    .env-success-icon { display: block; font-size: 2rem; margin-bottom: 0.7rem; }
+    .env-success-title {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.8vw, 1.45rem);
+      font-weight: 400;
+      color: var(--brown);
+      letter-spacing: 0.02em;
+      margin-bottom: 0.55rem;
+    }
+    .env-success-sub {
+      display: block;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      color: var(--brown-light);
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+    }
     .rsvp-form-reveal {
       overflow: hidden;
       max-height: 0;
@@ -1990,6 +2017,11 @@
           <span class="env-prompt-main" data-i18n="rsvp.env.main">your invitation is waiting</span>
           <span class="env-prompt-sub" data-i18n="rsvp.env.sub">tap to open ✦</span>
         </div>
+        <div class="env-success" id="env-success">
+          <span class="env-success-icon">🌸</span>
+          <span class="env-success-title" data-i18n="rsvp.sent.title">You're on the list!</span>
+          <span class="env-success-sub" data-i18n="rsvp.sent.sub">A confirmation email is on its way — check your inbox.<br>Nine &amp; Tom can't wait to see you there.</span>
+        </div>
       </div>
 
       <!-- Form revealed on open -->
@@ -2590,16 +2622,31 @@
         const data = await res.json();
 
         if (data.success) {
+          // 1) fade the form out
           form.style.opacity = '0';
           form.style.transition = 'opacity 0.4s ease';
           setTimeout(() => {
             form.style.display = 'none';
-            const success = document.getElementById('rsvp-success');
-            success.style.display = 'block';
-            success.style.opacity = '0';
-            success.style.transition = 'opacity 0.6s ease';
-            setTimeout(() => success.style.opacity = '1', 30);
-          }, 400);
+            // 2) collapse the form reveal area
+            const reveal = document.getElementById('rsvp-reveal');
+            reveal.style.transition = 'max-height 0.75s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease';
+            reveal.style.opacity = '0';
+            reveal.style.maxHeight = '0';
+            // 3) re-seal the envelope at the same time
+            const env   = document.getElementById('envelope');
+            const stage = document.getElementById('env-stage');
+            env.classList.remove('open');
+            stage.classList.remove('opened');
+            // 4) after the flap finishes closing (~750ms), show success message
+            setTimeout(() => {
+              const envSuccess = document.getElementById('env-success');
+              envSuccess.style.display = 'block';
+              requestAnimationFrame(() => requestAnimationFrame(() => {
+                envSuccess.classList.add('show');
+              }));
+              stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 850);
+          }, 420);
         } else if (data.alreadyExists) {
           alert('This email has already been registered. Check your inbox for your personal edit link.');
           btn.disabled = false;
@@ -2653,6 +2700,7 @@
         'venue.access':'Wheelchair accessible · Elevator available',
         'rsvp.title':'RSVP','rsvp.subtitle':'Please respond by 1 June 2027',
         'rsvp.env.main':'your invitation is waiting','rsvp.env.sub':'tap to open ✦',
+        'rsvp.sent.title':"You're on the list!",'rsvp.sent.sub':"A confirmation email is on its way — check your inbox.<br>Nine & Tom can't wait to see you there.",
         'rsvp.name.label':'Your Name *','rsvp.email.label':'Email Address *','rsvp.preferred.label':'Preferred Name','rsvp.lineid.label':'LINE ID','rsvp.phone.label':'Phone Number',
         'rsvp.session.label':'Which session will you attend?',
         'rsvp.session.pm':'Khan Maak & Tea Ceremony','rsvp.session.eve':'Reception & Dinner',
@@ -2708,6 +2756,7 @@
         'venue.access':'รองรับรถเข็น · มีลิฟต์บริการ',
         'rsvp.title':'ยืนยันการเข้าร่วม','rsvp.subtitle':'กรุณาตอบรับภายใน 1 มิถุนายน 2570',
         'rsvp.env.main':'คำเชิญของคุณรอคุณอยู่','rsvp.env.sub':'แตะเพื่อเปิด ✦',
+        'rsvp.sent.title':'ยืนยันแล้ว!','rsvp.sent.sub':'อีเมลยืนยันกำลังส่งไปหาคุณ — เช็กกล่องจดหมายด้วยนะ<br>ไนน์ & ทอม รอเจอคุณอยู่นะ',
         'rsvp.name.label':'ชื่อ-นามสกุล *','rsvp.email.label':'อีเมล *','rsvp.preferred.label':'ชื่อเล่น','rsvp.lineid.label':'Line ID','rsvp.phone.label':'เบอร์โทรศัพท์',
         'rsvp.session.label':'จะมาร่วมงานช่วงไหน?',
         'rsvp.session.pm':'ขันหมาก & พิธียกน้ำชา','rsvp.session.eve':'งานเลี้ยงรับรอง & อาหารค่ำ',
