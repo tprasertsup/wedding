@@ -104,32 +104,32 @@
     /* Fade-in */
     .fade-in {
       opacity: 0;
-      transform: translateY(48px);
-      transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1);
+      transform: translateY(18px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     /* Slide from sides */
-    .slide-left  { opacity: 0; transform: translateX(-70px); transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
-    .slide-right { opacity: 0; transform: translateX(70px);  transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
+    .slide-left  { opacity: 0; transform: translateX(-28px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+    .slide-right { opacity: 0; transform: translateX(28px);  transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
     .slide-left.visible  { opacity: 1; transform: translateX(0); }
     .slide-right.visible { opacity: 1; transform: translateX(0); }
 
     /* Scale reveal */
-    .scale-up { opacity: 0; transform: scale(0.88) translateY(30px); transition: opacity 1.05s cubic-bezier(0.16,1,0.3,1), transform 1.05s cubic-bezier(0.16,1,0.3,1); }
+    .scale-up { opacity: 0; transform: scale(0.95) translateY(14px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
     .scale-up.visible { opacity: 1; transform: scale(1) translateY(0); }
 
     /* Stagger delays */
-    .fade-in-delay-1 { transition-delay: 0.12s; }
-    .fade-in-delay-2 { transition-delay: 0.26s; }
-    .fade-in-delay-3 { transition-delay: 0.40s; }
-    .fade-in-delay-4 { transition-delay: 0.54s; }
-    .fade-in-delay-5 { transition-delay: 0.68s; }
-    .fade-in-delay-6 { transition-delay: 0.82s; }
-    .slide-left.d1, .slide-right.d1, .scale-up.d1 { transition-delay: 0.14s; }
-    .slide-left.d2, .slide-right.d2, .scale-up.d2 { transition-delay: 0.30s; }
-    .slide-left.d3, .slide-right.d3, .scale-up.d3 { transition-delay: 0.46s; }
-    .slide-left.d4, .slide-right.d4, .scale-up.d4 { transition-delay: 0.62s; }
+    .fade-in-delay-1 { transition-delay: 0.08s; }
+    .fade-in-delay-2 { transition-delay: 0.16s; }
+    .fade-in-delay-3 { transition-delay: 0.24s; }
+    .fade-in-delay-4 { transition-delay: 0.32s; }
+    .fade-in-delay-5 { transition-delay: 0.40s; }
+    .fade-in-delay-6 { transition-delay: 0.48s; }
+    .slide-left.d1, .slide-right.d1, .scale-up.d1 { transition-delay: 0.10s; }
+    .slide-left.d2, .slide-right.d2, .scale-up.d2 { transition-delay: 0.20s; }
+    .slide-left.d3, .slide-right.d3, .scale-up.d3 { transition-delay: 0.30s; }
+    .slide-left.d4, .slide-right.d4, .scale-up.d4 { transition-delay: 0.40s; }
 
     /* ═══════════════════════════════════════════════
        NAVIGATION
@@ -2130,7 +2130,7 @@
         'journey.title':'เส้นทางของเรา','journey.subtitle':'ช่วงเวลาพิเศษที่พาเรามาถึงวันนี้',
         'program.title':'กำหนดการงาน','program.subtitle':'วันที่เต็มไปด้วยความรัก ประเพณี และความสุข',
         'program.pm.title':'พิธีขันหมาก','program.pm.subtitle':'& พิธียกน้ำชา',
-        'program.pm.desc':'ช่วงบ่ายเปิดด้วยขบวนขันหมาก — ขบวนแห่ที่สนุกสนานและอบอวลไปด้วยเสียงดนตรี ฝ่ายเจ้าบ่าวนำขันหมากและของขวัญมายังครอบครัวเจ้าสาว พร้อมเกมประตูที่เพื่อนและญาติเตรียมท้าทายเจ้าบ่าวอย่างอบอุ่นและสนุกสนาน<br><br>ตามด้วยพิธียกน้ำชา ที่ไนน์และทอมถวายชาแก่พ่อแม่และผู้ใหญ่ทั้งสองฝ่าย พร้อมรับคำอวยพรและของขวัญจากคนที่รัก — เป็นช่วงเวลาที่อบอุ่นและซาบซึ้งที่สุดของวัน<br><br>ปิดช่วงบ่ายด้วยการพักผ่อน ถ่ายภาพครอบครัว และรับประทานอาหารว่าง ก่อนเริ่มงานเลี้ยงช่วงเย็น',
+        'program.pm.desc':'ช่วงบ่ายเปิดด้วยขบวนขันหมาก — ขบวนแห่ที่สนุกสนานและอบอวลไปด้วยเสียงดนตรี ฝ่ายเจ้าบ่าวนำขันหมากและของขวัญมายังครอบครัวเจ้าสาว พร้อมเกมประตูที่เพื่อนและญาติเตรียมท้าทายเจ้าบ่าวอย่างอบอุ่นและสนุกสนาน<br><br>ตามด้วยพิธียกน้ำชา ที่ไนน์และทอมถวายชาแก่พ่อแม่และผู้ใหญ่ทั้งสองฝ่าย พร้อมรับคำอวยพรและของขวัญจากคนที่รัก — เป็นช่วงเวลาที่อบอุ่นและซาบซึ้งที่สุดของวัน',
         'program.eve.title':'งานเลี้ยงต้อนรับ','program.eve.subtitle':'& อาหารค่ำ',
         'program.eve.desc':'งานรับรองและอาหารค่ำท่ามกลางคนที่รักที่สุด คำกล่าวจากครอบครัวและเพื่อนทั้งสองฝั่ง — คำพูดที่ทั้งเรียกรอยยิ้มและน้ำตาได้ในเวลาเดียวกัน จากนั้นร่วมดื่มแชมเปญฉลองการเริ่มต้นบทใหม่ที่สวยงามของไนน์และทอม',
         'dress.title':'การแต่งกาย','dress.subtitle':'แต่งกายตามสบาย ในโทนสีธรรมชาติ',
