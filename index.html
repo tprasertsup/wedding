@@ -570,6 +570,18 @@
       color: var(--gold-dark);
       margin-top: 0.8rem;
     }
+    .couple-facts { margin: 0; padding: 0; list-style: none; text-align: left; }
+    .couple-fact {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 0.7rem;
+      font-size: 0.84rem;
+      color: var(--brown-light);
+      line-height: 1.55;
+    }
+    .couple-fact:last-child { margin-bottom: 0; }
+    .fact-icon { flex-shrink: 0; width: 1.3rem; text-align: center; font-style: normal; }
 
     /* ═══════════════════════════════════════════════
        OUR JOURNEY — STICKY SCROLL DECK
@@ -1435,10 +1447,12 @@
             <div class="couple-name-main">Nine</div>
             <div class="couple-name-full" data-i18n="about.bride.fullname">Thananun Prasertsup</div>
             <div class="couple-divider"></div>
-            <p class="couple-desc" data-i18n="about.bride.bio">
-              Born beneath the warm skies of Bangkok, Nine carries within her the grace and quiet radiance of Thailand. Gentle in spirit, luminous in heart, she brings colour and joy wherever she goes. Her warmth is the kind that draws people in and makes them feel, without any effort at all, entirely at home.
-            </p>
-            <p class="couple-origin">Bangkok, Thailand &nbsp;·&nbsp; November 10, 1997</p>
+            <ul class="couple-facts">
+              <li class="couple-fact"><span class="fact-icon">📍</span><span data-i18n="about.bride.f1">Bangkok → Brown University → Seattle → wherever Tom is driving her next</span></li>
+              <li class="couple-fact"><span class="fact-icon">🐾</span><span data-i18n="about.bride.f2">Has stopped to pet every dog, cat, and mystery animal she has ever encountered</span></li>
+              <li class="couple-fact"><span class="fact-icon">📺</span><span data-i18n="about.bride.f3">Has rewatched Bojack Horseman and Young Sheldon more than ten times each. No shame, and no — she sees no contradiction in this.</span></li>
+              <li class="couple-fact"><span class="fact-icon">🧩</span><span data-i18n="about.bride.f4">Does not play games she might lose. Puzzles only. This is a very deliberate choice.</span></li>
+            </ul>
           </div>
         </div>
 
@@ -1450,10 +1464,12 @@
             <div class="couple-name-main">Tom</div>
             <div class="couple-name-full" data-i18n="about.groom.fullname">Thomas La Pham</div>
             <div class="couple-divider"></div>
-            <p class="couple-desc" data-i18n="about.groom.bio">
-              Raised in Washington with Vietnamese roots woven quietly but proudly through everything he does, Tom brings steadfast warmth, a grounded sense of self, and a heart with room enough for two worlds. He found in Nine not just a partner, but his greatest adventure — and the place where he feels most like himself.
-            </p>
-            <p class="couple-origin">Washington, USA &nbsp;·&nbsp; October 3, 1995</p>
+            <ul class="couple-facts">
+              <li class="couple-fact"><span class="fact-icon">📍</span><span data-i18n="about.groom.f1">Washington-born · Vietnamese American · middle child of six · evolved into the world's most agreeable person as a survival strategy</span></li>
+              <li class="couple-fact"><span class="fact-icon">🗣️</span><span data-i18n="about.groom.f2">Fluent in Turkish but conversational in Vietnamese. Secretly studied Thai for Nine's parents — still too shy to say สวัสดี to them.</span></li>
+              <li class="couple-fact"><span class="fact-icon">📱</span><span data-i18n="about.groom.f3">Very easy-going about most things in life. His Instagram feed, however, is a strictly moderated space.</span></li>
+              <li class="couple-fact"><span class="fact-icon">🎾</span><span data-i18n="about.groom.f4">High school tennis. College badminton. Recently retired from all sport. The muscles did not get the memo.</span></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -1625,8 +1641,8 @@
           <div class="tl-left"><div class="tl-dot"></div></div>
           <div class="tl-icon">🥂</div>
           <div class="tl-body">
-            <div class="tl-title" data-i18n="program.m6.title">Cocktails &amp; Reunion</div>
-            <div class="tl-desc" data-i18n="program.m6.desc">Drinks, laughter, and long-awaited hugs as two families meet and friends from across the world find each other again.</div>
+            <div class="tl-title" data-i18n="program.m6.title">Reception &amp; Reunion</div>
+            <div class="tl-desc" data-i18n="program.m6.desc">Photos, laughter, and long-awaited hugs as two families finally meet and friends from across the world find each other again.</div>
           </div>
         </div>
 
@@ -1643,8 +1659,8 @@
           <div class="tl-left"><div class="tl-dot"></div></div>
           <div class="tl-icon">💃</div>
           <div class="tl-body">
-            <div class="tl-title" data-i18n="program.m8.title">Dancing</div>
-            <div class="tl-desc" data-i18n="program.m8.desc">The dance floor opens and two families — one from Bangkok, one from Washington — find their way to each other, step by step.</div>
+            <div class="tl-title" data-i18n="program.m8.title">After Party</div>
+            <div class="tl-desc" data-i18n="program.m8.desc">No formalities — just good music, good drinks, and everyone letting loose. The night goes as long as you want it to.</div>
           </div>
         </div>
 
@@ -2097,11 +2113,13 @@
 
     /* ── DECK SWIPE GESTURES ─────────────────────────────────────────── */
     (function () {
-      const deck   = document.querySelector('.photo-deck');
-      const photos = Array.from(document.querySelectorAll('.deck-photo'));
+      const deck     = document.querySelector('.photo-deck');
+      const photos   = Array.from(document.querySelectorAll('.deck-photo'));
+      const shownEl  = document.getElementById('deck-shown');
+      const hint     = document.getElementById('deck-hint');
       if (!deck || !photos.length) return;
 
-      const dismissed = [];   // stack of { el, dir }
+      const dismissed = [];   // stack of { el }
       let   drag      = null; // { startX, el }
 
       function allRevealed() {
@@ -2119,34 +2137,42 @@
         photos.forEach(p => {
           const isTop = active[0] === p;
           p.classList.toggle('deck-top', isTop);
-          if (p.classList.contains('shown')) {
-            p.style.pointerEvents = isTop ? '' : 'none';
-          }
+          if (p.classList.contains('shown')) p.style.pointerEvents = isTop ? '' : 'none';
         });
-        deck.classList.toggle('swipeable', allRevealed() && active.length > 0);
+        const revealed = allRevealed();
+        deck.classList.toggle('swipeable', revealed && (active.length > 0 || dismissed.length > 0));
+        // Counter: once all revealed, reflect current active count
+        if (revealed && shownEl) shownEl.textContent = active.length;
+        // Hint: swap scroll hint for swipe hint once all are in
+        if (revealed && hint) {
+          hint.textContent = dismissed.length === 0
+            ? '← swipe left to remove'
+            : active.length === 1
+              ? 'swipe right to restore →'
+              : '← remove · restore →';
+          hint.classList.remove('hidden');
+        }
       }
 
-      // ── dismiss ──────────────────────────────────────────────────────
-      function flyOut(el, dir) {
+      // ── dismiss: flies out to the left ───────────────────────────────
+      function flyOut(el) {
         el.dataset.dismissed = '1';
-        dismissed.push({ el, dir });
-        el.style.transition  = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s ease';
-        el.style.transform   = `translate(calc(var(--px,0%) + ${dir > 0 ? 160 : -160}%), var(--py,0%)) rotate(calc(var(--rot,0deg) + ${dir > 0 ? 12 : -12}deg)) scale(0.92)`;
-        el.style.opacity     = '0';
+        dismissed.push({ el });
+        el.style.transition    = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s ease';
+        el.style.transform     = 'translate(calc(var(--px,0%) - 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) - 12deg)) scale(0.92)';
+        el.style.opacity       = '0';
         el.style.pointerEvents = 'none';
         setTimeout(() => { el.style.transition = ''; markTop(); }, 460);
       }
 
-      // ── restore ──────────────────────────────────────────────────────
+      // ── restore: flies back in from the left ─────────────────────────
       function flyIn() {
         if (!dismissed.length) return;
-        const { el, dir } = dismissed.pop();
+        const { el } = dismissed.pop();
         delete el.dataset.dismissed;
-        const flyX   = dir > 0 ? 160 : -160;
-        const flyRot = dir > 0 ? 12 : -12;
-        el.style.transition  = 'none';
-        el.style.transform   = `translate(calc(var(--px,0%) + ${flyX}%), var(--py,0%)) rotate(calc(var(--rot,0deg) + ${flyRot}deg)) scale(0.92)`;
-        el.style.opacity     = '0';
+        el.style.transition    = 'none';
+        el.style.transform     = 'translate(calc(var(--px,0%) - 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) - 12deg)) scale(0.92)';
+        el.style.opacity       = '0';
         el.style.pointerEvents = '';
         requestAnimationFrame(() => requestAnimationFrame(() => {
           el.style.transition = 'transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s ease';
@@ -2158,6 +2184,7 @@
       }
 
       function snapBack(el) {
+        if (!el) return;
         el.style.transition = 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.25s ease';
         el.style.transform  = '';
         el.style.opacity    = '';
@@ -2168,7 +2195,13 @@
       function startDrag(x) {
         if (!allRevealed()) return;
         const active = activeSorted();
-        if (!active.length) return;
+        if (!active.length) {
+          // All dismissed — only a rightward swipe can restore
+          if (!dismissed.length) return;
+          drag = { startX: x, el: null };
+          deck.classList.add('swiping');
+          return;
+        }
         const top = active[0];
         top.style.transition = 'none';
         drag = { startX: x, el: top };
@@ -2176,10 +2209,18 @@
       }
 
       function moveDrag(x) {
-        if (!drag) return;
+        if (!drag || !drag.el) return;
         const dx = x - drag.startX;
-        drag.el.style.transform = `translate(calc(var(--px,0%) + ${dx}px), var(--py,0%)) rotate(calc(var(--rot,0deg) + ${dx * 0.04}deg))`;
-        drag.el.style.opacity   = String(Math.max(0.25, 1 - Math.abs(dx) / 250));
+        if (dx < 0) {
+          // Left — dismiss preview: card follows finger and fades
+          drag.el.style.transform = `translate(calc(var(--px,0%) + ${dx}px), var(--py,0%)) rotate(calc(var(--rot,0deg) + ${dx * 0.04}deg))`;
+          drag.el.style.opacity   = String(Math.max(0.3, 1 - Math.abs(dx) / 220));
+        } else {
+          // Right — restore hint: card barely moves to signal a different action
+          const d = Math.min(dx * 0.15, 18);
+          drag.el.style.transform = `translate(calc(var(--px,0%) + ${d}px), var(--py,0%)) rotate(calc(var(--rot,0deg) + ${d * 0.02}deg))`;
+          drag.el.style.opacity   = '';
+        }
       }
 
       function endDrag(x) {
@@ -2189,10 +2230,16 @@
         drag = null;
         deck.classList.remove('swiping');
 
-        if (Math.abs(dx) >= 80) {
-          if (activeSorted().length > 1) {
-            flyOut(el, dx);
-          } else if (dismissed.length > 0) {
+        if (dx <= -80) {
+          // Left → dismiss (keep at least 1 card)
+          if (el && activeSorted().length > 1) {
+            flyOut(el);
+          } else {
+            snapBack(el);
+          }
+        } else if (dx >= 80) {
+          // Right → restore last dismissed
+          if (dismissed.length > 0) {
             snapBack(el);
             flyIn();
           } else {
@@ -2211,7 +2258,7 @@
       window.addEventListener('mousemove', e => { if (drag) moveDrag(e.clientX); });
       window.addEventListener('mouseup',   e => { if (drag) endDrag(e.clientX); });
 
-      // watch for class changes as photos drop in
+      // Watch class changes as photos drop in during scroll
       const mo = new MutationObserver(markTop);
       photos.forEach(p => mo.observe(p, { attributes: true, attributeFilter: ['class'] }));
     })();
@@ -2314,9 +2361,15 @@
         'hero.eyebrow':'Please join us as we celebrate the marriage of','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
         'about.title':'The Couple','about.subtitle':'Two cultures, two hearts, one love story',
         'about.bride.role':'The Bride','about.bride.fullname':'Thananun Prasertsup',
-        'about.bride.bio':'Born beneath the warm skies of Bangkok, Nine carries the grace and quiet radiance of Thailand. She brings colour and joy wherever she goes — her warmth the kind that makes everyone around her feel entirely at home.',
+        'about.bride.f1':'Bangkok → Brown University → Seattle → wherever Tom is driving her next',
+        'about.bride.f2':'Has stopped to pet every dog, cat, and mystery animal she has ever encountered',
+        'about.bride.f3':'Has rewatched Bojack Horseman and Young Sheldon more than ten times each. No shame, and no — she sees no contradiction in this.',
+        'about.bride.f4':'Does not play games she might lose. Puzzles only. This is a very deliberate choice.',
         'about.groom.role':'The Groom','about.groom.fullname':'Thomas La Pham',
-        'about.groom.bio':"Raised in Washington with Vietnamese roots woven quietly but proudly through everything he does, Tom brings steadfast warmth and a heart with room enough for two worlds. He found in Nine his greatest adventure — and the place where he feels most like himself.",
+        'about.groom.f1':'Washington-born · Vietnamese American · middle child of six · evolved into the world\'s most agreeable person as a survival strategy',
+        'about.groom.f2':'Fluent in Turkish but conversational in Vietnamese. Secretly studied Thai for Nine\'s parents — still too shy to say สวัสดี to them.',
+        'about.groom.f3':'Very easy-going about most things in life. His Instagram feed, however, is a strictly moderated space.',
+        'about.groom.f4':'High school tennis. College badminton. Recently retired from all sport. The muscles did not get the memo.',
         'journey.title':'Our Journey','journey.subtitle':'Moments from the adventure that led us here',
         'program.title':'The Celebration','program.subtitle':'A day of love, tradition, and joy',
         'program.afternoon':'Afternoon','program.evening':'Evening',
@@ -2325,9 +2378,9 @@
         'program.m3.title':'Sai Monkhon Ceremony','program.m3.desc':'A sacred looped thread crowns Nine and Tom together, joining two lives in an unbroken circle of love and blessing.',
         'program.m4.title':'Water Blessing','program.m4.desc':'Family and guests gently pour lustral water over the couple\'s hands, wishing them a life of goodness and grace.',
         'program.m5.title':'Tea Ceremony','program.m5.desc':'Nine and Tom kneel before their families, offering tea as a gesture of deep honour and gratitude to the elders who shaped them.',
-        'program.m6.title':'Cocktails & Reunion','program.m6.desc':'Drinks, laughter, and long-awaited hugs as two families meet and friends from across the world find each other again.',
+        'program.m6.title':'Reception & Reunion','program.m6.desc':'Photos, laughter, and long-awaited hugs as two families finally meet and friends from across the world find each other again.',
         'program.m7.title':'Dinner & Toasts','program.m7.desc':'A long, beautiful dinner with speeches from those who know Nine and Tom best — words that will make you laugh and cry in equal measure.',
-        'program.m8.title':'Dancing','program.m8.desc':'The dance floor opens and two families — one from Bangkok, one from Washington — find their way to each other, step by step.',
+        'program.m8.title':'After Party','program.m8.desc':'No formalities — just good music, good drinks, and everyone letting loose. The night goes as long as you want it to.',
         'dress.title':'Dress Code','dress.subtitle':'Come as you are — in soft, earthy tones',
         'dress.note1':'No need to buy anything new. Wear what you already own and feel your most comfortable, beautiful self in — soft neutrals, warm earth tones, and pastels all look wonderful.',
         'dress.avoid':'Just one small ask — please avoid white, ivory, and black.',
@@ -2361,9 +2414,15 @@
         'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
         'about.title':'คู่บ่าวสาว','about.subtitle':'สองวัฒนธรรม สองหัวใจ หนึ่งเรื่องราวความรัก',
         'about.bride.role':'เจ้าสาว','about.bride.fullname':'ธนนันท์ ประเสริฐทรัพย์',
-        'about.bride.bio':'ไนน์เกิดและโตในกรุงเทพฯ เมื่อ 10 พฤศจิกายน 2540 เธอมีความอบอุ่นแบบที่ทำให้ใคร ๆ ก็อยากอยู่ใกล้ ภาคภูมิในรากเหง้าไทย และตื่นเต้นกับชีวิตใหม่ที่กำลังจะเริ่ม',
+        'about.bride.f1':'กรุงเทพฯ → มหาวิทยาลัยบราวน์ → ซีแอตเทิล → ไปกับรถที่ทอมขับพาไป',
+        'about.bride.f2':'หยุดทักทายสุนัข แมว และสัตว์ประหลาดทุกตัวที่เจอ ไม่มีข้อยกเว้น',
+        'about.bride.f3':'ดู Bojack Horseman และ Young Sheldon มาแล้วมากกว่าสิบรอบ ไม่อาย และไม่เห็นว่ามันขัดแย้งกันตรงไหน',
+        'about.bride.f4':'ไม่เล่นเกมที่อาจแพ้ เล่นแต่จิ๊กซอว์เท่านั้น นี่คือการตัดสินใจที่ไตร่ตรองมาแล้วอย่างดี',
         'about.groom.role':'เจ้าบ่าว','about.groom.fullname':'โทมัส ลา ฟั่ม',
-        'about.groom.bio':'ทอมเกิดที่รัฐวอชิงตัน เมื่อ 3 ตุลาคม 2538 เขาเติบโตมาพร้อมกับความภูมิใจในรากเหง้าเวียดนามของตัวเอง และหัวใจที่กว้างพอสำหรับสองโลก เขาพบในไนน์ทั้งคู่ชีวิตและที่ที่รู้สึกว่าตัวเองเป็นตัวเองมากที่สุด',
+        'about.groom.f1':'เกิดที่วอชิงตัน · ชาวเวียดนามอเมริกัน · ลูกคนกลางในบ้านหกคน · กลายเป็นคนที่ยอมทุกอย่างที่สุดในโลก เพราะมันคือทางรอดเดียว',
+        'about.groom.f2':'พูดตุรกีได้คล่อง แต่เวียดนามได้แค่พอคุย แอบเรียนภาษาไทยเพื่อคุยกับพ่อแม่ไนน์ — แต่ยังขี้อายเกินกว่าจะพูดสวัสดีกับพวกเขา',
+        'about.groom.f3':'ใจเย็นและปล่อยวางกับแทบทุกเรื่องในชีวิต ยกเว้นฟีด Instagram ที่บริหารจัดการอย่างเข้มงวดเป็นพิเศษ',
+        'about.groom.f4':'เทนนิสมัธยม แบดมินตันมหาวิทยาลัย เพิ่งประกาศเลิกเล่นกีฬา แต่กล้ามเนื้อยังไม่รับทราบ',
         'journey.title':'เส้นทางของเรา','journey.subtitle':'ช่วงเวลาพิเศษที่พาเรามาถึงวันนี้',
         'program.title':'กำหนดการงาน','program.subtitle':'วันที่เต็มไปด้วยความรัก ประเพณี และความสุข',
         'program.afternoon':'บ่าย','program.evening':'เย็น',
@@ -2372,9 +2431,9 @@
         'program.m3.title':'พิธีสวมมงคลแฝด','program.m3.desc':'มงคลแฝดศักดิ์สิทธิ์ถูกสวมบนหัวของไนน์และทอม รวมสองชีวิตเข้าด้วยกันในวงแห่งความรักและพร',
         'program.m4.title':'พิธีรดน้ำสังข์','program.m4.desc':'ครอบครัวและแขกผู้มีเกียรติรดน้ำมนต์บนมือของคู่บ่าวสาว เพื่ออวยพรให้ชีวิตเต็มไปด้วยความดีและความสุข',
         'program.m5.title':'พิธียกน้ำชา','program.m5.desc':'ไนน์และทอมคุกเข่าถวายน้ำชาแก่พ่อแม่และผู้ใหญ่ทั้งสองฝ่าย เป็นการแสดงความกตัญญูและความเคารพอย่างลึกซึ้ง',
-        'program.m6.title':'ค็อกเทลและการพบปะ','program.m6.desc':'ดื่มชื่นใจ หัวเราะ และโอบกอดที่รอคอยมานาน เมื่อสองครอบครัวพบกันและเพื่อนๆ จากทั่วโลกกลับมาพบกันอีกครั้ง',
+        'program.m6.title':'รีเซปชันและการพบปะ','program.m6.desc':'ถ่ายภาพ หัวเราะ และโอบกอดที่รอคอยมานาน เมื่อสองครอบครัวพบกันและเพื่อนๆ จากทั่วโลกกลับมาพบกันอีกครั้ง',
         'program.m7.title':'ดินเนอร์และการกล่าวอวยพร','program.m7.desc':'มื้ออาหารค่ำที่ยาวนานและงดงาม พร้อมคำกล่าวจากผู้ที่รู้จักไนน์และทอมดีที่สุด — คำพูดที่จะทำให้หัวเราะและน้ำตาไหลพร้อมกัน',
-        'program.m8.title':'เต้นรำ','program.m8.desc':'ฟลอร์เต้นรำเปิดขึ้น และสองครอบครัว — จากกรุงเทพและวอชิงตัน — ก้าวเข้าหากันทีละก้าว',
+        'program.m8.title':'อาฟเตอร์ปาร์ตี้','program.m8.desc':'ไม่มีพิธีรีตอง — แค่เพลงดีๆ เครื่องดื่มดีๆ และทุกคนสนุกกันเต็มที่ คืนนี้จะยาวนานแค่ไหนก็แล้วแต่พวกเรา',
         'dress.title':'การแต่งกาย','dress.subtitle':'แต่งกายตามสบาย ในโทนสีธรรมชาติ',
         'dress.note1':'ไม่ต้องซื้อชุดใหม่ก็ได้ — ใส่สิ่งที่มีแล้วและรู้สึกดีที่สุด โทนสีธรรมชาติ สีดิน และสีพาสเทลจะเข้ากับบรรยากาศงานได้สวยมาก',
         'dress.avoid':'ขอแค่หลีกเลี่ยงสีขาว สีครีม และสีดำ',
