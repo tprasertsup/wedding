@@ -6,6 +6,51 @@
 const SHEET_NAME = 'RSVPs';
 const RSVP_DEADLINE = new Date('2027-06-01');
 
+const RSVP_HEADERS = [
+  'Submitted At', 'Token', 'Name', 'Email', 'Phone',
+  'Preferred Name', 'LINE ID', 'Session', 'Dietary', 'Plus One?', 'Plus One Name',
+  'Notes', 'Blessing', 'Status', 'Updated At', 'Language'
+];
+
+// --------------- Spreadsheet Triggers ---------------
+
+// Simple trigger — fires automatically on any cell edit in the spreadsheet.
+// No setup required; just keep this function named "onEdit".
+function onEdit(e) {
+  if (e.range.getSheet().getName() === SHEET_NAME) {
+    rebuildGuestLists();
+  }
+}
+
+// Installable trigger — fires when rows are inserted or deleted.
+// Register it once by running setupTriggers() from the Apps Script editor.
+function onChange(e) {
+  if (e.changeType === 'INSERT_ROW' || e.changeType === 'REMOVE_ROW') {
+    rebuildGuestLists();
+  }
+}
+
+// Run once from the Apps Script editor to install the onChange trigger:
+//   Extensions > Apps Script > select "setupTriggers" > Run
+function setupTriggers() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  ScriptApp.getProjectTriggers().forEach(function(t) {
+    if (t.getHandlerFunction() === 'onChange') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('onChange')
+    .forSpreadsheet(ss)
+    .onChange()
+    .create();
+  SpreadsheetApp.getUi().alert('Done! Guest lists will now auto-sync when rows are added or deleted on the RSVPs sheet.');
+}
+
+// Run once to update column headers on an existing RSVPs sheet:
+//   Extensions > Apps Script > select "fixSheetHeaders" > Run
+function fixSheetHeaders() {
+  const sheet = getSheet();
+  sheet.getRange(1, 1, 1, RSVP_HEADERS.length).setValues([RSVP_HEADERS]);
+}
+
 // --------------- HTTP Handlers ---------------
 
 function doGet(e) {
@@ -133,15 +178,10 @@ function getSheet() {
 
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow([
-      'created_at', 'token', 'name', 'email', 'phone',
-      'preferred_name', 'line_id', 'session', 'dietary', 'plusone', 'plusone_name',
-      'notes', 'blessing', 'status', 'updated_at', 'lang'
-    ]);
+    sheet.appendRow(RSVP_HEADERS);
     sheet.setFrozenRows(1);
-
-    sheet.getRange(1, 1, 1, 16).setFontWeight('bold');
-    sheet.setColumnWidths(1, 16, 160);
+    sheet.getRange(1, 1, 1, RSVP_HEADERS.length).setFontWeight('bold');
+    sheet.setColumnWidths(1, RSVP_HEADERS.length, 160);
     sheet.getRange(1, 2, 1, 1).setColumnWidth(280);
   }
 
