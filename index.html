@@ -1460,6 +1460,12 @@
     .rsvp-form-reveal.open .rsvp-wrap { transform: translateY(0); }
     .env-stage.submitted { cursor: default; }
     .env-stage.submitted .envelope { pointer-events: none; }
+    /* Hint that the open envelope can be clicked closed */
+    .env-stage.opened:not(.submitted) { cursor: pointer; }
+    .env-stage.opened:not(.submitted):hover .envelope {
+      transform: translateY(14px);
+      filter: drop-shadow(0 10px 24px rgba(139,105,20,0.22));
+    }
     @keyframes envWiggle {
       0%,100% { transform: rotate(0deg) translateY(0); }
       20%     { transform: rotate(-1.4deg) translateY(-3px); }
@@ -2412,12 +2418,27 @@
 
     /* ── NAV ────────────────────────────────────────────────────────── */
     function openEnvelope() {
-      const stage = document.getElementById('env-stage');
-      const env   = document.getElementById('envelope');
+      const stage  = document.getElementById('env-stage');
+      const env    = document.getElementById('envelope');
       const reveal = document.getElementById('rsvp-reveal');
-      if (!stage || stage.classList.contains('opened')) return;
+      if (!stage || stage.classList.contains('submitted')) return;
+
+      if (stage.classList.contains('opened')) {
+        // Close: collapse form (faster, no open-delay), then fold the flap back down
+        reveal.style.transition = 'max-height 0.9s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease';
+        reveal.classList.remove('open');
+        setTimeout(() => { reveal.style.transition = ''; }, 950);
+        setTimeout(() => {
+          stage.classList.remove('opened');
+          env.classList.remove('open');
+          stage.setAttribute('aria-label', 'Open your invitation');
+        }, 220);
+        return;
+      }
+
       stage.classList.add('opened');
       env.classList.add('open');
+      stage.setAttribute('aria-label', 'Close your invitation');
       setTimeout(() => {
         reveal.classList.add('open');
         setTimeout(() => reveal.scrollIntoView({ behavior: 'smooth', block: 'start' }), 550);
