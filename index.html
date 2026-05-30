@@ -229,8 +229,12 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center center;
+      object-position: center 20%;
       display: block;
+    }
+    @media (min-width: 769px) {
+      /* Portrait photo on a wide screen needs faces near the top */
+      .hero-bg-illustration img { object-position: center 15%; }
     }
     /* Overlay fades in slowly so text becomes easy to read as wording appears */
     .hero-bg-illustration::after {
@@ -475,6 +479,47 @@
       .hero-lotus-deco { font-size: 1.6rem; }
       .hero-lotus-deco.left  { left:  -1.4rem; }
       .hero-lotus-deco.right { right: -1.4rem; }
+    }
+
+    /* ── HERO DESKTOP PLACEHOLDER ── */
+    .hero-desktop-placeholder {
+      display: none;
+      position: absolute;
+      inset: 1.5rem;
+      z-index: 1;
+      border: 2px dashed rgba(201, 169, 110, 0.55);
+      border-radius: 10px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .hero-desktop-placeholder-label {
+      background: rgba(250, 243, 236, 0.88);
+      border: 1px solid rgba(201, 169, 110, 0.45);
+      border-radius: 8px;
+      padding: 0.65rem 1.4rem;
+      text-align: center;
+      backdrop-filter: blur(6px);
+    }
+    .hero-desktop-placeholder-label strong {
+      display: block;
+      font-size: 0.8rem;
+      color: rgba(130, 90, 40, 0.7);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: var(--font-serif);
+    }
+    .hero-desktop-placeholder-label span {
+      display: block;
+      font-size: 0.72rem;
+      color: rgba(130, 90, 40, 0.5);
+      margin-top: 0.25rem;
+      font-family: monospace;
+      letter-spacing: 0.02em;
+    }
+    @media (min-width: 769px) {
+      .hero-desktop-placeholder { display: flex; }
     }
 
     /* ═══════════════════════════════════════════════
@@ -1634,9 +1679,18 @@
        HERO
   ═══════════════════════════════ -->
   <section id="hero">
-    <!-- Full-bleed background illustration — save as images/couple.png -->
     <div class="hero-bg-illustration" id="heroBgIllus">
-      <img src="images/couple.png" alt="" aria-hidden="true" />
+      <picture>
+        <source media="(min-width: 769px)" srcset="images/hero-desktop.jpg">
+        <img src="images/couple.png" alt="" aria-hidden="true" id="heroBgImg" />
+      </picture>
+      <!-- Remove this div once hero-desktop.jpg is in place -->
+      <div class="hero-desktop-placeholder" aria-hidden="true">
+        <div class="hero-desktop-placeholder-label">
+          <strong>Desktop Hero Photo</strong>
+          <span>16 : 9 &nbsp;·&nbsp; 2400 × 1350 px &nbsp;·&nbsp; images/hero-desktop.jpg</span>
+        </div>
+      </div>
     </div>
 
     <div class="hero-bg-circle"></div>
@@ -2400,6 +2454,20 @@
         if (names) names.style.transform = 'translateY(' + (-prog * 72) + 'px)';
       }
     }, { passive: true });
+
+    /* ── HERO DESKTOP IMAGE ──────────────────────────────────────────── */
+    (function () {
+      const img         = document.getElementById('heroBgImg');
+      const placeholder = document.querySelector('.hero-desktop-placeholder');
+      if (!img || !placeholder) return;
+      const check = () => {
+        if (img.currentSrc && img.currentSrc.includes('hero-desktop')) {
+          placeholder.style.display = 'none';
+        }
+      };
+      img.addEventListener('load', check);
+      if (img.complete) check();
+    })();
 
     /* ── JOURNEY PHOTO DECK ──────────────────────────────────────────── */
     (function () {
