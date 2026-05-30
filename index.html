@@ -229,8 +229,12 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center center;
+      object-position: center 20%;
       display: block;
+    }
+    @media (min-width: 769px) {
+      /* Portrait photo on a wide screen needs faces near the top */
+      .hero-bg-illustration img { object-position: center 15%; }
     }
     /* Overlay fades in slowly so text becomes easy to read as wording appears */
     .hero-bg-illustration::after {
@@ -475,6 +479,47 @@
       .hero-lotus-deco { font-size: 1.6rem; }
       .hero-lotus-deco.left  { left:  -1.4rem; }
       .hero-lotus-deco.right { right: -1.4rem; }
+    }
+
+    /* ── HERO DESKTOP PLACEHOLDER ── */
+    .hero-desktop-placeholder {
+      display: none;
+      position: absolute;
+      inset: 1.5rem;
+      z-index: 1;
+      border: 2px dashed rgba(201, 169, 110, 0.55);
+      border-radius: 10px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .hero-desktop-placeholder-label {
+      background: rgba(250, 243, 236, 0.88);
+      border: 1px solid rgba(201, 169, 110, 0.45);
+      border-radius: 8px;
+      padding: 0.65rem 1.4rem;
+      text-align: center;
+      backdrop-filter: blur(6px);
+    }
+    .hero-desktop-placeholder-label strong {
+      display: block;
+      font-size: 0.8rem;
+      color: rgba(130, 90, 40, 0.7);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: var(--font-serif);
+    }
+    .hero-desktop-placeholder-label span {
+      display: block;
+      font-size: 0.72rem;
+      color: rgba(130, 90, 40, 0.5);
+      margin-top: 0.25rem;
+      font-family: monospace;
+      letter-spacing: 0.02em;
+    }
+    @media (min-width: 769px) {
+      .hero-desktop-placeholder { display: flex; }
     }
 
     /* ═══════════════════════════════════════════════
@@ -1415,6 +1460,12 @@
     .rsvp-form-reveal.open .rsvp-wrap { transform: translateY(0); }
     .env-stage.submitted { cursor: default; }
     .env-stage.submitted .envelope { pointer-events: none; }
+    /* Hint that the open envelope can be clicked closed */
+    .env-stage.opened:not(.submitted) { cursor: pointer; }
+    .env-stage.opened:not(.submitted):hover .envelope {
+      transform: translateY(14px);
+      filter: drop-shadow(0 10px 24px rgba(139,105,20,0.22));
+    }
     @keyframes envWiggle {
       0%,100% { transform: rotate(0deg) translateY(0); }
       20%     { transform: rotate(-1.4deg) translateY(-3px); }
@@ -1634,9 +1685,18 @@
        HERO
   ═══════════════════════════════ -->
   <section id="hero">
-    <!-- Full-bleed background illustration — save as images/couple.png -->
     <div class="hero-bg-illustration" id="heroBgIllus">
-      <img src="images/couple.png" alt="" aria-hidden="true" />
+      <picture>
+        <source media="(min-width: 769px)" srcset="images/hero-desktop.jpg">
+        <img src="images/couple.png" alt="" aria-hidden="true" id="heroBgImg" />
+      </picture>
+      <!-- Remove this div once hero-desktop.jpg is in place -->
+      <div class="hero-desktop-placeholder" aria-hidden="true">
+        <div class="hero-desktop-placeholder-label">
+          <strong>Desktop Hero Photo</strong>
+          <span>16 : 9 &nbsp;·&nbsp; 2400 × 1350 px &nbsp;·&nbsp; images/hero-desktop.jpg</span>
+        </div>
+      </div>
     </div>
 
     <div class="hero-bg-circle"></div>
@@ -2358,12 +2418,27 @@
 
     /* ── NAV ────────────────────────────────────────────────────────── */
     function openEnvelope() {
-      const stage = document.getElementById('env-stage');
-      const env   = document.getElementById('envelope');
+      const stage  = document.getElementById('env-stage');
+      const env    = document.getElementById('envelope');
       const reveal = document.getElementById('rsvp-reveal');
-      if (!stage || stage.classList.contains('opened')) return;
+      if (!stage || stage.classList.contains('submitted')) return;
+
+      if (stage.classList.contains('opened')) {
+        // Close: collapse form (faster, no open-delay), then fold the flap back down
+        reveal.style.transition = 'max-height 0.9s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease';
+        reveal.classList.remove('open');
+        setTimeout(() => { reveal.style.transition = ''; }, 950);
+        setTimeout(() => {
+          stage.classList.remove('opened');
+          env.classList.remove('open');
+          stage.setAttribute('aria-label', 'Open your invitation');
+        }, 220);
+        return;
+      }
+
       stage.classList.add('opened');
       env.classList.add('open');
+      stage.setAttribute('aria-label', 'Close your invitation');
       setTimeout(() => {
         reveal.classList.add('open');
         setTimeout(() => reveal.scrollIntoView({ behavior: 'smooth', block: 'start' }), 550);
@@ -2400,6 +2475,20 @@
         if (names) names.style.transform = 'translateY(' + (-prog * 72) + 'px)';
       }
     }, { passive: true });
+
+    /* ── HERO DESKTOP IMAGE ──────────────────────────────────────────── */
+    (function () {
+      const img         = document.getElementById('heroBgImg');
+      const placeholder = document.querySelector('.hero-desktop-placeholder');
+      if (!img || !placeholder) return;
+      const check = () => {
+        if (img.currentSrc && img.currentSrc.includes('hero-desktop')) {
+          placeholder.style.display = 'none';
+        }
+      };
+      img.addEventListener('load', check);
+      if (img.complete) check();
+    })();
 
     /* ── JOURNEY PHOTO DECK ──────────────────────────────────────────── */
     (function () {
@@ -2489,24 +2578,28 @@
         if (revealed && hint) hint.classList.add('hidden');
       }
 
-      // ── dismiss: flies out to the left ───────────────────────────────
-      function flyOut(el) {
+      // ── dismiss: flies out (dir = 'left' for swipe, 'right' for button) ──
+      function flyOut(el, dir = 'left') {
         el.dataset.dismissed = '1';
-        dismissed.push({ el });
+        dismissed.push({ el, dir });
+        const sign    = dir === 'right' ? '+' : '-';
+        const rotSign = dir === 'right' ? '+' : '-';
         el.style.transition    = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s ease';
-        el.style.transform     = 'translate(calc(var(--px,0%) - 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) - 12deg)) scale(0.92)';
+        el.style.transform     = `translate(calc(var(--px,0%) ${sign} 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) ${rotSign} 12deg)) scale(0.92)`;
         el.style.opacity       = '0';
         el.style.pointerEvents = 'none';
         setTimeout(() => { el.style.transition = ''; markTop(); }, 460);
       }
 
-      // ── restore: flies back in from the left ─────────────────────────
+      // ── restore: flies back in from the direction it was dismissed ────
       function flyIn() {
         if (!dismissed.length) return;
-        const { el } = dismissed.pop();
+        const { el, dir } = dismissed.pop();
         delete el.dataset.dismissed;
+        const sign    = dir === 'right' ? '+' : '-';
+        const rotSign = dir === 'right' ? '+' : '-';
         el.style.transition    = 'none';
-        el.style.transform     = 'translate(calc(var(--px,0%) - 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) - 12deg)) scale(0.92)';
+        el.style.transform     = `translate(calc(var(--px,0%) ${sign} 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) ${rotSign} 12deg)) scale(0.92)`;
         el.style.opacity       = '0';
         el.style.pointerEvents = '';
         requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -2593,10 +2686,10 @@
       window.addEventListener('mousemove', e => { if (drag) moveDrag(e.clientX); });
       window.addEventListener('mouseup',   e => { if (drag) endDrag(e.clientX); });
 
-      // Arrow button clicks
+      // Arrow button clicks — right sends card right, left restores from its exit direction
       document.getElementById('deck-nav-right')?.addEventListener('click', () => {
         const active = activeSorted();
-        if (active.length > 1) flyOut(active[0]);
+        if (active.length > 1) flyOut(active[0], 'right');
       });
       document.getElementById('deck-nav-left')?.addEventListener('click', () => {
         flyIn();
