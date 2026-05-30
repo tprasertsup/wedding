@@ -693,24 +693,17 @@
     .fact-icon { flex-shrink: 0; width: 1.3rem; text-align: center; font-style: normal; }
 
     /* ═══════════════════════════════════════════════
-       OUR JOURNEY — STICKY SCROLL DECK
+       OUR JOURNEY — SLIDESHOW DECK
     ═══════════════════════════════════════════════ */
 
-    /* Wrapper provides the extra scroll height */
-    #journey-wrapper { height: calc(100vh + 3500px); }
-
-    /* Sticky container — stays pinned while user scrolls through wrapper */
     #journey {
-      position: sticky;
-      top: 0;
-      height: 100svh;           /* svh = small viewport height (avoids mobile bar jank) */
-      overflow: hidden;
       background: var(--peach-light);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 0;               /* override .section padding */
+      min-height: 100svh;
+      padding: 0;
     }
 
     .journey-top {
@@ -805,7 +798,7 @@
 
     /* Nav arrow buttons flanking the deck */
     .deck-nav {
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
@@ -821,7 +814,6 @@
       margin: 0 0.5rem;
       transition: background 0.2s, color 0.2s, transform 0.15s, opacity 0.2s;
     }
-    .deck-nav.visible { display: flex; }
     .deck-nav:hover:not(:disabled) {
       background: var(--gold-dark);
       color: var(--cream);
@@ -849,10 +841,9 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold-dark);
-      opacity: 1;
-      transition: opacity 0.6s ease;
+      opacity: 0;
+      transition: opacity 0.8s ease;
     }
-    .deck-scroll-hint.hidden { opacity: 0; }
 
     /* ═══════════════════════════════════════════════
        PROGRAM — SIDE-BY-SIDE CARDS
@@ -1825,11 +1816,9 @@
   </section>
 
   <!-- ═══════════════════════════════
-       OUR JOURNEY — STICKY SCROLL DECK
-       Wrapper height = sticky height + scroll-per-photo × 10
+       OUR JOURNEY — SLIDESHOW DECK
   ═══════════════════════════════ -->
-  <div id="journey-wrapper">
-  <section id="journey">
+  <section id="journey" class="section">
 
     <div class="journey-top">
       <h2 class="section-title" data-i18n="journey.title">Our Journey</h2>
@@ -1846,7 +1835,7 @@
     </div>
 
     <div class="journey-deck-area">
-      <button class="deck-nav" id="deck-nav-left" aria-label="Previous photo">&#8592;</button>
+      <button class="deck-nav" id="deck-nav-left" aria-label="Previous photo" disabled>&#8592;</button>
       <div class="photo-deck">
 
         <!-- z-index increases toward 10 so each new photo lands on top -->
@@ -1892,18 +1881,17 @@
         </div>
 
       </div>
-      <button class="deck-nav" id="deck-nav-right" aria-label="Next photo">&#8594;</button>
+      <button class="deck-nav" id="deck-nav-right" aria-label="Next photo" disabled>&#8594;</button>
     </div>
 
     <div class="journey-bottom">
       <div class="deck-counter">
-        <strong id="deck-shown">0</strong> / 10
+        <strong id="deck-shown">1</strong> / 10
       </div>
-      <div class="deck-scroll-hint" id="deck-hint" data-i18n="journey.hint">↓ scroll to reveal all</div>
+      <div class="deck-scroll-hint" id="deck-hint" data-i18n="journey.hint">← swipe →</div>
     </div>
 
   </section>
-  </div>
 
   <!-- ═══════════════════════════════
        THE CELEBRATION / PROGRAM
@@ -2491,64 +2479,20 @@
       if (img.complete) check();
     })();
 
-    /* ── JOURNEY PHOTO DECK ──────────────────────────────────────────── */
+    /* ── JOURNEY SLIDESHOW DECK ─────────────────────────────────────── */
     (function () {
-      const wrapper  = document.getElementById('journey-wrapper');
-      const photos   = document.querySelectorAll('.deck-photo');
-      const shownEl  = document.getElementById('deck-shown');
-      const hint     = document.getElementById('deck-hint');
-      const PX_PER_PHOTO = 350;   // px of scroll space per photo
-      const animating    = new Set();
-      let   maxShown     = -1;
-
-      function updateDeck() {
-        if (!wrapper || !photos.length) return;
-        const scrolled = -wrapper.getBoundingClientRect().top;
-        if (scrolled < 0) return;
-
-        const target = Math.min(Math.floor(scrolled / PX_PER_PHOTO), photos.length - 1);
-        if (target <= maxShown) return;
-
-        for (let i = maxShown + 1; i <= target; i++) {
-          if (animating.has(i)) continue;
-          animating.add(i);
-          const p = photos[i];
-          const lag = (i - maxShown - 1) * 90;   // stagger rapid scrolls
-          setTimeout(() => {
-            p.classList.add('dropping');
-            setTimeout(() => {
-              p.classList.remove('dropping');
-              p.classList.add('shown');
-              animating.delete(i);
-            }, 950);
-          }, lag);
-        }
-        maxShown = target;
-
-        const count = document.querySelectorAll('.deck-photo.shown, .deck-photo.dropping').length
-                    + animating.size;
-        if (shownEl) shownEl.textContent = Math.min(count, photos.length);
-        if (hint) hint.classList.toggle('hidden', maxShown >= photos.length - 1);
-      }
-
-      window.addEventListener('scroll', updateDeck, { passive: true });
-      updateDeck();
-    })();
-
-    /* ── DECK SWIPE GESTURES ─────────────────────────────────────────── */
-    (function () {
+      const section  = document.getElementById('journey');
       const deck     = document.querySelector('.photo-deck');
       const photos   = Array.from(document.querySelectorAll('.deck-photo'));
       const shownEl  = document.getElementById('deck-shown');
       const hint     = document.getElementById('deck-hint');
+      const leftBtn  = document.getElementById('deck-nav-left');
+      const rightBtn = document.getElementById('deck-nav-right');
       if (!deck || !photos.length) return;
 
-      const dismissed = [];   // stack of { el }
-      let   drag      = null; // { startX, el }
-
-      function allRevealed() {
-        return photos.every(p => p.classList.contains('shown'));
-      }
+      const dismissed = [];
+      let   drag      = null;
+      let   ready     = false;
 
       function activeSorted() {
         return photos
@@ -2556,30 +2500,47 @@
           .sort((a, b) => (parseInt(b.style.zIndex) || 0) - (parseInt(a.style.zIndex) || 0));
       }
 
-      function markTop() {
+      function updateUI() {
         const active = activeSorted();
         photos.forEach(p => {
           const isTop = active[0] === p;
           p.classList.toggle('deck-top', isTop);
           if (p.classList.contains('shown')) p.style.pointerEvents = isTop ? '' : 'none';
         });
-        const revealed = allRevealed();
-        deck.classList.toggle('swipeable', revealed && (active.length > 0 || dismissed.length > 0));
-        // Counter: once all revealed, reflect current active count
-        if (revealed && shownEl) shownEl.textContent = active.length;
-        // Show/update arrow buttons and hide the text hint once all photos are in
-        const leftBtn  = document.getElementById('deck-nav-left');
-        const rightBtn = document.getElementById('deck-nav-right');
-        if (leftBtn && rightBtn) {
-          leftBtn.classList.toggle('visible', revealed);
-          rightBtn.classList.toggle('visible', revealed);
-          leftBtn.disabled  = dismissed.length === 0;
-          rightBtn.disabled = active.length <= 1;
-        }
-        if (revealed && hint) hint.classList.add('hidden');
+        deck.classList.toggle('swipeable', ready && active.length > 0);
+        if (leftBtn)  leftBtn.disabled  = dismissed.length === 0;
+        if (rightBtn) rightBtn.disabled = active.length <= 1;
+        if (shownEl)  shownEl.textContent = dismissed.length + 1;
       }
 
-      // ── dismiss: flies out (dir = 'left' for swipe, 'right' for button) ──
+      // Drop all photos in with stagger, then enable interaction
+      function initDeck() {
+        if (section.dataset.initialized) return;
+        section.dataset.initialized = '1';
+
+        photos.forEach((p, i) => {
+          setTimeout(() => {
+            p.classList.add('dropping');
+            setTimeout(() => {
+              p.classList.remove('dropping');
+              p.classList.add('shown');
+              if (i === photos.length - 1) {
+                ready = true;
+                updateUI();
+                if (hint) hint.style.opacity = '1';
+              }
+            }, 1100);
+          }, i * 70);
+        });
+      }
+
+      // Trigger drop-in when section scrolls into view
+      const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { initDeck(); observer.disconnect(); }
+      }, { threshold: 0.15 });
+      observer.observe(section);
+
+      // ── dismiss: flies out ──────────────────────────────────────────
       function flyOut(el, dir = 'left') {
         el.dataset.dismissed = '1';
         dismissed.push({ el, dir });
@@ -2589,10 +2550,10 @@
         el.style.transform     = `translate(calc(var(--px,0%) ${sign} 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) ${rotSign} 12deg)) scale(0.92)`;
         el.style.opacity       = '0';
         el.style.pointerEvents = 'none';
-        setTimeout(() => { el.style.transition = ''; markTop(); }, 460);
+        setTimeout(() => { el.style.transition = ''; updateUI(); }, 460);
       }
 
-      // ── restore: flies back in from the direction it was dismissed ────
+      // ── restore: flies back in from the direction it left ──────────
       function flyIn() {
         if (!dismissed.length) return;
         const { el, dir } = dismissed.pop();
@@ -2607,7 +2568,7 @@
           el.style.transition = 'transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s ease';
           el.style.transform  = '';
           el.style.opacity    = '';
-          markTop();
+          updateUI();
           setTimeout(() => { el.style.transition = ''; }, 520);
         }));
       }
@@ -2620,17 +2581,12 @@
         setTimeout(() => { el.style.transition = ''; }, 360);
       }
 
-      // ── drag ─────────────────────────────────────────────────────────
+      // ── drag ────────────────────────────────────────────────────────
       function startDrag(x) {
-        if (!allRevealed()) return;
+        if (!ready) return;
         const active = activeSorted();
-        if (!active.length) {
-          // All dismissed — only a rightward swipe can restore
-          if (!dismissed.length) return;
-          drag = { startX: x, el: null };
-          deck.classList.add('swiping');
-          return;
-        }
+        if (!active.length && !dismissed.length) return;
+        if (!active.length) { drag = { startX: x, el: null }; deck.classList.add('swiping'); return; }
         const top = active[0];
         top.style.transition = 'none';
         drag = { startX: x, el: top };
@@ -2641,11 +2597,9 @@
         if (!drag || !drag.el) return;
         const dx = x - drag.startX;
         if (dx < 0) {
-          // Left — dismiss preview: card follows finger and fades
           drag.el.style.transform = `translate(calc(var(--px,0%) + ${dx}px), var(--py,0%)) rotate(calc(var(--rot,0deg) + ${dx * 0.04}deg))`;
           drag.el.style.opacity   = String(Math.max(0.3, 1 - Math.abs(dx) / 220));
         } else {
-          // Right — restore hint: card barely moves to signal a different action
           const d = Math.min(dx * 0.15, 18);
           drag.el.style.transform = `translate(calc(var(--px,0%) + ${d}px), var(--py,0%)) rotate(calc(var(--rot,0deg) + ${d * 0.02}deg))`;
           drag.el.style.opacity   = '';
@@ -2654,32 +2608,22 @@
 
       function endDrag(x) {
         if (!drag) return;
-        const dx     = x - drag.startX;
+        const dx = x - drag.startX;
         const { el } = drag;
         drag = null;
         deck.classList.remove('swiping');
-
         if (dx <= -80) {
-          // Left → dismiss (keep at least 1 card)
-          if (el && activeSorted().length > 1) {
-            flyOut(el);
-          } else {
-            snapBack(el);
-          }
+          if (el && activeSorted().length > 1) flyOut(el);
+          else snapBack(el);
         } else if (dx >= 80) {
-          // Right → restore last dismissed
-          if (dismissed.length > 0) {
-            snapBack(el);
-            flyIn();
-          } else {
-            snapBack(el);
-          }
+          snapBack(el);
+          if (dismissed.length > 0) flyIn();
         } else {
           snapBack(el);
         }
       }
 
-      // ── events ───────────────────────────────────────────────────────
+      // ── events ──────────────────────────────────────────────────────
       deck.addEventListener('touchstart',  e => { if (e.touches.length === 1) startDrag(e.touches[0].clientX); }, { passive: true });
       deck.addEventListener('touchmove',   e => { if (drag && e.touches.length === 1) moveDrag(e.touches[0].clientX); }, { passive: true });
       deck.addEventListener('touchend',    e => { if (drag) endDrag(e.changedTouches[0].clientX); });
@@ -2687,21 +2631,10 @@
       window.addEventListener('mousemove', e => { if (drag) moveDrag(e.clientX); });
       window.addEventListener('mouseup',   e => { if (drag) endDrag(e.clientX); });
 
-      // Arrow button clicks — right sends card right, left restores from its exit direction
-      document.getElementById('deck-nav-right')?.addEventListener('click', () => {
-        const active = activeSorted();
-        if (active.length > 1) flyOut(active[0], 'right');
-      });
-      document.getElementById('deck-nav-left')?.addEventListener('click', () => {
-        flyIn();
-      });
+      rightBtn?.addEventListener('click', () => { const a = activeSorted(); if (a.length > 1) flyOut(a[0], 'right'); });
+      leftBtn?.addEventListener('click',  () => flyIn());
 
-      // Watch class changes as photos drop in during scroll
-      const mo = new MutationObserver(markTop);
-      photos.forEach(p => mo.observe(p, { attributes: true, attributeFilter: ['class'] }));
-
-      // Re-apply swipe hint text whenever language changes (setLang overwrites data-i18n elements)
-      document.addEventListener('langchange', markTop);
+      document.addEventListener('langchange', updateUI);
     })();
 
     /* ── COUPLE CARD FLIP ───────────────────────────────────────────── */
@@ -2850,7 +2783,7 @@
         'about.groom.f2':'Fluent in Turkish but conversational in Vietnamese. Secretly studied Thai for Nine\'s parents — still too shy to say สวัสดี to them.',
         'about.groom.f3':'Very easy-going about most things in life. His Instagram feed, however, is a strictly moderated space.',
         'about.groom.f4':'High school tennis. College badminton. Recently retired from all sport. The muscles did not get the memo.',
-        'journey.title':'Our Journey','journey.subtitle':'Moments from the adventure that led us here','journey.hint':'↓ scroll to reveal all',
+        'journey.title':'Our Journey','journey.subtitle':'Moments from the adventure that led us here','journey.hint':'← swipe →',
         'program.title':'The Celebration','program.subtitle':'A day of love, tradition, and joy',
         'program.afternoon':'Afternoon','program.evening':'Evening',
         'program.m1.title':'Khan Maak Procession','program.m1.desc':'The groom leads a joyful, music-filled procession bearing ceremonial gifts to the bride\'s family — a festive, formal request for her hand.',
@@ -2906,7 +2839,7 @@
         'about.groom.f2':'พูดตุรกีได้คล่อง แต่เวียดนามได้แค่พอคุย แอบเรียนภาษาไทยเพื่อคุยกับพ่อแม่ไนน์ — แต่ยังขี้อายเกินกว่าจะพูดสวัสดีกับพวกเขา',
         'about.groom.f3':'ใจเย็นและปล่อยวางกับแทบทุกเรื่องในชีวิต ยกเว้นฟีด Instagram ที่บริหารจัดการอย่างเข้มงวดเป็นพิเศษ',
         'about.groom.f4':'เทนนิสมัธยม แบดมินตันมหาวิทยาลัย เพิ่งประกาศเลิกเล่นกีฬา แต่กล้ามเนื้อยังไม่รับทราบ',
-        'journey.title':'เส้นทางของเรา','journey.subtitle':'ช่วงเวลาพิเศษที่พาเรามาถึงวันนี้','journey.hint':'↓ เลื่อนเพื่อดูทั้งหมด',
+        'journey.title':'เส้นทางของเรา','journey.subtitle':'ช่วงเวลาพิเศษที่พาเรามาถึงวันนี้','journey.hint':'← ปัด →',
         'program.title':'กำหนดการงาน','program.subtitle':'วันที่เต็มไปด้วยความรัก ประเพณี และความสุข',
         'program.afternoon':'บ่าย','program.evening':'เย็น',
         'program.m1.title':'ขบวนขันหมาก','program.m1.desc':'เจ้าบ่าวนำขบวนแห่ที่สนุกสนานพร้อมดนตรีและของขวัญสู่บ้านเจ้าสาว เป็นการแสดงความเคารพและขอคู่ครองอย่างเป็นทางการ',
