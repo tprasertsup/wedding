@@ -7,8 +7,8 @@ Everything is already wired up. You only need to put your photos in the `images/
 | File name | What it's for | Best orientation |
 |---|---|---|
 | `couple.png` | Full-screen hero background (behind your names) | Landscape (wide) |
-| `nine-kid.jpg` | Nine's childhood photo on the couple card | Any — auto-cropped to circle |
-| `tom-kid.jpg` | Tom's childhood photo on the couple card | Any — auto-cropped to circle |
+| `nine-kid.png` | Nine's childhood photo on the couple card | Square |
+| `tom-kid.png` | Tom's childhood photo on the couple card | Square |
 | `story-1.jpg` | Our Story deck — card 1 (bottom of stack) | Portrait (tall) |
 | `story-2.jpg` | Our Story deck — card 2 | Portrait (tall) |
 | `story-3.jpg` | Our Story deck — card 3 | Portrait (tall) |
