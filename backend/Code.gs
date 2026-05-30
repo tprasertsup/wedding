@@ -329,8 +329,8 @@ function rebuildGuestLists() {
   const sheet = getSheet();
   const data = sheet.getDataRange().getValues();
 
-  const afternoon = ensureListSheet_(ss, 'GuestList_Afternoon', ['name', 'preferred_name', 'phone', 'line_id', 'source']);
-  const evening = ensureListSheet_(ss, 'GuestList_Evening', ['name', 'preferred_name', 'phone', 'line_id', 'dietary', 'source']);
+  const afternoon = ensureListSheet_(ss, 'GuestList_Afternoon', ['Name', 'Preferred Name', 'Phone', 'LINE ID', 'Source', 'Plus One Of']);
+  const evening = ensureListSheet_(ss, 'GuestList_Evening', ['Name', 'Preferred Name', 'Phone', 'LINE ID', 'Dietary', 'Source', 'Plus One Of']);
   clearListSheet_(afternoon);
   clearListSheet_(evening);
 
@@ -340,18 +340,19 @@ function rebuildGuestLists() {
   for (let i = 1; i < data.length; i++) {
     const r = data[i];
     if (r[13] !== 'active') continue;
+    const primaryName = r[2];
     const guest = [r[2], r[5], r[4], r[6]];
     const session = r[7];
     const dietary = r[8] || '';
     const hasPlus = r[9] === 'yes' && r[10];
 
-    if (session === 'afternoon' || session === 'both') afternoonRows.push([...guest, 'primary']);
-    if (session === 'evening' || session === 'both') eveningRows.push([...guest, dietary, 'primary']);
+    if (session === 'afternoon' || session === 'both') afternoonRows.push([...guest, 'primary', '']);
+    if (session === 'evening' || session === 'both') eveningRows.push([...guest, dietary, 'primary', '']);
 
     if (hasPlus) {
       const plus = [r[10], '', '', ''];
-      if (session === 'afternoon' || session === 'both') afternoonRows.push([...plus, 'plus_one']);
-      if (session === 'evening' || session === 'both') eveningRows.push([...plus, dietary, 'plus_one']);
+      if (session === 'afternoon' || session === 'both') afternoonRows.push([...plus, 'plus_one', primaryName]);
+      if (session === 'evening' || session === 'both') eveningRows.push([...plus, dietary, 'plus_one', primaryName]);
     }
   }
 
