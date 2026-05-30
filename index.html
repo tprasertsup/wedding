@@ -2508,8 +2508,8 @@
           if (p.classList.contains('shown')) p.style.pointerEvents = isTop ? '' : 'none';
         });
         deck.classList.toggle('swipeable', ready && active.length > 0);
-        if (leftBtn)  leftBtn.disabled  = dismissed.length === 0;
-        if (rightBtn) rightBtn.disabled = active.length <= 1;
+        if (leftBtn)  leftBtn.disabled  = active.length <= 1;
+        if (rightBtn) rightBtn.disabled = dismissed.length === 0;
         if (shownEl)  shownEl.textContent = dismissed.length + 1;
       }
 
@@ -2631,8 +2631,8 @@
       window.addEventListener('mousemove', e => { if (drag) moveDrag(e.clientX); });
       window.addEventListener('mouseup',   e => { if (drag) endDrag(e.clientX); });
 
-      rightBtn?.addEventListener('click', () => { const a = activeSorted(); if (a.length > 1) flyOut(a[0], 'right'); });
-      leftBtn?.addEventListener('click',  () => flyIn());
+      leftBtn?.addEventListener('click',  () => { const a = activeSorted(); if (a.length > 1) flyOut(a[0], 'left'); });
+      rightBtn?.addEventListener('click', () => flyIn());
 
       document.addEventListener('langchange', updateUI);
     })();
