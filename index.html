@@ -802,8 +802,8 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      width: 2.4rem;
-      height: 2.4rem;
+      width: 3rem;
+      height: 3rem;
       border-radius: 50%;
       border: 1.5px solid var(--gold-border);
       background: var(--cream);
@@ -811,8 +811,10 @@
       font-size: 1.2rem;
       line-height: 1;
       cursor: pointer;
-      margin: 0 0.5rem;
+      margin: 0 0.6rem;
       transition: background 0.2s, color 0.2s, transform 0.15s, opacity 0.2s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
     .deck-nav:hover:not(:disabled) {
       background: var(--gold-dark);
@@ -2508,8 +2510,8 @@
           if (p.classList.contains('shown')) p.style.pointerEvents = isTop ? '' : 'none';
         });
         deck.classList.toggle('swipeable', ready && active.length > 0);
-        if (leftBtn)  leftBtn.disabled  = dismissed.length === 0;
-        if (rightBtn) rightBtn.disabled = active.length <= 1;
+        if (leftBtn)  leftBtn.disabled  = active.length <= 1;
+        if (rightBtn) rightBtn.disabled = dismissed.length === 0;
         if (shownEl)  shownEl.textContent = dismissed.length + 1;
       }
 
@@ -2627,12 +2629,12 @@
       deck.addEventListener('touchstart',  e => { if (e.touches.length === 1) startDrag(e.touches[0].clientX); }, { passive: true });
       deck.addEventListener('touchmove',   e => { if (drag && e.touches.length === 1) moveDrag(e.touches[0].clientX); }, { passive: true });
       deck.addEventListener('touchend',    e => { if (drag) endDrag(e.changedTouches[0].clientX); });
-      deck.addEventListener('mousedown',   e => { startDrag(e.clientX); e.preventDefault(); });
-      window.addEventListener('mousemove', e => { if (drag) moveDrag(e.clientX); });
-      window.addEventListener('mouseup',   e => { if (drag) endDrag(e.clientX); });
+      deck.addEventListener('pointerdown',  e => { if (e.pointerType === 'touch') return; startDrag(e.clientX); e.preventDefault(); });
+      window.addEventListener('pointermove', e => { if (drag && e.pointerType !== 'touch') moveDrag(e.clientX); });
+      window.addEventListener('pointerup',   e => { if (drag && e.pointerType !== 'touch') endDrag(e.clientX); });
 
-      rightBtn?.addEventListener('click', () => { const a = activeSorted(); if (a.length > 1) flyOut(a[0], 'right'); });
-      leftBtn?.addEventListener('click',  () => flyIn());
+      leftBtn?.addEventListener('click',  () => { const a = activeSorted(); if (a.length > 1) flyOut(a[0], 'left'); });
+      rightBtn?.addEventListener('click', () => flyIn());
 
       document.addEventListener('langchange', updateUI);
     })();
