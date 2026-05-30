@@ -2489,24 +2489,28 @@
         if (revealed && hint) hint.classList.add('hidden');
       }
 
-      // ── dismiss: flies out to the left ───────────────────────────────
-      function flyOut(el) {
+      // ── dismiss: flies out (dir = 'left' for swipe, 'right' for button) ──
+      function flyOut(el, dir = 'left') {
         el.dataset.dismissed = '1';
-        dismissed.push({ el });
+        dismissed.push({ el, dir });
+        const sign    = dir === 'right' ? '+' : '-';
+        const rotSign = dir === 'right' ? '+' : '-';
         el.style.transition    = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s ease';
-        el.style.transform     = 'translate(calc(var(--px,0%) - 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) - 12deg)) scale(0.92)';
+        el.style.transform     = `translate(calc(var(--px,0%) ${sign} 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) ${rotSign} 12deg)) scale(0.92)`;
         el.style.opacity       = '0';
         el.style.pointerEvents = 'none';
         setTimeout(() => { el.style.transition = ''; markTop(); }, 460);
       }
 
-      // ── restore: flies back in from the left ─────────────────────────
+      // ── restore: flies back in from the direction it was dismissed ────
       function flyIn() {
         if (!dismissed.length) return;
-        const { el } = dismissed.pop();
+        const { el, dir } = dismissed.pop();
         delete el.dataset.dismissed;
+        const sign    = dir === 'right' ? '+' : '-';
+        const rotSign = dir === 'right' ? '+' : '-';
         el.style.transition    = 'none';
-        el.style.transform     = 'translate(calc(var(--px,0%) - 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) - 12deg)) scale(0.92)';
+        el.style.transform     = `translate(calc(var(--px,0%) ${sign} 160%), var(--py,0%)) rotate(calc(var(--rot,0deg) ${rotSign} 12deg)) scale(0.92)`;
         el.style.opacity       = '0';
         el.style.pointerEvents = '';
         requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -2593,10 +2597,10 @@
       window.addEventListener('mousemove', e => { if (drag) moveDrag(e.clientX); });
       window.addEventListener('mouseup',   e => { if (drag) endDrag(e.clientX); });
 
-      // Arrow button clicks
+      // Arrow button clicks — right sends card right, left restores from its exit direction
       document.getElementById('deck-nav-right')?.addEventListener('click', () => {
         const active = activeSorted();
-        if (active.length > 1) flyOut(active[0]);
+        if (active.length > 1) flyOut(active[0], 'right');
       });
       document.getElementById('deck-nav-left')?.addEventListener('click', () => {
         flyIn();
