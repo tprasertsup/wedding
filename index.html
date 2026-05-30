@@ -651,7 +651,7 @@
     ═══════════════════════════════════════════════ */
 
     /* Wrapper provides the extra scroll height */
-    #journey-wrapper { height: calc(100vh + 2600px); }
+    #journey-wrapper { height: calc(100vh + 3500px); }
 
     /* Sticky container — stays pinned while user scrolls through wrapper */
     #journey {
@@ -756,6 +756,32 @@
       box-shadow: 0 28px 72px rgba(92,61,46,0.22), 0 8px 24px rgba(92,61,46,0.12) !important;
       z-index: 100 !important;
     }
+
+    /* Nav arrow buttons flanking the deck */
+    .deck-nav {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold-border);
+      background: var(--cream);
+      color: var(--brown);
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+      margin: 0 0.5rem;
+      transition: background 0.2s, color 0.2s, transform 0.15s, opacity 0.2s;
+    }
+    .deck-nav.visible { display: flex; }
+    .deck-nav:hover:not(:disabled) {
+      background: var(--gold-dark);
+      color: var(--cream);
+      transform: scale(1.08);
+    }
+    .deck-nav:disabled { opacity: 0.25; cursor: default; }
 
     /* Bottom counter */
     .journey-bottom {
@@ -1759,6 +1785,7 @@
     </div>
 
     <div class="journey-deck-area">
+      <button class="deck-nav" id="deck-nav-left" aria-label="Previous photo">&#8592;</button>
       <div class="photo-deck">
 
         <!-- z-index increases toward 10 so each new photo lands on top -->
@@ -1804,6 +1831,7 @@
         </div>
 
       </div>
+      <button class="deck-nav" id="deck-nav-right" aria-label="Next photo">&#8594;</button>
     </div>
 
     <div class="journey-bottom">
@@ -2379,7 +2407,7 @@
       const photos   = document.querySelectorAll('.deck-photo');
       const shownEl  = document.getElementById('deck-shown');
       const hint     = document.getElementById('deck-hint');
-      const PX_PER_PHOTO = 260;   // px of scroll space per photo
+      const PX_PER_PHOTO = 350;   // px of scroll space per photo
       const animating    = new Set();
       let   maxShown     = -1;
 
@@ -2449,17 +2477,16 @@
         deck.classList.toggle('swipeable', revealed && (active.length > 0 || dismissed.length > 0));
         // Counter: once all revealed, reflect current active count
         if (revealed && shownEl) shownEl.textContent = active.length;
-        // Hint: swap scroll hint for swipe hint once all are in
-        if (revealed && hint) {
-          const lang = localStorage.getItem('wedding-lang') || 'en';
-          const hints = {
-            en: { remove: '← swipe left to remove', restore: 'swipe right to restore →', both: '← remove · restore →' },
-            th: { remove: '← เลื่อนซ้ายเพื่อเอาออก', restore: 'เลื่อนขวาเพื่อดึงกลับ →', both: '← เอาออก · ดึงกลับ →' }
-          };
-          const t = hints[lang] || hints.en;
-          hint.textContent = dismissed.length === 0 ? t.remove : active.length === 1 ? t.restore : t.both;
-          hint.classList.remove('hidden');
+        // Show/update arrow buttons and hide the text hint once all photos are in
+        const leftBtn  = document.getElementById('deck-nav-left');
+        const rightBtn = document.getElementById('deck-nav-right');
+        if (leftBtn && rightBtn) {
+          leftBtn.classList.toggle('visible', revealed);
+          rightBtn.classList.toggle('visible', revealed);
+          leftBtn.disabled  = dismissed.length === 0;
+          rightBtn.disabled = active.length <= 1;
         }
+        if (revealed && hint) hint.classList.add('hidden');
       }
 
       // ── dismiss: flies out to the left ───────────────────────────────
@@ -2565,6 +2592,15 @@
       deck.addEventListener('mousedown',   e => { startDrag(e.clientX); e.preventDefault(); });
       window.addEventListener('mousemove', e => { if (drag) moveDrag(e.clientX); });
       window.addEventListener('mouseup',   e => { if (drag) endDrag(e.clientX); });
+
+      // Arrow button clicks
+      document.getElementById('deck-nav-right')?.addEventListener('click', () => {
+        const active = activeSorted();
+        if (active.length > 1) flyOut(active[0]);
+      });
+      document.getElementById('deck-nav-left')?.addEventListener('click', () => {
+        flyIn();
+      });
 
       // Watch class changes as photos drop in during scroll
       const mo = new MutationObserver(markTop);
