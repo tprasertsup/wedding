@@ -227,9 +227,9 @@
       height: 100%;
       object-fit: cover;
       object-position: center top;
-      transform: scale(1.25);
-      transform-origin: center 65%;
-      animation: imageSettle 4.5s ease-out forwards;
+      transform: scale(2.0);
+      transform-origin: center 72%;
+      animation: imageSettle 6s ease-out forwards;
     }
 
     #hero::after {
@@ -428,7 +428,7 @@
     }
     @keyframes imageSettle {
       from {
-        transform: scale(1.25);
+        transform: scale(2.0);
         filter: saturate(1.04) contrast(1.02) brightness(1);
       }
       to {
@@ -460,13 +460,14 @@
       }
       .hero-content {
         display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: flex-start;
         padding: 7rem 5% 3rem clamp(4rem, 9vw, 9rem);
         text-align: center;
       }
       .hero-copy {
-        max-width: min(420px, 38vw);
+        max-width: min(400px, 36vw);
         margin: 0;
         transform: none;
       }
