@@ -442,29 +442,27 @@
         object-position: center center;
       }
       .hero-content {
-        display: grid;
-        place-items: center;
-        padding: 7rem 2rem 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 7rem 5% 3rem clamp(3rem, 6vw, 6rem);
+        text-align: center;
       }
       .hero-copy {
-        max-width: 900px;
-        margin-top: 0;
-        transform: translateY(-8vh);
-      }
-      .double-happiness {
-        font-size: clamp(3.5rem, 5vw, 6rem);
-        margin-bottom: 1.3rem;
+        max-width: min(500px, 46vw);
+        margin: 0;
+        transform: none;
       }
       .invite-line {
-        font-size: clamp(0.8rem, 1vw, 1rem);
+        font-size: clamp(0.78rem, 1vw, 0.96rem);
         letter-spacing: 0.34em;
         margin-bottom: 1.8rem;
       }
       .name {
-        font-size: clamp(5.2rem, 9vw, 9rem);
+        font-size: clamp(4rem, 7vw, 7.5rem);
       }
       .ampersand {
-        font-size: clamp(1.8rem, 3vw, 3rem);
+        font-size: clamp(1.8rem, 2.8vw, 3rem);
       }
       .date {
         font-size: clamp(1rem, 1.3vw, 1.35rem);
@@ -473,12 +471,12 @@
         font-size: clamp(1rem, 1.4vw, 1.35rem);
       }
       .countdown {
-        max-width: 560px;
-        gap: 2rem;
+        max-width: 420px;
+        gap: 1.6rem;
         margin-top: 2.4rem;
       }
       .countdown-number {
-        font-size: clamp(2rem, 3.5vw, 4rem);
+        font-size: clamp(2rem, 3vw, 3.5rem);
       }
       .rsvp-button {
         width: 300px;
@@ -1600,7 +1598,6 @@
     }
     body.lang-th h1, body.lang-th h2, body.lang-th h3, body.lang-th h4,
     body.lang-th .section-title, body.lang-th .section-subtitle,
-    body.lang-th .double-happiness,
     body.lang-th .couple-name-full,
     body.lang-th .tl-title,
     body.lang-th .venue-location,
@@ -1616,6 +1613,8 @@
     body.lang-th .nav-links a,
     body.lang-th .lang-btn { font-family: 'Sarabun', sans-serif; }
     body.lang-th .rsvp-button { font-family: 'Sarabun', sans-serif; letter-spacing: 0.06em; }
+    body.lang-th .couple-names .name,
+    body.lang-th .couple-names .ampersand { font-family: 'Cormorant Garamond', serif; }
   </style>
 </head>
 <body>
@@ -1664,22 +1663,20 @@
 
     <div class="hero-content">
       <div class="hero-copy">
-        <div class="double-happiness fade-line" style="animation-delay: 1.4s;">囍</div>
-
-        <p class="invite-line fade-line" style="animation-delay: 1.8s;" data-i18n="hero.eyebrow">
+        <p class="invite-line fade-line" style="animation-delay: 1.4s;" data-i18n="hero.eyebrow">
           Please join us as we celebrate the marriage of
         </p>
 
         <h1 class="couple-names" id="heroNames" aria-label="Nine and Tom">
-          <span class="name fade-line" style="animation-delay: 2.2s;">NINE</span>
-          <span class="ampersand fade-line" style="animation-delay: 2.55s;">&amp;</span>
-          <span class="name fade-line" style="animation-delay: 2.9s;">TOM</span>
+          <span class="name fade-line" style="animation-delay: 1.8s;">NINE</span>
+          <span class="ampersand fade-line" style="animation-delay: 2.15s;">&amp;</span>
+          <span class="name fade-line" style="animation-delay: 2.5s;">TOM</span>
         </h1>
 
-        <p class="date fade-line" style="animation-delay: 3.3s;">July 11, 2027</p>
-        <p class="venue fade-line" style="animation-delay: 3.6s;">Le Pansiri · Nonthaburi, Thailand</p>
+        <p class="date fade-line" style="animation-delay: 2.9s;">July 11, 2027</p>
+        <p class="venue fade-line" style="animation-delay: 3.2s;">Le Pansiri · Nonthaburi, Thailand</p>
 
-        <div class="countdown fade-line" style="animation-delay: 3.9s;" aria-label="Countdown to wedding">
+        <div class="countdown fade-line" style="animation-delay: 3.5s;" aria-label="Countdown to wedding">
           <div class="countdown-unit">
             <span class="countdown-number" id="cd-days">000</span>
             <span class="countdown-label">Days</span>
@@ -1698,7 +1695,7 @@
           </div>
         </div>
 
-        <a href="#rsvp" class="rsvp-button fade-line" style="animation-delay: 4.2s;" data-i18n="hero.cta">
+        <a href="#rsvp" class="rsvp-button fade-line" style="animation-delay: 3.8s;" data-i18n="hero.cta">
           RSVP Now
         </a>
       </div>
