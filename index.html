@@ -227,8 +227,9 @@
       height: 100%;
       object-fit: cover;
       object-position: center top;
-      transform: scale(1.035);
-      animation: imageSettle 2.4s ease-out forwards;
+      transform: scale(1.25);
+      transform-origin: center 65%;
+      animation: imageSettle 4.5s ease-out forwards;
     }
 
     #hero::after {
@@ -397,7 +398,7 @@
       opacity: 0;
       transform: translateY(14px);
       filter: blur(4px);
-      animation: lineReveal 900ms cubic-bezier(.22, .61, .36, 1) forwards;
+      animation: lineReveal 1200ms cubic-bezier(.22, .61, .36, 1) forwards;
     }
 
     /* ═══════════════════════════════════════════════
@@ -427,7 +428,17 @@
     }
     @keyframes imageSettle {
       from {
-        transform: scale(1.035);
+        transform: scale(1.25);
+        filter: saturate(1.04) contrast(1.02) brightness(1);
+      }
+      to {
+        transform: scale(1);
+        filter: saturate(.92) contrast(.96) brightness(1.06);
+      }
+    }
+    @keyframes imageSettleDesktop {
+      from {
+        transform: scale(1.06);
         filter: saturate(1.04) contrast(1.02) brightness(1);
       }
       to {
@@ -440,16 +451,22 @@
     @media (min-width: 768px) {
       .hero-bg img {
         object-position: center center;
+        transform: scale(1.06);
+        transform-origin: center center;
+        animation: imageSettleDesktop 3s ease-out forwards;
+      }
+      #hero::after {
+        display: none;
       }
       .hero-content {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding: 7rem 5% 3rem clamp(3rem, 6vw, 6rem);
+        padding: 7rem 5% 3rem clamp(4rem, 9vw, 9rem);
         text-align: center;
       }
       .hero-copy {
-        max-width: min(500px, 46vw);
+        max-width: min(420px, 38vw);
         margin: 0;
         transform: none;
       }
@@ -2264,7 +2281,7 @@
 
       for (let i = 0; i < count; i++) {
         const petal    = document.createElement('div');
-        const size     = 10 + Math.random() * 18;
+        const size     = 5 + Math.random() * 8;
         const left     = Math.random() * 100;
         const delay    = Math.random() * 14;
         const duration = 10 + Math.random() * 14;
