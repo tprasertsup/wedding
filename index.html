@@ -233,7 +233,18 @@
     }
 
     #hero::after {
-      display: none;
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: rgba(248, 236, 216, 0.22);
+      opacity: 0;
+      animation: overlayFade 3s ease forwards;
+      animation-delay: 2s;
+      pointer-events: none;
+    }
+    @media (min-width: 768px) {
+      #hero::after { display: none; }
     }
 
     #petals-container {
