@@ -1618,6 +1618,7 @@
     body.lang-th .rsvp-button { font-family: 'Sarabun', sans-serif; letter-spacing: 0.06em; }
     body.lang-th .couple-names .name,
     body.lang-th .couple-names .ampersand { font-family: 'Cormorant Garamond', serif; }
+    body.lang-th .date { font-family: 'Sarabun', sans-serif; letter-spacing: 0.1em; text-transform: none; }
   </style>
 </head>
 <body>
@@ -1676,7 +1677,7 @@
           <span class="name fade-line" style="animation-delay: 2.5s;">TOM</span>
         </h1>
 
-        <p class="date fade-line" style="animation-delay: 2.9s;">July 11, 2027</p>
+        <p class="date fade-line" style="animation-delay: 2.9s;" data-i18n="hero.date">July 11, 2027</p>
         <p class="venue fade-line" style="animation-delay: 3.2s;">Le Pansiri · Nonthaburi, Thailand</p>
 
         <div class="countdown fade-line" style="animation-delay: 3.5s;" aria-label="Countdown to wedding">
@@ -2722,7 +2723,7 @@
     const T = {
       en: {
         'nav.story':'Our Story','nav.program':'Program','nav.dresscode':'Dress Code','nav.venue':'Venue','nav.rsvp':'RSVP',
-        'hero.eyebrow':'Please join us as we celebrate the marriage of','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
+        'hero.eyebrow':'Please join us as we celebrate the marriage of','hero.date':'July 11, 2027','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
         'about.title':'The Couple','about.subtitle':'Two cultures, two hearts, one love story',
         'about.flip':'tap to reveal ↻','about.flipback':'↺ tap to go back',
         'about.bride.role':'The Bride','about.bride.fullname':'Thananun Prasertsup',
@@ -2783,7 +2784,7 @@
       },
       th: {
         'nav.story':'เรื่องราวของเรา','nav.program':'กำหนดการ','nav.dresscode':'การแต่งกาย','nav.venue':'สถานที่จัดงาน','nav.rsvp':'ยืนยันการเข้าร่วม',
-        'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
+        'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.date':'11 กรกฎาคม พ.ศ. 2570','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
         'about.title':'คู่บ่าวสาว','about.subtitle':'สองวัฒนธรรม สองหัวใจ หนึ่งเรื่องราวความรัก',
         'about.flip':'แตะเพื่อดู ↻','about.flipback':'↺ แตะเพื่อกลับ',
         'about.bride.role':'เจ้าสาว','about.bride.fullname':'ธนนันท์ ประเสริฐทรัพย์',
