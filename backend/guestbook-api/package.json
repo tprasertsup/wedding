@@ -1,0 +1,22 @@
+{
+  "name": "nine-tom-guestbook-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Secure upload API for Nine & Tom's wedding video guestbook.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test",
+    "hash-password": "node scripts/hash-password.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "googleapis": "^173.0.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
