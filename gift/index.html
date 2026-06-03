@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send a Gift — Nine &amp; Tom</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --peach:        #f5e6d8;
+      --peach-light:  #faf3ec;
+      --gold:         #c9a96e;
+      --gold-dark:    #8b6914;
+      --gold-border:  #d4b896;
+      --rose:         #e8968a;
+      --brown:        #5c3d2e;
+      --brown-light:  #8a6552;
+      --cream:        #fefaf6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--peach-light);
+      color: var(--brown);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    body.lang-th { font-family: 'Sarabun', sans-serif; }
+    body.lang-th .card-title, body.lang-th .card-sub,
+    body.lang-th .section-label, body.lang-th .registry-note {
+      font-family: 'Sarabun', sans-serif; font-weight: 600;
+    }
+    body.lang-th .btn-submit, body.lang-th .btn-method, body.lang-th .btn-back {
+      font-family: 'Sarabun', sans-serif; letter-spacing: 0.04em;
+    }
+
+    header {
+      background: var(--peach);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+    }
+    .header-ornament { font-size: 24px; color: var(--gold); opacity: .7; margin-bottom: 4px; }
+    .header-names { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; }
+    .header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--brown-light); margin-top: 3px; }
+    .lang-switcher { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); display: flex; align-items: center; gap: 4px; }
+    .lang-btn { background: none; border: none; font-family: 'Lato', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--brown-light); cursor: pointer; padding: 4px 2px; }
+    .lang-btn.active { color: var(--gold-dark); border-bottom: 1.5px solid var(--gold); }
+    .lang-sep { color: var(--gold-border); font-size: 10px; }
+
+    main { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 56px 20px 80px; }
+    .card { background: var(--cream); border: 1px solid var(--gold-border); max-width: 560px; width: 100%; padding: 50px 44px; position: relative; }
+    .card::before, .card::after { content: ''; position: absolute; width: 18px; height: 18px; border-color: var(--gold); border-style: solid; }
+    .card::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .card::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; text-align: center; margin-bottom: 6px; }
+    .card-sub { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; text-align: center; color: var(--gold-dark); margin-bottom: 20px; }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 0 28px; }
+
+    .registry-note {
+      background: rgba(201,169,110,.1);
+      border: 1px solid var(--gold-border);
+      border-left: 3px solid var(--gold);
+      padding: 14px 16px;
+      font-size: 13.5px;
+      color: var(--brown-light);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    /* States */
+    .state { display: none; }
+    .state.active { display: block; }
+
+    /* Method chooser */
+    .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+    .btn-method {
+      padding: 20px 16px;
+      background: white;
+      border: 1.5px solid var(--gold-border);
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--brown);
+      cursor: pointer;
+      transition: border-color .2s, background .2s, transform .1s;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      min-height: 90px;
+    }
+    .btn-method:hover { border-color: var(--gold); background: rgba(201,169,110,.06); }
+    .btn-method:active { transform: scale(.98); }
+    .btn-method-icon { font-size: 1.6rem; }
+
+    /* QR display */
+    .qr-section { text-align: center; }
+    .section-label { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--brown-light); margin-bottom: 20px; }
+    .qr-box { display: inline-block; position: relative; border: 1px solid var(--gold-border); background: white; padding: 12px; margin-bottom: 20px; }
+    .qr-real { display: block; max-width: 200px; max-height: 200px; }
+    .qr-actions { display: flex; gap: 12px; justify-content: center; margin-bottom: 28px; }
+    .btn-download {
+      padding: 11px 20px;
+      background: white;
+      border: 1px solid var(--gold-border);
+      color: var(--gold-dark);
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color .2s;
+      display: inline-block;
+      min-height: 44px;
+      line-height: 22px;
+    }
+    .btn-download:hover { border-color: var(--gold); }
+
+    /* Form */
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--brown-light); margin-bottom: 7px; }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 12px 14px;
+      border: 1px solid var(--gold-border); background: white;
+      font-family: 'Lato', sans-serif; font-size: 14px; color: var(--brown);
+      outline: none; transition: border-color .25s; border-radius: 0; -webkit-appearance: none;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    .slip-upload-area {
+      border: 2px dashed var(--gold-border);
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      background: white;
+    }
+    .slip-upload-area:hover { border-color: var(--gold); background: rgba(201,169,110,.04); }
+    .slip-upload-area.has-file { border-color: var(--gold); border-style: solid; background: rgba(201,169,110,.06); }
+    .slip-upload-area input[type="file"] { position: absolute; width: 0; height: 0; opacity: 0; }
+    .slip-icon { font-size: 2rem; margin-bottom: 8px; }
+    .slip-hint { font-size: 12px; color: var(--brown-light); line-height: 1.6; }
+    .slip-name { font-size: 13px; color: var(--gold-dark); margin-top: 6px; font-weight: 600; }
+    .slip-required-err { font-size: 12px; color: var(--rose); margin-top: 6px; display: none; }
+
+    /* Buttons */
+    .btn-submit {
+      width: 100%; padding: 16px; background: var(--gold-dark); color: white; border: none;
+      font-family: 'Lato', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; transition: background .25s, transform .1s; margin-top: 8px; min-height: 52px;
+    }
+    .btn-submit:hover { background: var(--brown); }
+    .btn-submit:active { transform: scale(.99); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    .btn-back {
+      background: none; border: none; color: var(--brown-light); font-family: 'Lato', sans-serif;
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      padding: 0; margin-bottom: 28px; transition: color .2s; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .btn-back:hover { color: var(--brown); }
+
+    /* Loading / Success / Error */
+    .loading-wrap { text-align: center; padding: 40px 0 30px; }
+    .spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid var(--gold-border); border-top-color: var(--gold-dark); border-radius: 50%; animation: spin .8s linear infinite; margin-bottom: 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .success-wrap { text-align: center; padding: 10px 0; }
+    .success-icon { font-size: 40px; margin-bottom: 16px; }
+    .success-wrap h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 12px; }
+    .success-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
+
+    .error-wrap { text-align: center; padding: 10px 0; }
+    .error-icon { font-size: 40px; margin-bottom: 16px; }
+    .error-wrap h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; margin-bottom: 12px; }
+    .error-wrap p { color: var(--brown-light); font-size: 14px; line-height: 1.7; }
+
+    .link-back { display: inline-block; margin-top: 24px; color: var(--brown-light); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--gold-border); }
+    .link-back:hover { color: var(--gold-dark); }
+
+    footer { background: var(--brown); color: var(--peach); text-align: center; padding: 24px 20px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+
+    @media (max-width: 600px) {
+      .card { padding: 36px 22px; }
+      .method-grid { grid-template-columns: 1fr; }
+      .btn-method { flex-direction: row; min-height: 64px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">囍</div>
+  <div class="header-names">Nine &amp; Tom</div>
+  <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="th" onclick="setLang('th')">ไทย</button>
+  </div>
+</header>
+
+<main>
+<div class="card">
+
+  <!-- ── state-choose ──────────────────────────────── -->
+  <div class="state active" id="state-choose">
+    <h1 class="card-title" data-i18n="gift.title">Send a Monetary Gift</h1>
+    <p class="card-sub" data-i18n="gift.subtitle">Optional, and always from the heart</p>
+    <div class="divider"></div>
+    <div class="registry-note" data-i18n="gift.note">
+      We don't have a wedding registry — we only do monetary gifts, and even that is completely optional. Your presence with us today is more than enough. But if you'd like to give a little something extra, we're grateful for every kind gesture. 🌸
+    </div>
+    <p class="section-label" data-i18n="gift.choose">Choose a method</p>
+    <div class="method-grid">
+      <button class="btn-method" onclick="choosePP()" aria-label="Pay via PromptPay">
+        <span class="btn-method-icon">📱</span>
+        <span data-i18n="gift.pp.btn">PromptPay</span>
+      </button>
+      <button class="btn-method" onclick="chooseVenmo()" aria-label="Pay via Venmo">
+        <span class="btn-method-icon">💸</span>
+        <span data-i18n="gift.venmo.btn">Venmo</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── state-pp-qr ───────────────────────────────── -->
+  <div class="state" id="state-pp-qr">
+    <button class="btn-back" onclick="goBack()">← <span data-i18n="gift.back">Back</span></button>
+    <div class="qr-section">
+      <p class="section-label" data-i18n="gift.pp.qr.label">Scan to transfer via PromptPay</p>
+      <div class="qr-box">
+        <!-- Real QR image (shown when CONFIG.PROMPTPAY_QR_URL resolves) -->
+        <img class="qr-real" id="pp-qr-img" alt="PromptPay QR code" style="display:none">
+        <!-- Placeholder SVG (shown when image missing) -->
+        <div id="pp-qr-placeholder">
+          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="180" fill="white"/>
+            <rect x="10" y="10" width="50" height="50" stroke="#5c3d2e" stroke-width="4" fill="none"/>
+            <rect x="22" y="22" width="26" height="26" fill="#5c3d2e"/>
+            <rect x="120" y="10" width="50" height="50" stroke="#5c3d2e" stroke-width="4" fill="none"/>
+            <rect x="132" y="22" width="26" height="26" fill="#5c3d2e"/>
+            <rect x="10" y="120" width="50" height="50" stroke="#5c3d2e" stroke-width="4" fill="none"/>
+            <rect x="22" y="132" width="26" height="26" fill="#5c3d2e"/>
+            <rect x="72" y="10" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="88" y="10" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="104" y="10" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="10" y="72" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="10" y="88" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="10" y="104" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="72" y="120" width="8" height="8" fill="#5c3d2e" opacity="0.5"/>
+            <rect x="88" y="136" width="8" height="8" fill="#5c3d2e" opacity="0.4"/>
+            <rect x="104" y="120" width="8" height="8" fill="#5c3d2e" opacity="0.6"/>
+            <rect x="120" y="72" width="8" height="8" fill="#5c3d2e" opacity="0.5"/>
+            <rect x="136" y="88" width="8" height="8" fill="#5c3d2e" opacity="0.4"/>
+            <rect x="136" y="120" width="8" height="8" fill="#5c3d2e" opacity="0.6"/>
+            <rect x="152" y="136" width="8" height="8" fill="#5c3d2e" opacity="0.3"/>
+            <rect x="72" y="72" width="8" height="8" fill="#5c3d2e" opacity="0.3"/>
+            <rect x="104" y="88" width="8" height="8" fill="#5c3d2e" opacity="0.4"/>
+            <rect x="68" y="64" width="44" height="52" rx="3" fill="white" stroke="#d4b896"/>
+            <text x="90" y="84" text-anchor="middle" font-family="Lato,sans-serif" font-size="8" fill="#8a6552">PromptPay</text>
+            <text x="90" y="97" text-anchor="middle" font-family="Lato,sans-serif" font-size="7" fill="#c9a96e">QR Code</text>
+            <text x="90" y="109" text-anchor="middle" font-family="Lato,sans-serif" font-size="6" fill="#d4b896">add image to</text>
+            <text x="90" y="119" text-anchor="middle" font-family="Lato,sans-serif" font-size="6" fill="#d4b896">/assets/promptpay-qr.png</text>
+          </svg>
+        </div>
+      </div>
+      <div class="qr-actions">
+        <a class="btn-download" id="pp-download-btn" download="promptpay-qr.png" data-i18n="gift.download">↓ Save QR</a>
+      </div>
+      <button class="btn-submit" onclick="goToSlipForm()" data-i18n="gift.pp.transferred">I've transferred →</button>
+    </div>
+  </div>
+
+  <!-- ── state-pp-form ─────────────────────────────── -->
+  <div class="state" id="state-pp-form">
+    <button class="btn-back" onclick="showState('state-pp-qr')">← <span data-i18n="gift.back">Back</span></button>
+    <h2 class="card-title" style="font-size:22px;margin-bottom:6px" data-i18n="gift.slip.title">Upload your transfer slip</h2>
+    <p class="card-sub" style="font-size:14px;margin-bottom:24px" data-i18n="gift.slip.note">Please upload a screenshot of your transfer. Name and amount are optional — the slip usually has the details.</p>
+    <div class="divider"></div>
+
+    <div class="form-group">
+      <label for="g-name" data-i18n="gift.name.label">Your Name (optional)</label>
+      <input type="text" id="g-name" data-i18n-placeholder="gift.name.ph" placeholder="How shall we remember you?" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label for="g-amount" data-i18n="gift.amount.label">Amount (THB, optional)</label>
+      <input type="number" id="g-amount" min="1" data-i18n-placeholder="gift.amount.ph" placeholder="e.g. 500">
+    </div>
+    <div class="form-group">
+      <label for="g-note" data-i18n="gift.note.label">Note (optional)</label>
+      <textarea id="g-note" rows="2" data-i18n-placeholder="gift.note.ph" placeholder="A little message for Nine & Tom…"></textarea>
+    </div>
+    <div class="form-group">
+      <label data-i18n="gift.slip.label">Transfer Slip *</label>
+      <div class="slip-upload-area" id="slip-drop-zone" onclick="document.getElementById('slip-input').click()" role="button" tabindex="0" aria-label="Click to upload transfer slip">
+        <input type="file" id="slip-input" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf" onchange="handleSlipFile(this.files[0])">
+        <div id="slip-placeholder">
+          <div class="slip-icon">📎</div>
+          <div class="slip-hint" data-i18n="gift.slip.hint">Tap to upload — JPEG, PNG, WebP or PDF · Max 10 MB</div>
+        </div>
+        <div class="slip-name" id="slip-name" style="display:none"></div>
+        <div class="slip-required-err" id="slip-err" data-i18n="gift.slip.err">Please upload your transfer slip.</div>
+      </div>
+    </div>
+    <button class="btn-submit" id="btn-submit-slip" onclick="submitSlip()" data-i18n="gift.slip.submit">Submit Slip</button>
+  </div>
+
+  <!-- ── state-venmo-qr ────────────────────────────── -->
+  <div class="state" id="state-venmo-qr">
+    <button class="btn-back" onclick="goBack()">← <span data-i18n="gift.back">Back</span></button>
+    <div class="qr-section">
+      <p class="section-label" data-i18n="gift.venmo.qr.label">Scan to pay via Venmo</p>
+      <div class="qr-box">
+        <img class="qr-real" id="venmo-qr-img" alt="Venmo QR code" style="display:none">
+        <div id="venmo-qr-placeholder">
+          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="180" fill="white"/>
+            <rect x="10" y="10" width="50" height="50" stroke="#5c3d2e" stroke-width="4" fill="none"/>
+            <rect x="22" y="22" width="26" height="26" fill="#5c3d2e"/>
+            <rect x="120" y="10" width="50" height="50" stroke="#5c3d2e" stroke-width="4" fill="none"/>
+            <rect x="132" y="22" width="26" height="26" fill="#5c3d2e"/>
+            <rect x="10" y="120" width="50" height="50" stroke="#5c3d2e" stroke-width="4" fill="none"/>
+            <rect x="22" y="132" width="26" height="26" fill="#5c3d2e"/>
+            <rect x="72" y="10" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="88" y="10" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="104" y="10" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="10" y="72" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="10" y="88" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="10" y="104" width="8" height="8" fill="#5c3d2e"/>
+            <rect x="72" y="120" width="8" height="8" fill="#5c3d2e" opacity="0.5"/>
+            <rect x="88" y="136" width="8" height="8" fill="#5c3d2e" opacity="0.4"/>
+            <rect x="104" y="120" width="8" height="8" fill="#5c3d2e" opacity="0.6"/>
+            <rect x="120" y="72" width="8" height="8" fill="#5c3d2e" opacity="0.5"/>
+            <rect x="136" y="88" width="8" height="8" fill="#5c3d2e" opacity="0.4"/>
+            <rect x="136" y="120" width="8" height="8" fill="#5c3d2e" opacity="0.6"/>
+            <rect x="152" y="136" width="8" height="8" fill="#5c3d2e" opacity="0.3"/>
+            <rect x="72" y="72" width="8" height="8" fill="#5c3d2e" opacity="0.3"/>
+            <rect x="104" y="88" width="8" height="8" fill="#5c3d2e" opacity="0.4"/>
+            <rect x="68" y="64" width="44" height="52" rx="3" fill="white" stroke="#d4b896"/>
+            <text x="90" y="84" text-anchor="middle" font-family="Lato,sans-serif" font-size="10" fill="#8a6552">Venmo</text>
+            <text x="90" y="97" text-anchor="middle" font-family="Lato,sans-serif" font-size="7" fill="#c9a96e">QR Code</text>
+            <text x="90" y="109" text-anchor="middle" font-family="Lato,sans-serif" font-size="6" fill="#d4b896">add image to</text>
+            <text x="90" y="119" text-anchor="middle" font-family="Lato,sans-serif" font-size="6" fill="#d4b896">/assets/venmo-qr.png</text>
+          </svg>
+        </div>
+      </div>
+      <div class="qr-actions">
+        <a class="btn-download" id="venmo-download-btn" download="venmo-qr.png" data-i18n="gift.download">↓ Save QR</a>
+      </div>
+      <button class="btn-submit" onclick="venmoGiftSent()" data-i18n="gift.venmo.done">Done — Gift Sent ✓</button>
+    </div>
+  </div>
+
+  <!-- ── state-uploading ───────────────────────────── -->
+  <div class="state" id="state-uploading" aria-live="polite">
+    <div class="loading-wrap">
+      <div class="spinner" role="status" aria-label="Uploading"></div>
+      <p style="color:var(--brown-light);font-size:14px" data-i18n="gift.uploading">Sending your slip…</p>
+    </div>
+  </div>
+
+  <!-- ── state-success ─────────────────────────────── -->
+  <div class="state" id="state-success" aria-live="polite">
+    <div class="success-wrap">
+      <div class="success-icon" aria-hidden="true">🌸</div>
+      <h2 id="success-heading" data-i18n="gift.success.pp">Thank you — we received your gift slip 💛</h2>
+      <p data-i18n="gift.success.sub">We're so grateful for your generosity. With love, Nine &amp; Tom.</p>
+      <a href="../" class="link-back" data-i18n="gift.back.portal">← Back to portal</a>
+    </div>
+  </div>
+
+  <!-- ── state-error ───────────────────────────────── -->
+  <div class="state" id="state-error" aria-live="polite">
+    <div class="error-wrap">
+      <div class="error-icon" aria-hidden="true">💌</div>
+      <h2 data-i18n="gift.error.title">Something went wrong</h2>
+      <p id="error-msg" data-i18n="gift.error.msg">Could not send your slip. Please check your connection and try again.</p>
+      <button class="btn-submit" style="max-width:280px;margin:24px auto 0;display:block" onclick="retryFromError()" data-i18n="gift.retry">Try Again</button>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer>Nine &amp; Tom · July 11, 2027</footer>
+
+<script>
+  /* ── CONFIG ────────────────────────────────────────────────────────
+   * Replace placeholder values after creating your Assets and Apps Script.
+   */
+  var CONFIG = {
+    PROMPTPAY_QR_URL: '/wedding/assets/promptpay-qr.png',
+    VENMO_QR_URL:     '/wedding/assets/venmo-qr.png',
+    GIFT_ENDPOINT:    'PASTE_GIFT_APPS_SCRIPT_WEB_APP_URL_HERE',
+    MAX_SLIP_SIZE_MB: 10
+  };
+
+  /* ── Translations ─────────────────────────────────────────────────── */
+  var T = {
+    en: {
+      'gift.title':           'Send a Monetary Gift',
+      'gift.subtitle':        'Optional, and always from the heart',
+      'gift.note':            "We don't have a wedding registry — we only do monetary gifts, and even that is completely optional. Your presence with us today is more than enough. But if you'd like to give a little something extra, we're grateful for every kind gesture. 🌸",
+      'gift.choose':          'Choose a method',
+      'gift.pp.btn':          'PromptPay',
+      'gift.venmo.btn':       'Venmo',
+      'gift.back':            'Back',
+      'gift.download':        '↓ Save QR',
+      'gift.pp.qr.label':     'Scan to transfer via PromptPay',
+      'gift.pp.transferred':  "I've transferred →",
+      'gift.slip.title':      'Upload your transfer slip',
+      'gift.slip.note':       'Please upload a screenshot of your transfer. Name and amount are optional — the slip usually has the details.',
+      'gift.name.label':      'Your Name (optional)',
+      'gift.name.ph':         'How shall we remember you?',
+      'gift.amount.label':    'Amount (THB, optional)',
+      'gift.amount.ph':       'e.g. 500',
+      'gift.note.label':      'Note (optional)',
+      'gift.note.ph':         'A little message for Nine & Tom…',
+      'gift.slip.label':      'Transfer Slip *',
+      'gift.slip.hint':       'Tap to upload — JPEG, PNG, WebP or PDF · Max 10 MB',
+      'gift.slip.err':        'Please upload your transfer slip.',
+      'gift.slip.submit':     'Submit Slip',
+      'gift.venmo.qr.label':  'Scan to pay via Venmo',
+      'gift.venmo.done':      'Done — Gift Sent ✓',
+      'gift.uploading':       'Sending your slip…',
+      'gift.success.pp':      'Thank you — we received your gift slip 💛',
+      'gift.success.venmo':   'Thank you so much! Your gift means the world to us. 💛',
+      'gift.success.sub':     "We're so grateful for your generosity. With love, Nine &amp; Tom.",
+      'gift.error.title':     'Something went wrong',
+      'gift.error.msg':       'Could not send your slip. Please check your connection and try again.',
+      'gift.retry':           'Try Again',
+      'gift.back.portal':     '← Back to portal'
+    },
+    th: {
+      'gift.title':           'ส่งของขวัญเป็นเงิน',
+      'gift.subtitle':        'ไม่บังคับ และมาจากใจเสมอ',
+      'gift.note':            'เราไม่มีรายการของขวัญที่ลงทะเบียนไว้ — ของขวัญที่รับได้คือของขวัญเป็นเงิน และนั่นก็ไม่ได้บังคับเลยนะ การที่คุณมาร่วมงานด้วยวันนี้คือสิ่งที่พิเศษที่สุดสำหรับเราแล้ว แต่ถ้าอยากให้ของขวัญเพิ่มเติม ขอบคุณมากจากใจเลย 🌸',
+      'gift.choose':          'เลือกวิธีโอน',
+      'gift.pp.btn':          'พร้อมเพย์',
+      'gift.venmo.btn':       'Venmo',
+      'gift.back':            'ย้อนกลับ',
+      'gift.download':        '↓ บันทึก QR',
+      'gift.pp.qr.label':     'สแกนเพื่อโอนผ่านพร้อมเพย์',
+      'gift.pp.transferred':  'โอนเงินแล้ว →',
+      'gift.slip.title':      'อัปโหลดสลิปการโอน',
+      'gift.slip.note':       'กรุณาอัปโหลดสลิปการโอนเงิน ชื่อและจำนวนเงินไม่จำเป็นต้องกรอก เพราะมีในสลิปอยู่แล้ว',
+      'gift.name.label':      'ชื่อของคุณ (ไม่จำเป็น)',
+      'gift.name.ph':         'จะให้เราจำว่าอะไรดี?',
+      'gift.amount.label':    'จำนวนเงิน (บาท, ไม่จำเป็น)',
+      'gift.amount.ph':       'เช่น 500',
+      'gift.note.label':      'ข้อความ (ไม่จำเป็น)',
+      'gift.note.ph':         'ข้อความถึงไนน์กับทอม…',
+      'gift.slip.label':      'สลิปการโอน *',
+      'gift.slip.hint':       'แตะเพื่ออัปโหลด — JPEG, PNG, WebP หรือ PDF · ไม่เกิน 10 MB',
+      'gift.slip.err':        'กรุณาอัปโหลดสลิปการโอน',
+      'gift.slip.submit':     'ส่งสลิป',
+      'gift.venmo.qr.label':  'สแกนเพื่อจ่ายผ่าน Venmo',
+      'gift.venmo.done':      'เรียบร้อย — ส่งของขวัญแล้ว ✓',
+      'gift.uploading':       'กำลังส่งสลิป…',
+      'gift.success.pp':      'ขอบคุณมากนะ — รับสลิปของคุณแล้ว 💛',
+      'gift.success.venmo':   'ขอบคุณมากเลย ของขวัญของคุณมีความหมายมากสำหรับเรา 💛',
+      'gift.success.sub':     'ขอบคุณสำหรับน้ำใจที่ดีงามของคุณ ด้วยความรัก ไนน์ &amp; ทอม',
+      'gift.error.title':     'เกิดข้อผิดพลาด',
+      'gift.error.msg':       'ส่งสลิปไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อและลองใหม่อีกครั้ง',
+      'gift.retry':           'ลองอีกครั้ง',
+      'gift.back.portal':     '← กลับหน้าหลัก'
+    }
+  };
+
+  var currentLang = localStorage.getItem('wedding-lang') || 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('wedding-lang', lang);
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (T[lang] && T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-placeholder');
+      if (T[lang] && T[lang][key] !== undefined) el.placeholder = T[lang][key];
+    });
+    document.querySelectorAll('.lang-btn[data-lang="en"]').forEach(function(b) { b.classList.toggle('active', lang === 'en'); });
+    document.querySelectorAll('.lang-btn[data-lang="th"]').forEach(function(b) { b.classList.toggle('active', lang === 'th'); });
+    document.body.classList.toggle('lang-th', lang === 'th');
+    document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+  }
+
+  /* ── State helpers ─────────────────────────────────────────────────── */
+  var prevState   = 'state-choose';
+  var lastFormState = 'state-pp-form';
+  var selectedSlipFile = null;
+
+  function showState(id) {
+    document.querySelectorAll('.state').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() { showState(prevState); }
+
+  /* ── Guest token ───────────────────────────────────────────────────── */
+  function getGuestToken() {
+    return new URLSearchParams(window.location.search).get('guest') || '';
+  }
+
+  /* ── Method selection ─────────────────────────────────────────────── */
+  function choosePP() {
+    prevState = 'state-choose';
+    showState('state-pp-qr');
+  }
+
+  function chooseVenmo() {
+    prevState = 'state-choose';
+    showState('state-venmo-qr');
+  }
+
+  function goToSlipForm() {
+    showState('state-pp-form');
+  }
+
+  function venmoGiftSent() {
+    document.getElementById('success-heading').innerHTML =
+      T[currentLang]['gift.success.venmo'] || 'Thank you so much! Your gift means the world to us. 💛';
+    showState('state-success');
+  }
+
+  function retryFromError() {
+    showState(lastFormState);
+  }
+
+  /* ── Slip file handling ───────────────────────────────────────────── */
+  function handleSlipFile(file) {
+    if (!file) return;
+    var allowed = ['image/jpeg','image/png','image/webp','image/heic','image/heif','application/pdf'];
+    var maxBytes = CONFIG.MAX_SLIP_SIZE_MB * 1048576;
+
+    if (allowed.indexOf(file.type) === -1) {
+      alert('Please upload a JPEG, PNG, WebP, or PDF file.');
+      return;
+    }
+    if (file.size > maxBytes) {
+      alert('File is too large. Maximum size is ' + CONFIG.MAX_SLIP_SIZE_MB + ' MB.');
+      return;
+    }
+
+    selectedSlipFile = file;
+    var zone = document.getElementById('slip-drop-zone');
+    zone.classList.add('has-file');
+    document.getElementById('slip-placeholder').style.display = 'none';
+    var nameEl = document.getElementById('slip-name');
+    nameEl.style.display = 'block';
+    nameEl.textContent = file.name + ' (' + (file.size / 1048576).toFixed(1) + ' MB)';
+    document.getElementById('slip-err').style.display = 'none';
+  }
+
+  /* ── Submit slip (PromptPay) ───────────────────────────────────────── */
+  function submitSlip() {
+    if (!selectedSlipFile) {
+      document.getElementById('slip-err').style.display = 'block';
+      return;
+    }
+
+    var btn = document.getElementById('btn-submit-slip');
+    btn.disabled = true;
+    lastFormState = 'state-pp-form';
+    showState('state-uploading');
+
+    var reader = new FileReader();
+    reader.onload = function() {
+      var base64 = reader.result.split(',')[1];
+      var payload = {
+        guestToken:    getGuestToken(),
+        guestName:     (document.getElementById('g-name').value || '').trim(),
+        submittedAt:   new Date().toISOString(),
+        amountThb:     parseFloat(document.getElementById('g-amount').value) || null,
+        note:          (document.getElementById('g-note').value || '').trim(),
+        slipFileName:  selectedSlipFile.name,
+        slipMimeType:  selectedSlipFile.type,
+        slipBase64:    base64,
+        status:        'slip_uploaded',
+        source:        'static_promptpay',
+        userAgent:     navigator.userAgent
+      };
+
+      fetch(CONFIG.GIFT_ENDPOINT, {
+        method: 'POST',
+        body:   JSON.stringify(payload),
+        headers: { 'Content-Type': 'text/plain' }
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          document.getElementById('success-heading').innerHTML =
+            T[currentLang]['gift.success.pp'] || 'Thank you — we received your gift slip 💛';
+          showState('state-success');
+        } else {
+          btn.disabled = false;
+          document.getElementById('error-msg').textContent = data.error || 'Server error. Please try again.';
+          showState('state-error');
+        }
+      })
+      .catch(function() {
+        btn.disabled = false;
+        document.getElementById('error-msg').textContent =
+          'Could not reach the server. Please check your connection and try again.';
+        showState('state-error');
+      });
+    };
+    reader.onerror = function() {
+      btn.disabled = false;
+      document.getElementById('error-msg').textContent = 'Could not read the file. Please try again.';
+      showState('state-error');
+    };
+    reader.readAsDataURL(selectedSlipFile);
+  }
+
+  /* ── QR image loading ─────────────────────────────────────────────── */
+  function loadQrImage(imgId, placeholderId, url) {
+    var img = document.getElementById(imgId);
+    var placeholder = document.getElementById(placeholderId);
+    if (!url || url.indexOf('PASTE') !== -1) return; // still a placeholder constant
+    img.onload = function() {
+      img.style.display = 'block';
+      placeholder.style.display = 'none';
+    };
+    img.onerror = function() {
+      img.style.display = 'none';
+      placeholder.style.display = 'block';
+    };
+    img.src = url;
+  }
+
+  /* ── Init ─────────────────────────────────────────────────────────── */
+  setLang(currentLang);
+
+  loadQrImage('pp-qr-img',    'pp-qr-placeholder',    CONFIG.PROMPTPAY_QR_URL);
+  loadQrImage('venmo-qr-img', 'venmo-qr-placeholder', CONFIG.VENMO_QR_URL);
+
+  document.getElementById('pp-download-btn').href    = CONFIG.PROMPTPAY_QR_URL;
+  document.getElementById('venmo-download-btn').href = CONFIG.VENMO_QR_URL;
+
+  // Keyboard support for slip drop zone
+  document.getElementById('slip-drop-zone').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.getElementById('slip-input').click(); }
+  });
+</script>
+
+</body>
+</html>

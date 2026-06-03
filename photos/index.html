@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Photos — Nine &amp; Tom</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --peach:        #f5e6d8;
+      --peach-light:  #faf3ec;
+      --gold:         #c9a96e;
+      --gold-dark:    #8b6914;
+      --gold-border:  #d4b896;
+      --rose:         #e8968a;
+      --brown:        #5c3d2e;
+      --brown-light:  #8a6552;
+      --cream:        #fefaf6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Lato', sans-serif; background: var(--peach-light); color: var(--brown); min-height: 100vh; display: flex; flex-direction: column; }
+    body.lang-th { font-family: 'Sarabun', sans-serif; }
+    body.lang-th .card-title, body.lang-th .card-sub, body.lang-th .btn-submit,
+    body.lang-th .btn-view, body.lang-th label { font-family: 'Sarabun', sans-serif; }
+    body.lang-th .btn-submit, body.lang-th .btn-view { letter-spacing: 0.04em; }
+    body.lang-th .card-title { font-weight: 600; }
+
+    header { background: var(--peach); border-bottom: 1px solid var(--gold-border); padding: 24px 20px; text-align: center; position: relative; }
+    .header-ornament { font-size: 24px; color: var(--gold); opacity: .7; margin-bottom: 4px; }
+    .header-names { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; }
+    .header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--brown-light); margin-top: 3px; }
+    .lang-switcher { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); display: flex; align-items: center; gap: 4px; }
+    .lang-btn { background: none; border: none; font-family: 'Lato', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--brown-light); cursor: pointer; padding: 4px 2px; }
+    .lang-btn.active { color: var(--gold-dark); border-bottom: 1.5px solid var(--gold); }
+    .lang-sep { color: var(--gold-border); font-size: 10px; }
+
+    main { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 56px 20px 80px; }
+    .card { background: var(--cream); border: 1px solid var(--gold-border); max-width: 600px; width: 100%; padding: 50px 44px; position: relative; }
+    .card::before, .card::after { content: ''; position: absolute; width: 18px; height: 18px; border-color: var(--gold); border-style: solid; }
+    .card::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .card::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; text-align: center; margin-bottom: 6px; }
+    .card-sub { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; text-align: center; color: var(--gold-dark); margin-bottom: 32px; }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 0 28px; }
+
+    /* States */
+    .state { display: none; }
+    .state.active { display: block; }
+
+    /* Form */
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--brown-light); margin-bottom: 7px; }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--gold-border); background: white;
+      font-family: 'Lato', sans-serif; font-size: 14px; color: var(--brown); outline: none;
+      transition: border-color .25s; border-radius: 0; -webkit-appearance: none;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); }
+
+    /* File upload zone */
+    .file-zone {
+      border: 2px dashed var(--gold-border); padding: 32px 20px; text-align: center;
+      cursor: pointer; transition: border-color .2s, background .2s; background: white; margin-bottom: 16px;
+    }
+    .file-zone:hover, .file-zone.dragover { border-color: var(--gold); background: rgba(201,169,110,.05); }
+    .file-zone.has-files { border-color: var(--gold); border-style: solid; }
+    .file-zone input[type="file"] { position: absolute; width: 0; height: 0; opacity: 0; }
+    .file-zone-icon { font-size: 2.2rem; margin-bottom: 8px; }
+    .file-zone-label { font-size: 14px; color: var(--brown); margin-bottom: 4px; font-weight: 600; }
+    .file-zone-hint { font-size: 11px; color: var(--brown-light); line-height: 1.7; }
+
+    /* Preview list */
+    .file-list { margin-bottom: 20px; }
+    .file-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; background: white; border: 1px solid var(--gold-border);
+      margin-bottom: 8px; position: relative;
+    }
+    .file-thumb { width: 48px; height: 48px; object-fit: cover; flex-shrink: 0; border: 1px solid var(--gold-border); }
+    .file-thumb-placeholder { width: 48px; height: 48px; background: var(--peach); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid var(--gold-border); }
+    .file-info { flex: 1; min-width: 0; }
+    .file-name { font-size: 13px; color: var(--brown); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-size { font-size: 11px; color: var(--brown-light); margin-top: 2px; }
+    .file-status { font-size: 11px; margin-top: 2px; }
+    .file-status.error { color: var(--rose); }
+    .file-status.ok { color: var(--green, #8fa884); }
+    .file-remove { background: none; border: none; color: var(--brown-light); cursor: pointer; font-size: 16px; padding: 4px; flex-shrink: 0; }
+    .file-remove:hover { color: var(--rose); }
+
+    /* Progress */
+    .progress-text { text-align: center; font-size: 13px; color: var(--brown-light); margin-bottom: 8px; }
+
+    /* Buttons */
+    .btn-submit {
+      width: 100%; padding: 16px; background: var(--gold-dark); color: white; border: none;
+      font-family: 'Lato', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; transition: background .25s, transform .1s; margin-top: 4px; min-height: 52px;
+    }
+    .btn-submit:hover { background: var(--brown); }
+    .btn-submit:active { transform: scale(.99); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    .btn-view {
+      display: block; width: 100%; padding: 14px; margin-top: 12px;
+      background: transparent; color: var(--gold-dark); border: 1px solid var(--gold-border);
+      font-family: 'Lato', sans-serif; font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      cursor: pointer; text-decoration: none; text-align: center; transition: border-color .2s, background .2s;
+      min-height: 48px; line-height: 22px;
+    }
+    .btn-view:hover { border-color: var(--gold); background: rgba(201,169,110,.06); }
+
+    /* Loading / Success / Error */
+    .loading-wrap { text-align: center; padding: 40px 0 30px; }
+    .spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid var(--gold-border); border-top-color: var(--gold-dark); border-radius: 50%; animation: spin .8s linear infinite; margin-bottom: 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .success-wrap { text-align: center; padding: 10px 0; }
+    .success-icon { font-size: 40px; margin-bottom: 16px; }
+    .success-wrap h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 12px; }
+    .success-wrap p { color: var(--brown-light); font-size: 14px; line-height: 1.7; }
+
+    .error-wrap { text-align: center; padding: 10px 0; }
+    .error-icon { font-size: 40px; margin-bottom: 16px; }
+    .error-wrap h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; margin-bottom: 12px; }
+    .error-wrap p { color: var(--brown-light); font-size: 14px; line-height: 1.7; }
+
+    .btn-another {
+      display: inline-block; margin-top: 20px; padding: 13px 28px;
+      background: transparent; color: var(--gold-dark); border: 1px solid var(--gold-border);
+      font-family: 'Lato', sans-serif; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      cursor: pointer; transition: border-color .2s; min-height: 44px;
+    }
+    .btn-another:hover { border-color: var(--gold); }
+
+    .link-back { display: inline-block; margin-top: 16px; color: var(--brown-light); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--gold-border); }
+    .link-back:hover { color: var(--gold-dark); }
+
+    footer { background: var(--brown); color: var(--peach); text-align: center; padding: 24px 20px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+
+    @media (max-width: 600px) {
+      .card { padding: 36px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">囍</div>
+  <div class="header-names">Nine &amp; Tom</div>
+  <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="th" onclick="setLang('th')">ไทย</button>
+  </div>
+</header>
+
+<main>
+<div class="card">
+
+  <!-- ── state-form ───────────────────────────────── -->
+  <div class="state active" id="state-form">
+    <h1 class="card-title" data-i18n="photos.title">Share Your Photos</h1>
+    <p class="card-sub" data-i18n="photos.subtitle">Upload your favorite moments from today</p>
+    <div class="divider"></div>
+
+    <div class="form-group">
+      <label for="p-name" data-i18n="photos.name.label">Your Name (optional)</label>
+      <input type="text" id="p-name" data-i18n-placeholder="photos.name.ph" placeholder="How shall we remember you?" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label for="p-caption" data-i18n="photos.caption.label">Caption (optional)</label>
+      <input type="text" id="p-caption" data-i18n-placeholder="photos.caption.ph" placeholder="A short note about these photos…">
+    </div>
+
+    <div class="form-group">
+      <label data-i18n="photos.files.label">Photos</label>
+      <div class="file-zone" id="file-zone" onclick="document.getElementById('photo-input').click()" role="button" tabindex="0" aria-label="Click to select photos">
+        <input type="file" id="photo-input" multiple accept="image/jpeg,image/png,image/webp,image/heic,image/heif" onchange="handleFiles(this.files)">
+        <div id="fz-empty">
+          <div class="file-zone-icon" aria-hidden="true">📷</div>
+          <div class="file-zone-label" data-i18n="photos.files.cta">Choose Photos</div>
+          <div class="file-zone-hint" data-i18n="photos.files.hint">Up to 10 photos · Max 15 MB each · JPEG, PNG, WebP</div>
+        </div>
+        <div id="fz-selected" style="display:none">
+          <div class="file-zone-label" data-i18n="photos.files.change">Tap to add more photos</div>
+        </div>
+      </div>
+      <div class="file-list" id="file-list"></div>
+    </div>
+
+    <div class="progress-text" id="upload-progress" style="display:none" aria-live="polite"></div>
+    <button class="btn-submit" id="btn-upload" onclick="uploadPhotos()" disabled data-i18n="photos.upload.btn">Upload Photos</button>
+
+    <a id="view-photos-link" href="#" class="btn-view" target="_blank" rel="noopener noreferrer" data-i18n="photos.view.btn">View Shared Photos →</a>
+  </div>
+
+  <!-- ── state-uploading ─────────────────────────── -->
+  <div class="state" id="state-uploading" aria-live="polite">
+    <div class="loading-wrap">
+      <div class="spinner" role="status" aria-label="Uploading"></div>
+      <p id="uploading-text" style="color:var(--brown-light);font-size:14px" data-i18n="photos.uploading">Uploading your photos…</p>
+    </div>
+  </div>
+
+  <!-- ── state-success ───────────────────────────── -->
+  <div class="state" id="state-success" aria-live="polite">
+    <div class="success-wrap">
+      <div class="success-icon" aria-hidden="true">🌸</div>
+      <h2 data-i18n="photos.success">Thank you — your photos were uploaded 💛</h2>
+      <p data-i18n="photos.success.note">Photos will appear in the shared album once reviewed.</p>
+      <a id="view-link-success" href="#" class="btn-view" style="margin-top:20px" target="_blank" rel="noopener noreferrer" data-i18n="photos.view.btn">View Shared Photos →</a>
+      <br>
+      <button class="btn-another" onclick="resetForm()" data-i18n="photos.upload.another">Upload more photos</button>
+      <br>
+      <a href="../" class="link-back" data-i18n="photos.back.portal">← Back to portal</a>
+    </div>
+  </div>
+
+  <!-- ── state-error ─────────────────────────────── -->
+  <div class="state" id="state-error" aria-live="polite">
+    <div class="error-wrap">
+      <div class="error-icon" aria-hidden="true">💌</div>
+      <h2 data-i18n="photos.error.title">Something went wrong</h2>
+      <p id="error-msg" data-i18n="photos.error.msg">Could not upload your photos. Please check your connection and try again.</p>
+      <button class="btn-submit" style="max-width:280px;margin:24px auto 0;display:block" onclick="showState('state-form')" data-i18n="photos.retry">Try Again</button>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer>Nine &amp; Tom · July 11, 2027</footer>
+
+<script>
+  /* ── CONFIG ─────────────────────────────────────────────────────────
+   * Replace placeholder values after setting up Apps Script and Drive.
+   */
+  var CONFIG = {
+    PHOTOS_ENDPOINT:    'PASTE_PHOTOS_APPS_SCRIPT_WEB_APP_URL_HERE',
+    PHOTOS_FOLDER_URL:  'PASTE_SHARED_GOOGLE_DRIVE_FOLDER_URL_HERE',
+    MAX_FILES:          10,
+    MAX_SIZE_MB:        15,
+    MAX_DIMENSION:      1600
+  };
+
+  /* ── Translations ────────────────────────────────────────────────── */
+  var T = {
+    en: {
+      'photos.title':          'Share Your Photos',
+      'photos.subtitle':       'Upload your favorite moments from today',
+      'photos.name.label':     'Your Name (optional)',
+      'photos.name.ph':        'How shall we remember you?',
+      'photos.caption.label':  'Caption (optional)',
+      'photos.caption.ph':     'A short note about these photos…',
+      'photos.files.label':    'Photos',
+      'photos.files.cta':      'Choose Photos',
+      'photos.files.hint':     'Up to 10 photos · Max 15 MB each · JPEG, PNG, WebP',
+      'photos.files.change':   'Tap to add more photos',
+      'photos.upload.btn':     'Upload Photos',
+      'photos.view.btn':       'View Shared Photos →',
+      'photos.uploading':      'Uploading your photos…',
+      'photos.success':        'Thank you — your photos were uploaded 💛',
+      'photos.success.note':   'Photos will appear in the shared album once reviewed.',
+      'photos.upload.another': 'Upload more photos',
+      'photos.back.portal':    '← Back to portal',
+      'photos.error.title':    'Something went wrong',
+      'photos.error.msg':      'Could not upload your photos. Please check your connection and try again.',
+      'photos.retry':          'Try Again'
+    },
+    th: {
+      'photos.title':          'แชร์รูปภาพ',
+      'photos.subtitle':       'อัปโหลดรูปที่ชอบจากวันนี้',
+      'photos.name.label':     'ชื่อของคุณ (ไม่จำเป็น)',
+      'photos.name.ph':        'จะให้เราจำว่าอะไรดี?',
+      'photos.caption.label':  'คำบรรยาย (ไม่จำเป็น)',
+      'photos.caption.ph':     'คำอธิบายสั้นๆ เกี่ยวกับรูปเหล่านี้…',
+      'photos.files.label':    'รูปภาพ',
+      'photos.files.cta':      'เลือกรูปภาพ',
+      'photos.files.hint':     'ได้สูงสุด 10 รูป · แต่ละรูปไม่เกิน 15 MB · JPEG, PNG, WebP',
+      'photos.files.change':   'แตะเพื่อเพิ่มรูปภาพ',
+      'photos.upload.btn':     'อัปโหลดรูปภาพ',
+      'photos.view.btn':       'ดูรูปที่แชร์ →',
+      'photos.uploading':      'กำลังอัปโหลดรูปภาพ…',
+      'photos.success':        'ขอบคุณมากนะ — อัปโหลดรูปสำเร็จแล้ว 💛',
+      'photos.success.note':   'รูปของคุณจะปรากฏในอัลบั้มหลังจากตรวจสอบแล้ว',
+      'photos.upload.another': 'อัปโหลดรูปเพิ่มเติม',
+      'photos.back.portal':    '← กลับหน้าหลัก',
+      'photos.error.title':    'เกิดข้อผิดพลาด',
+      'photos.error.msg':      'ไม่สามารถอัปโหลดรูปได้ กรุณาตรวจสอบการเชื่อมต่อและลองใหม่',
+      'photos.retry':          'ลองอีกครั้ง'
+    }
+  };
+
+  var currentLang = localStorage.getItem('wedding-lang') || 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('wedding-lang', lang);
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (T[lang] && T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-placeholder');
+      if (T[lang] && T[lang][key] !== undefined) el.placeholder = T[lang][key];
+    });
+    document.querySelectorAll('.lang-btn[data-lang="en"]').forEach(function(b) { b.classList.toggle('active', lang === 'en'); });
+    document.querySelectorAll('.lang-btn[data-lang="th"]').forEach(function(b) { b.classList.toggle('active', lang === 'th'); });
+    document.body.classList.toggle('lang-th', lang === 'th');
+    document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+  }
+
+  /* ── State helpers ───────────────────────────────────────────────── */
+  function showState(id) {
+    document.querySelectorAll('.state').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function getGuestToken() {
+    return new URLSearchParams(window.location.search).get('guest') || '';
+  }
+
+  /* ── File management ─────────────────────────────────────────────── */
+  var selectedFiles = [];
+
+  function handleFiles(fileList) {
+    var newFiles = Array.from(fileList);
+    newFiles.forEach(function(file) {
+      if (selectedFiles.length >= CONFIG.MAX_FILES) return;
+      // Avoid duplicate filenames
+      var exists = selectedFiles.some(function(f) { return f.name === file.name && f.size === file.size; });
+      if (!exists) selectedFiles.push(file);
+    });
+    // Reset input so the same file can be re-added after removal
+    document.getElementById('photo-input').value = '';
+    renderFileList();
+  }
+
+  function removeFile(idx) {
+    selectedFiles.splice(idx, 1);
+    renderFileList();
+  }
+
+  function renderFileList() {
+    var list = document.getElementById('file-list');
+    var fzEmpty = document.getElementById('fz-empty');
+    var fzSelected = document.getElementById('fz-selected');
+    var zone = document.getElementById('file-zone');
+    var btn = document.getElementById('btn-upload');
+
+    list.innerHTML = '';
+
+    if (selectedFiles.length === 0) {
+      fzEmpty.style.display = 'block';
+      fzSelected.style.display = 'none';
+      zone.classList.remove('has-files');
+      btn.disabled = true;
+      return;
+    }
+
+    fzEmpty.style.display = 'none';
+    fzSelected.style.display = 'block';
+    zone.classList.add('has-files');
+
+    var anyValid = false;
+
+    selectedFiles.forEach(function(file, i) {
+      var item = document.createElement('div');
+      item.className = 'file-item';
+
+      // Thumbnail
+      if (file.type.startsWith('image/') && file.type !== 'image/heic' && file.type !== 'image/heif') {
+        var img = document.createElement('img');
+        img.className = 'file-thumb';
+        img.alt = file.name;
+        img.src = URL.createObjectURL(file);
+      } else {
+        var img = document.createElement('div');
+        img.className = 'file-thumb-placeholder';
+        img.innerHTML = '🖼';
+      }
+      item.appendChild(img);
+
+      // Info
+      var info = document.createElement('div');
+      info.className = 'file-info';
+      var name = document.createElement('div');
+      name.className = 'file-name';
+      name.textContent = file.name;
+      var size = document.createElement('div');
+      size.className = 'file-size';
+      size.textContent = (file.size / 1048576).toFixed(1) + ' MB';
+      info.appendChild(name);
+      info.appendChild(size);
+
+      // Validation
+      var status = document.createElement('div');
+      var maxBytes = CONFIG.MAX_SIZE_MB * 1048576;
+      if (file.size > maxBytes) {
+        status.className = 'file-status error';
+        status.textContent = 'Too large (max ' + CONFIG.MAX_SIZE_MB + ' MB)';
+      } else {
+        status.className = 'file-status ok';
+        status.textContent = '✓';
+        anyValid = true;
+      }
+      info.appendChild(status);
+      item.appendChild(info);
+
+      // Remove button
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'file-remove';
+      removeBtn.innerHTML = '&times;';
+      removeBtn.setAttribute('aria-label', 'Remove ' + file.name);
+      removeBtn.setAttribute('data-idx', i);
+      removeBtn.onclick = function() { removeFile(parseInt(this.getAttribute('data-idx'))); };
+      item.appendChild(removeBtn);
+
+      list.appendChild(item);
+    });
+
+    btn.disabled = !anyValid;
+  }
+
+  /* ── Canvas resize ───────────────────────────────────────────────── */
+  function resizeImage(file) {
+    return new Promise(function(resolve) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+          var w = img.width, h = img.height;
+          var max = CONFIG.MAX_DIMENSION;
+          if (w > max || h > max) {
+            if (w > h) { h = Math.round(h * max / w); w = max; }
+            else       { w = Math.round(w * max / h); h = max; }
+          }
+          var canvas = document.createElement('canvas');
+          canvas.width  = w;
+          canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          var outMime = (file.type === 'image/png') ? 'image/png' : 'image/jpeg';
+          var dataUrl = canvas.toDataURL(outMime, 0.88);
+          resolve({ dataUrl: dataUrl, mimeType: outMime });
+        };
+        img.onerror = function() {
+          // If canvas can't decode (e.g. HEIC), fall back to raw base64
+          resolve({ dataUrl: e.target.result, mimeType: file.type });
+        };
+        img.src = e.target.result;
+      };
+      reader.onerror = function() {
+        resolve(null);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* ── Upload ──────────────────────────────────────────────────────── */
+  async function uploadPhotos() {
+    var validFiles = selectedFiles.filter(function(f) { return f.size <= CONFIG.MAX_SIZE_MB * 1048576; });
+    if (validFiles.length === 0) return;
+
+    var btn = document.getElementById('btn-upload');
+    btn.disabled = true;
+    showState('state-uploading');
+
+    var name    = document.getElementById('p-name').value.trim();
+    var caption = document.getElementById('p-caption').value.trim();
+    var token   = getGuestToken();
+    var total   = validFiles.length;
+    var uploaded = 0;
+    var errors   = 0;
+
+    for (var i = 0; i < validFiles.length; i++) {
+      var file = validFiles[i];
+      document.getElementById('uploading-text').textContent =
+        'Uploading photo ' + (i + 1) + ' of ' + total + '…';
+
+      try {
+        var result = await resizeImage(file);
+        if (!result) { errors++; continue; }
+
+        var base64 = result.dataUrl.split(',')[1];
+        var payload = {
+          guestToken:       token,
+          guestName:        name,
+          caption:          caption,
+          submittedAt:      new Date().toISOString(),
+          fileName:         file.name,
+          mimeType:         result.mimeType,
+          imageBase64:      base64,
+          userAgent:        navigator.userAgent
+        };
+
+        var res  = await fetch(CONFIG.PHOTOS_ENDPOINT, {
+          method:  'POST',
+          body:    JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain' }
+        });
+        var data = await res.json();
+        if (data.success) { uploaded++; } else { errors++; }
+      } catch (err) {
+        errors++;
+      }
+    }
+
+    if (uploaded > 0) {
+      showState('state-success');
+    } else {
+      document.getElementById('error-msg').textContent =
+        'None of the photos could be uploaded. Please check your connection and try again.';
+      showState('state-error');
+    }
+  }
+
+  /* ── Reset (for shared devices) ──────────────────────────────────── */
+  function resetForm() {
+    selectedFiles = [];
+    document.getElementById('p-name').value    = '';
+    document.getElementById('p-caption').value = '';
+    document.getElementById('photo-input').value = '';
+    renderFileList();
+    showState('state-form');
+  }
+
+  /* ── Init ────────────────────────────────────────────────────────── */
+  setLang(currentLang);
+
+  // Wire up shared photos view link
+  var folderUrl = CONFIG.PHOTOS_FOLDER_URL;
+  if (folderUrl && folderUrl.indexOf('PASTE') === -1) {
+    document.getElementById('view-photos-link').href    = folderUrl;
+    document.getElementById('view-link-success').href   = folderUrl;
+  } else {
+    // Hide view button until folder URL is configured
+    document.getElementById('view-photos-link').style.display  = 'none';
+    document.getElementById('view-link-success').style.display = 'none';
+  }
+
+  // Keyboard support for file zone
+  document.getElementById('file-zone').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.getElementById('photo-input').click(); }
+  });
+
+  // Drag-and-drop support
+  var zone = document.getElementById('file-zone');
+  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
+  });
+</script>
+
+</body>
+</html>

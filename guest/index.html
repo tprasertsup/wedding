@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You're Welcome Here — Nine &amp; Tom</title>
+  <title>Nine &amp; Tom — July 11, 2027</title>
   <link rel="icon" href="../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --peach:        #f5e6d8;
@@ -16,7 +16,6 @@
       --gold-dark:    #8b6914;
       --gold-border:  #d4b896;
       --rose:         #e8968a;
-      --green:        #8fa884;
       --brown:        #5c3d2e;
       --brown-light:  #8a6552;
       --cream:        #fefaf6;
@@ -33,17 +32,32 @@
       flex-direction: column;
     }
 
+    body.lang-th {
+      font-family: 'Sarabun', sans-serif;
+    }
+    body.lang-th .card-title,
+    body.lang-th .card-desc,
+    body.lang-th .portal-title,
+    body.lang-th .portal-subtitle,
+    body.lang-th .header-names {
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 600;
+    }
+    body.lang-th .portal-eyebrow { font-family: 'Sarabun', sans-serif; }
+    body.lang-th .portal-title { font-size: clamp(1.8rem, 4.5vw, 2.6rem); }
+
     /* ---- Header ---- */
     header {
       background: var(--peach);
       border-bottom: 1px solid var(--gold-border);
-      padding: 28px 20px;
+      padding: 24px 20px;
       text-align: center;
+      position: relative;
     }
-    .header-ornament { font-size: 28px; color: var(--gold); opacity: .7; margin-bottom: 6px; }
+    .header-ornament { font-size: 24px; color: var(--gold); opacity: .7; margin-bottom: 4px; }
     .header-names {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 400;
       color: var(--brown);
     }
@@ -52,8 +66,31 @@
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--brown-light);
-      margin-top: 4px;
+      margin-top: 3px;
     }
+
+    .lang-switcher {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      cursor: pointer;
+      padding: 4px 2px;
+    }
+    .lang-btn.active { color: var(--gold-dark); border-bottom: 1.5px solid var(--gold); }
+    .lang-sep { color: var(--gold-border); font-size: 10px; }
 
     /* ---- Main ---- */
     main {
@@ -61,82 +98,80 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 60px 20px 80px;
+      padding: 52px 20px 72px;
     }
 
     /* ---- Hero ---- */
     .portal-hero {
       text-align: center;
-      max-width: 560px;
-      margin: 0 auto 20px;
+      max-width: 480px;
+      margin: 0 auto 44px;
     }
     .portal-eyebrow {
       font-size: 10px;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--brown-light);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .portal-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
       font-weight: 400;
       color: var(--brown);
-      margin-bottom: 14px;
-      line-height: 1.2;
+      margin-bottom: 12px;
+      line-height: 1.25;
     }
     .ornament {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.9rem;
       justify-content: center;
-      margin: 18px 0;
+      margin: 14px 0;
     }
     .ornament-line {
       flex: 1;
-      max-width: 80px;
+      max-width: 70px;
       height: 1px;
       background: linear-gradient(to right, transparent, var(--gold-border));
     }
-    .ornament-line:last-child {
-      background: linear-gradient(to left, transparent, var(--gold-border));
-    }
+    .ornament-line:last-child { background: linear-gradient(to left, transparent, var(--gold-border)); }
     .ornament-diamond {
-      width: 7px; height: 7px;
+      width: 6px; height: 6px;
       border: 1.5px solid var(--gold);
       transform: rotate(45deg);
     }
     .portal-subtitle {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-style: italic;
       color: var(--brown-light);
       line-height: 1.65;
     }
 
-    /* ---- Cards grid ---- */
+    /* ---- Cards ---- */
     .portal-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      max-width: 900px;
+      gap: 1.4rem;
+      max-width: 860px;
       width: 100%;
-      margin-bottom: 2.5rem;
     }
 
     .portal-card {
       background: var(--cream);
       border: 1px solid var(--gold-border);
-      padding: 2.2rem 1.8rem 2rem;
+      padding: 2.4rem 1.6rem 2rem;
       text-decoration: none;
       color: var(--brown);
       position: relative;
-      transition: border-color .25s, box-shadow .25s;
+      transition: border-color .25s, box-shadow .25s, transform .15s;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
+      cursor: pointer;
     }
     .portal-card::before, .portal-card::after {
       content: '';
@@ -147,76 +182,66 @@
     }
     .portal-card::before { top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px; }
     .portal-card::after  { bottom: 6px; right: 6px; border-width: 0 1.5px 1.5px 0; }
-    .portal-card:hover {
+    .portal-card:hover, .portal-card:focus {
       border-color: var(--gold);
-      box-shadow: 0 4px 24px rgba(201,169,110,.18);
+      box-shadow: 0 6px 28px rgba(201,169,110,.2);
+      transform: translateY(-2px);
+      outline: none;
     }
+    .portal-card:active { transform: translateY(0); }
 
-    .portal-card-icon { font-size: 2rem; margin-bottom: 4px; }
-    .portal-card-title {
+    .card-icon { font-size: 2.2rem; margin-bottom: 6px; }
+    .card-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.45rem;
+      font-size: 1.4rem;
       font-weight: 400;
       color: var(--brown);
+      line-height: 1.3;
     }
-    .portal-card-desc {
-      font-size: 13px;
+    .card-desc {
+      font-size: 12.5px;
       color: var(--brown-light);
       line-height: 1.65;
-      margin-bottom: 8px;
+      margin-top: 2px;
     }
-
-    /* QR code inside each card */
-    .card-qr-wrap {
-      margin-top: 10px;
-      padding-top: 14px;
-      border-top: 1px solid var(--gold-border);
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
+    .card-arrow {
+      margin-top: 12px;
+      font-size: 18px;
+      color: var(--gold);
+      transition: transform .2s;
     }
-    .card-qr-label {
-      font-size: 9px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--brown-light);
-    }
-
-    /* ---- Print QR link ---- */
-    .print-link {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--brown-light);
-      text-decoration: none;
-      border-bottom: 1px solid var(--gold-border);
-      padding-bottom: 1px;
-      transition: color .2s, border-color .2s;
-    }
-    .print-link:hover { color: var(--gold-dark); border-color: var(--gold); }
+    .portal-card:hover .card-arrow { transform: translateX(4px); }
 
     /* ---- Footer ---- */
     footer {
       background: var(--brown);
       color: var(--peach);
       text-align: center;
-      padding: 28px 20px;
-      font-size: 12px;
+      padding: 24px 20px;
+      font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
     /* ---- Responsive ---- */
-    @media (max-width: 768px) {
+    @media (max-width: 720px) {
       .portal-grid {
         grid-template-columns: 1fr;
         max-width: 420px;
       }
+      .portal-card {
+        padding: 2rem 1.6rem;
+        flex-direction: row;
+        text-align: left;
+        gap: 1.2rem;
+      }
+      .card-icon { font-size: 2rem; flex-shrink: 0; margin-bottom: 0; }
+      .card-text-wrap { display: flex; flex-direction: column; gap: 3px; }
+      .card-arrow { margin-top: 0; margin-left: auto; align-self: center; }
     }
-    @media (max-width: 480px) {
-      .portal-card { padding: 1.8rem 1.4rem 1.6rem; }
+
+    @media (max-width: 400px) {
+      .lang-switcher { right: 12px; }
     }
   </style>
 </head>
@@ -226,12 +251,17 @@
   <div class="header-ornament">囍</div>
   <div class="header-names">Nine &amp; Tom</div>
   <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="th" onclick="setLang('th')">ไทย</button>
+  </div>
 </header>
 
 <main>
   <div class="portal-hero">
-    <p class="portal-eyebrow">A little corner, just for you</p>
-    <h1 class="portal-title">You're so welcome here</h1>
+    <p class="portal-eyebrow" data-i18n="portal.eyebrow">July 11, 2027</p>
+    <h1 class="portal-title" data-i18n="portal.title">A little something for today</h1>
     <div class="ornament" aria-hidden="true">
       <div class="ornament-line"></div>
       <div class="ornament-diamond"></div>
@@ -239,70 +269,91 @@
       <div class="ornament-diamond"></div>
       <div class="ornament-line"></div>
     </div>
-    <p class="portal-subtitle">Pick anything you'd like to do — or just read, no pressure at all.</p>
+    <p class="portal-subtitle" data-i18n="portal.subtitle">No pressure — but we'd love any of these.</p>
   </div>
 
-  <div class="portal-grid" role="list">
+  <div class="portal-grid">
 
-    <a class="portal-card" id="card-moments" href="/wedding/moments/" role="listitem">
-      <div class="portal-card-icon" aria-hidden="true">🎙</div>
-      <div class="portal-card-title">Leave a Blessing</div>
-      <div class="portal-card-desc">A voice message or written note — whatever feels right.</div>
-      <div class="card-qr-wrap">
-        <span class="card-qr-label">Scan with your phone</span>
-        <div id="qr-moments"></div>
+    <a class="portal-card" id="card-moments" href="/wedding/moments/">
+      <div class="card-icon" aria-hidden="true">🎙</div>
+      <div class="card-text-wrap">
+        <div class="card-title" data-i18n="portal.c1.title">Leave a Blessing</div>
+        <div class="card-desc" data-i18n="portal.c1.desc">A voice message or written note for Nine &amp; Tom</div>
       </div>
+      <div class="card-arrow" aria-hidden="true">›</div>
     </a>
 
-    <a class="portal-card" id="card-gift" href="/wedding/gift/" role="listitem">
-      <div class="portal-card-icon" aria-hidden="true">🎁</div>
-      <div class="portal-card-title">Send a Gift</div>
-      <div class="portal-card-desc">PromptPay or a note of love — it all means the world.</div>
-      <div class="card-qr-wrap">
-        <span class="card-qr-label">Scan with your phone</span>
-        <div id="qr-gift"></div>
+    <a class="portal-card" id="card-gift" href="/wedding/gift/">
+      <div class="card-icon" aria-hidden="true">🎁</div>
+      <div class="card-text-wrap">
+        <div class="card-title" data-i18n="portal.c2.title">Send a Gift</div>
+        <div class="card-desc" data-i18n="portal.c2.desc">PromptPay or Venmo — thank you so much</div>
       </div>
+      <div class="card-arrow" aria-hidden="true">›</div>
     </a>
 
-    <a class="portal-card" id="card-photos" href="/wedding/photos/" role="listitem">
-      <div class="portal-card-icon" aria-hidden="true">📷</div>
-      <div class="portal-card-title">Share Photos</div>
-      <div class="portal-card-desc">Drop in anything you've captured — we'd love to keep them.</div>
-      <div class="card-qr-wrap">
-        <span class="card-qr-label">Scan with your phone</span>
-        <div id="qr-photos"></div>
+    <a class="portal-card" id="card-photos" href="/wedding/photos/">
+      <div class="card-icon" aria-hidden="true">📷</div>
+      <div class="card-text-wrap">
+        <div class="card-title" data-i18n="portal.c3.title">Share Photos</div>
+        <div class="card-desc" data-i18n="portal.c3.desc">Upload your favorite moments from today</div>
       </div>
+      <div class="card-arrow" aria-hidden="true">›</div>
     </a>
 
   </div>
-
-  <a href="print.html" class="print-link">View QR codes for printing →</a>
 </main>
 
 <footer>Nine &amp; Tom · July 11, 2027</footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
-        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSe2HkjufsD6EDzBmDtIuNf8l3t7JNuPyBj6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-  var BASE = 'https://tprasertsup.github.io/wedding/';
-
-  var QR_OPTS = {
-    width:        100,
-    height:       100,
-    colorDark:    '#5c3d2e',
-    colorLight:   '#fefaf6',
-    correctLevel: QRCode.CorrectLevel.M
+  var T = {
+    en: {
+      'portal.eyebrow':  'July 11, 2027',
+      'portal.title':    'A little something for today',
+      'portal.subtitle': "No pressure — but we'd love any of these.",
+      'portal.c1.title': 'Leave a Blessing',
+      'portal.c1.desc':  'A voice message or written note for Nine &amp; Tom',
+      'portal.c2.title': 'Send a Gift',
+      'portal.c2.desc':  'PromptPay or Venmo — thank you so much',
+      'portal.c3.title': 'Share Photos',
+      'portal.c3.desc':  'Upload your favorite moments from today'
+    },
+    th: {
+      'portal.eyebrow':  '11 กรกฎาคม 2570',
+      'portal.title':    'สำหรับวันนี้',
+      'portal.subtitle': 'ไม่ได้บังคับ แต่จะดีใจมากถ้าคุณลองทำดู',
+      'portal.c1.title': 'ฝากคำอวยพร',
+      'portal.c1.desc':  'บันทึกเสียงหรือเขียนข้อความถึงไนน์กับทอม',
+      'portal.c2.title': 'ส่งของขวัญ',
+      'portal.c2.desc':  'PromptPay หรือ Venmo — ขอบคุณมากนะ',
+      'portal.c3.title': 'แชร์รูปภาพ',
+      'portal.c3.desc':  'อัปโหลดรูปที่ชอบจากวันนี้'
+    }
   };
 
-  // Render QR codes into each card
-  if (typeof QRCode !== 'undefined') {
-    new QRCode(document.getElementById('qr-moments'), Object.assign({}, QR_OPTS, { text: BASE + 'moments/' }));
-    new QRCode(document.getElementById('qr-gift'),    Object.assign({}, QR_OPTS, { text: BASE + 'gift/'    }));
-    new QRCode(document.getElementById('qr-photos'),  Object.assign({}, QR_OPTS, { text: BASE + 'photos/'  }));
+  var currentLang = localStorage.getItem('wedding-lang') || 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('wedding-lang', lang);
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (T[lang] && T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+    });
+    document.querySelectorAll('.lang-btn[data-lang="en"]').forEach(function(b) {
+      b.classList.toggle('active', lang === 'en');
+    });
+    document.querySelectorAll('.lang-btn[data-lang="th"]').forEach(function(b) {
+      b.classList.toggle('active', lang === 'th');
+    });
+    document.body.classList.toggle('lang-th', lang === 'th');
+    document.documentElement.lang = lang === 'th' ? 'th' : 'en';
   }
 
-  // Pass guest token through to feature page links (but NOT into the QR codes)
+  setLang(currentLang);
+
+  // Pass guest token to child pages via link href (QR codes always use base URL)
   (function() {
     var guest = new URLSearchParams(window.location.search).get('guest');
     if (!guest) return;
