@@ -213,6 +213,7 @@
     .form-group input:focus,
     .form-group textarea:focus { border-color: var(--gold); }
     .form-group textarea { resize: vertical; min-height: 130px; }
+    .field-required-err { font-size: 12px; color: var(--rose); margin-top: 6px; display: none; }
 
     /* ---- Tab bar ---- */
     .tab-bar {
@@ -406,7 +407,7 @@
       <div class="divider"></div>
 
       <div class="form-group">
-        <label for="m-name" data-i18n="moments.name.label">Your Name (optional)</label>
+        <label for="m-name" data-i18n="moments.name.label">Your Name</label>
         <input type="text" id="m-name" data-i18n-placeholder="moments.name.ph" placeholder="How shall we remember you?" autocomplete="name">
       </div>
 
@@ -448,12 +449,13 @@
       <!-- Text panel -->
       <div id="panel-text" role="tabpanel" aria-labelledby="tab-text" style="display:none">
         <div class="form-group">
-          <label for="m-text" data-i18n="moments.blessing.label">Your Blessing</label>
+          <label for="m-text" data-i18n="moments.blessing.label">Your Blessing *</label>
           <textarea id="m-text"
             data-i18n-placeholder="moments.blessing.ph"
             placeholder="Share a wish, a memory, or a few words of love for Nine and Tom…"
             aria-required="true"
             style="border-color:var(--gold);background:#fffdf9"></textarea>
+          <div class="field-required-err" id="blessing-err" data-i18n="moments.blessing.err">Please write your blessing.</div>
         </div>
         <button class="btn-submit" id="btn-submit-text" onclick="submitText()" data-i18n="moments.submit.text">
           Send Written Blessing
@@ -526,7 +528,7 @@
     en: {
       'moments.title':          'Leave us a little blessing',
       'moments.subtitle':       "Record a short voice message or write us a note.<br>We'll keep these as one of our favorite memories from the day.",
-      'moments.name.label':     'Your Name (optional)',
+      'moments.name.label':     'Your Name',
       'moments.name.ph':        "How shall we remember you?",
       'moments.tab.voice':      '🎙 Voice Message',
       'moments.tab.text':       '✍ Written Note',
@@ -536,7 +538,8 @@
       'moments.status.saved':   'Recording saved — press play to review',
       'moments.rerecord':       'Record again',
       'moments.submit.voice':   'Send Voice Blessing',
-      'moments.blessing.label': 'Your Blessing',
+      'moments.blessing.label': 'Your Blessing *',
+      'moments.blessing.err':   'Please write your blessing.',
       'moments.blessing.ph':    'Share a wish, a memory, or a few words of love for Nine and Tom…',
       'moments.submit.text':    'Send Written Blessing',
       'moments.note':           'With love, Nine &amp; Tom 🌸',
@@ -554,7 +557,7 @@
     th: {
       'moments.title':          'ฝากคำอวยพรให้เรา',
       'moments.subtitle':       'บันทึกข้อความเสียงสั้นๆ หรือเขียนโน้ตถึงเรา<br>เราจะเก็บไว้เป็นหนึ่งในความทรงจำที่ดีที่สุดจากวันนี้',
-      'moments.name.label':     'ชื่อของคุณ (ไม่จำเป็น)',
+      'moments.name.label':     'ชื่อของคุณ',
       'moments.name.ph':        'จะให้เราจำว่าอะไรดี?',
       'moments.tab.voice':      '🎙 ข้อความเสียง',
       'moments.tab.text':       '✍ ข้อความเขียน',
@@ -564,7 +567,8 @@
       'moments.status.saved':   'บันทึกเสร็จแล้ว — กดเล่นเพื่อฟัง',
       'moments.rerecord':       'บันทึกใหม่',
       'moments.submit.voice':   'ส่งคำอวยพรแบบเสียง',
-      'moments.blessing.label': 'คำอวยพรของคุณ',
+      'moments.blessing.label': 'คำอวยพรของคุณ *',
+      'moments.blessing.err':   'กรุณาเขียนคำอวยพร',
       'moments.blessing.ph':    'แบ่งปันความปรารถนา ความทรงจำ หรือคำรักไม่กี่คำถึงไนน์กับทอม…',
       'moments.submit.text':    'ส่งคำอวยพรแบบเขียน',
       'moments.note':           'ด้วยความรัก ไนน์ &amp; ทอม 🌸',
@@ -803,9 +807,14 @@
     var message = document.getElementById('m-text').value.trim();
     if (!message) {
       var ta = document.getElementById('m-text');
+      var err = document.getElementById('blessing-err');
       ta.style.borderColor = 'var(--rose)';
+      err.style.display = 'block';
       ta.focus();
-      ta.addEventListener('input', function() { ta.style.borderColor = ''; }, { once: true });
+      ta.addEventListener('input', function() {
+        ta.style.borderColor = '';
+        err.style.display = 'none';
+      }, { once: true });
       return;
     }
 
