@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're Welcome Here — Nine &amp; Tom</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --peach:        #f5e6d8;
+      --peach-light:  #faf3ec;
+      --gold:         #c9a96e;
+      --gold-dark:    #8b6914;
+      --gold-border:  #d4b896;
+      --rose:         #e8968a;
+      --green:        #8fa884;
+      --brown:        #5c3d2e;
+      --brown-light:  #8a6552;
+      --cream:        #fefaf6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--peach-light);
+      color: var(--brown);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    header {
+      background: var(--peach);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .header-ornament { font-size: 28px; color: var(--gold); opacity: .7; margin-bottom: 6px; }
+    .header-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--brown);
+    }
+    .header-sub {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-top: 4px;
+    }
+
+    /* ---- Main ---- */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px 80px;
+    }
+
+    /* ---- Hero ---- */
+    .portal-hero {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 20px;
+    }
+    .portal-eyebrow {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-bottom: 14px;
+    }
+    .portal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 400;
+      color: var(--brown);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+      margin: 18px 0;
+    }
+    .ornament-line {
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-border));
+    }
+    .ornament-line:last-child {
+      background: linear-gradient(to left, transparent, var(--gold-border));
+    }
+    .ornament-diamond {
+      width: 7px; height: 7px;
+      border: 1.5px solid var(--gold);
+      transform: rotate(45deg);
+    }
+    .portal-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--brown-light);
+      line-height: 1.65;
+    }
+
+    /* ---- Cards grid ---- */
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 900px;
+      width: 100%;
+      margin-bottom: 2.5rem;
+    }
+
+    .portal-card {
+      background: var(--cream);
+      border: 1px solid var(--gold-border);
+      padding: 2.2rem 1.8rem 2rem;
+      text-decoration: none;
+      color: var(--brown);
+      position: relative;
+      transition: border-color .25s, box-shadow .25s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.6rem;
+    }
+    .portal-card::before, .portal-card::after {
+      content: '';
+      position: absolute;
+      width: 14px; height: 14px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .portal-card::before { top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px; }
+    .portal-card::after  { bottom: 6px; right: 6px; border-width: 0 1.5px 1.5px 0; }
+    .portal-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 4px 24px rgba(201,169,110,.18);
+    }
+
+    .portal-card-icon { font-size: 2rem; margin-bottom: 4px; }
+    .portal-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      color: var(--brown);
+    }
+    .portal-card-desc {
+      font-size: 13px;
+      color: var(--brown-light);
+      line-height: 1.65;
+      margin-bottom: 8px;
+    }
+
+    /* QR code inside each card */
+    .card-qr-wrap {
+      margin-top: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--gold-border);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-qr-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+    }
+
+    /* ---- Print QR link ---- */
+    .print-link {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold-border);
+      padding-bottom: 1px;
+      transition: color .2s, border-color .2s;
+    }
+    .print-link:hover { color: var(--gold-dark); border-color: var(--gold); }
+
+    /* ---- Footer ---- */
+    footer {
+      background: var(--brown);
+      color: var(--peach);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .portal-grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+      }
+    }
+    @media (max-width: 480px) {
+      .portal-card { padding: 1.8rem 1.4rem 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">囍</div>
+  <div class="header-names">Nine &amp; Tom</div>
+  <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
+</header>
+
+<main>
+  <div class="portal-hero">
+    <p class="portal-eyebrow">A little corner, just for you</p>
+    <h1 class="portal-title">You're so welcome here</h1>
+    <div class="ornament" aria-hidden="true">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line"></div>
+    </div>
+    <p class="portal-subtitle">Pick anything you'd like to do — or just read, no pressure at all.</p>
+  </div>
+
+  <div class="portal-grid" role="list">
+
+    <a class="portal-card" id="card-moments" href="/wedding/moments/" role="listitem">
+      <div class="portal-card-icon" aria-hidden="true">🎙</div>
+      <div class="portal-card-title">Leave a Blessing</div>
+      <div class="portal-card-desc">A voice message or written note — whatever feels right.</div>
+      <div class="card-qr-wrap">
+        <span class="card-qr-label">Scan with your phone</span>
+        <div id="qr-moments"></div>
+      </div>
+    </a>
+
+    <a class="portal-card" id="card-gift" href="/wedding/gift/" role="listitem">
+      <div class="portal-card-icon" aria-hidden="true">🎁</div>
+      <div class="portal-card-title">Send a Gift</div>
+      <div class="portal-card-desc">PromptPay or a note of love — it all means the world.</div>
+      <div class="card-qr-wrap">
+        <span class="card-qr-label">Scan with your phone</span>
+        <div id="qr-gift"></div>
+      </div>
+    </a>
+
+    <a class="portal-card" id="card-photos" href="/wedding/photos/" role="listitem">
+      <div class="portal-card-icon" aria-hidden="true">📷</div>
+      <div class="portal-card-title">Share Photos</div>
+      <div class="portal-card-desc">Drop in anything you've captured — we'd love to keep them.</div>
+      <div class="card-qr-wrap">
+        <span class="card-qr-label">Scan with your phone</span>
+        <div id="qr-photos"></div>
+      </div>
+    </a>
+
+  </div>
+
+  <a href="print.html" class="print-link">View QR codes for printing →</a>
+</main>
+
+<footer>Nine &amp; Tom · July 11, 2027</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSe2HkjufsD6EDzBmDtIuNf8l3t7JNuPyBj6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  var BASE = 'https://tprasertsup.github.io/wedding/';
+
+  var QR_OPTS = {
+    width:        100,
+    height:       100,
+    colorDark:    '#5c3d2e',
+    colorLight:   '#fefaf6',
+    correctLevel: QRCode.CorrectLevel.M
+  };
+
+  // Render QR codes into each card
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(document.getElementById('qr-moments'), Object.assign({}, QR_OPTS, { text: BASE + 'moments/' }));
+    new QRCode(document.getElementById('qr-gift'),    Object.assign({}, QR_OPTS, { text: BASE + 'gift/'    }));
+    new QRCode(document.getElementById('qr-photos'),  Object.assign({}, QR_OPTS, { text: BASE + 'photos/'  }));
+  }
+
+  // Pass guest token through to feature page links (but NOT into the QR codes)
+  (function() {
+    var guest = new URLSearchParams(window.location.search).get('guest');
+    if (!guest) return;
+    ['card-moments', 'card-gift', 'card-photos'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var url = new URL(el.href, location.href);
+      url.searchParams.set('guest', guest);
+      el.href = url.toString();
+    });
+  })();
+</script>
+
+</body>
+</html>

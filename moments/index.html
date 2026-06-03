@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leave a Blessing — Nine &amp; Tom</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --peach:        #f5e6d8;
+      --peach-light:  #faf3ec;
+      --gold:         #c9a96e;
+      --gold-dark:    #8b6914;
+      --gold-border:  #d4b896;
+      --rose:         #e8968a;
+      --green:        #8fa884;
+      --brown:        #5c3d2e;
+      --brown-light:  #8a6552;
+      --cream:        #fefaf6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--peach-light);
+      color: var(--brown);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    header {
+      background: var(--peach);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .header-ornament { font-size: 28px; color: var(--gold); opacity: .7; margin-bottom: 6px; }
+    .header-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--brown);
+    }
+    .header-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-top: 4px;
+    }
+
+    /* ---- Main ---- */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 60px 20px 80px;
+    }
+
+    .card {
+      background: var(--cream);
+      border: 1px solid var(--gold-border);
+      max-width: 640px;
+      width: 100%;
+      padding: 50px 48px;
+      position: relative;
+    }
+    .card::before, .card::after {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .card::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .card::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 6px;
+      color: var(--brown);
+    }
+    .card-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-style: italic;
+      text-align: center;
+      color: var(--gold-dark);
+      margin-bottom: 36px;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 0 0 36px;
+    }
+
+    /* ---- State screens ---- */
+    .state { display: none; }
+    .state.active { display: block; }
+
+    .loading-wrap {
+      text-align: center;
+      padding: 40px 0 30px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 36px; height: 36px;
+      border: 3px solid var(--gold-border);
+      border-top-color: var(--gold-dark);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .success-wrap {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .success-icon { font-size: 40px; margin-bottom: 16px; }
+    .success-wrap h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .success-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
+
+    .error-wrap {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .error-icon { font-size: 40px; margin-bottom: 16px; }
+    .error-wrap h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .error-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
+
+    /* ---- Form ---- */
+    .form-group { margin-bottom: 22px; }
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-bottom: 7px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--gold-border);
+      background: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--brown);
+      outline: none;
+      transition: border-color .25s;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 130px; }
+
+    /* ---- Tab bar ---- */
+    .tab-bar {
+      display: flex;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 13px 16px;
+      border: 1px solid var(--gold-border);
+      background: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .2s;
+      color: var(--brown);
+      min-height: 48px;
+    }
+    .tab-btn:first-child { border-right: none; }
+    .tab-btn.active {
+      border-color: var(--gold);
+      background: var(--gold-dark);
+      color: white;
+    }
+    .tab-btn:hover:not(.active) {
+      border-color: var(--gold);
+      background: rgba(201,169,110,.08);
+    }
+
+    /* ---- Voice UI ---- */
+    .voice-status {
+      text-align: center;
+      font-size: 14px;
+      color: var(--brown-light);
+      margin-bottom: 12px;
+      min-height: 20px;
+    }
+
+    .voice-timer {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--brown);
+      text-align: center;
+      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+      min-height: 3rem;
+    }
+    .voice-timer.recording { color: var(--rose); }
+
+    .record-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      background: var(--gold-dark);
+      transition: background .2s, transform .1s;
+    }
+    .record-btn:hover { background: var(--brown); }
+    .record-btn:active { transform: scale(.96); }
+    .record-btn.recording { background: var(--rose); }
+    .record-btn-icon { font-size: 1.8rem; line-height: 1; }
+
+    .voice-audio-wrap {
+      display: none;
+      margin-bottom: 16px;
+    }
+    audio {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .fallback-notice {
+      background: #fff8f2;
+      border: 1px solid var(--gold-border);
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--brown-light);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    /* ---- Buttons ---- */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--gold-dark);
+      color: white;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .25s, transform .1s;
+      margin-top: 8px;
+      min-height: 52px;
+    }
+    .btn-submit:hover { background: var(--brown); }
+    .btn-submit:active { transform: scale(.99); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    .btn-rerecord {
+      width: 100%;
+      padding: 13px;
+      background: white;
+      color: var(--gold-dark);
+      border: 1px solid var(--gold-border);
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+      margin-bottom: 12px;
+      min-height: 48px;
+    }
+    .btn-rerecord:hover { border-color: var(--gold); color: var(--brown); }
+
+    .btn-another {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--gold-dark);
+      border: 1px solid var(--gold-border);
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      min-height: 48px;
+    }
+    .btn-another:hover { border-color: var(--gold); background: rgba(201,169,110,.06); }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--brown-light);
+      text-align: center;
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+
+    /* ---- Page QR code ---- */
+    .page-qr-wrap {
+      text-align: center;
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 1px solid var(--gold-border);
+    }
+    .page-qr-wrap p {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-bottom: 10px;
+    }
+    .page-qr-wrap a {
+      display: block;
+      font-size: 11px;
+      color: var(--brown-light);
+      margin-top: 8px;
+      text-decoration: none;
+    }
+
+    /* ---- Footer ---- */
+    footer {
+      background: var(--brown);
+      color: var(--peach);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      .card { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">囍</div>
+  <div class="header-names">Nine &amp; Tom</div>
+  <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
+</header>
+
+<main>
+  <div class="card">
+
+    <!-- ── state-form ─────────────────────────────── -->
+    <div class="state active" id="state-form">
+      <h1 class="card-title">Leave us a little blessing</h1>
+      <p class="card-sub">Record a short voice message or write us a note.<br>We'll keep these as one of our favorite memories from the day.</p>
+      <div class="divider"></div>
+
+      <div class="form-group">
+        <label for="m-name">Your Name (optional)</label>
+        <input type="text" id="m-name" placeholder="How shall we remember you?" autocomplete="name">
+      </div>
+
+      <div class="tab-bar" role="tablist" aria-label="Choose how to leave your blessing">
+        <button class="tab-btn active" id="tab-voice" role="tab"
+                aria-selected="true" aria-controls="panel-voice"
+                onclick="showTab('voice')">
+          🎙 Voice Message
+        </button>
+        <button class="tab-btn" id="tab-text" role="tab"
+                aria-selected="false" aria-controls="panel-text"
+                onclick="showTab('text')">
+          ✍ Written Note
+        </button>
+      </div>
+
+      <!-- Voice panel -->
+      <div id="panel-voice" role="tabpanel" aria-labelledby="tab-voice">
+        <div id="voice-fallback" class="fallback-notice" aria-live="polite">
+          Voice recording isn't available on this browser or device.
+          Please use the <strong>Written Note</strong> tab instead.
+        </div>
+        <div id="voice-status" class="voice-status" aria-live="polite">Press record when you're ready</div>
+        <div id="voice-timer" class="voice-timer" aria-label="Recording timer" aria-live="polite">0:00</div>
+        <button class="record-btn" id="record-btn" onclick="toggleRecord()"
+                aria-label="Start recording">
+          <span class="record-btn-icon" id="record-icon" aria-hidden="true">🎙</span>
+        </button>
+        <div class="voice-audio-wrap" id="voice-audio-wrap">
+          <audio id="voice-playback" controls aria-label="Playback your recorded message"></audio>
+          <button class="btn-rerecord" onclick="reRecord()">Record again</button>
+        </div>
+        <button class="btn-submit" id="btn-submit-voice" disabled onclick="submitVoice()"
+                aria-label="Send voice blessing">
+          Send Voice Blessing
+        </button>
+      </div>
+
+      <!-- Text panel -->
+      <div id="panel-text" role="tabpanel" aria-labelledby="tab-text" style="display:none">
+        <div class="form-group">
+          <label for="m-text">Your Blessing</label>
+          <textarea id="m-text"
+            placeholder="Share a wish, a memory, or a few words of love for Nine and Tom…"
+            aria-required="true"
+            style="border-color:var(--gold);background:#fffdf9"></textarea>
+        </div>
+        <button class="btn-submit" id="btn-submit-text" onclick="submitText()">
+          Send Written Blessing
+        </button>
+      </div>
+
+      <p class="form-note">With love, Nine &amp; Tom 🌸</p>
+
+      <!-- QR code so a helper can hand the URL to the guest's own phone -->
+      <div class="page-qr-wrap">
+        <p>Scan to open on your phone</p>
+        <div id="page-qr" style="display:inline-block"></div>
+        <a href="https://tprasertsup.github.io/wedding/moments/"
+           aria-label="Direct link to this page">tprasertsup.github.io/wedding/moments/</a>
+      </div>
+    </div><!-- /state-form -->
+
+    <!-- ── state-uploading ─────────────────────────── -->
+    <div class="state" id="state-uploading" aria-live="polite">
+      <div class="loading-wrap">
+        <div class="spinner" role="status" aria-label="Uploading"></div>
+        <p id="upload-progress-text" style="color:var(--brown-light);font-size:14px">
+          Sending your blessing…
+        </p>
+      </div>
+    </div>
+
+    <!-- ── state-success ───────────────────────────── -->
+    <div class="state" id="state-success" aria-live="polite">
+      <div class="success-wrap">
+        <div class="success-icon" aria-hidden="true">🌸</div>
+        <h2>Thank you — we received your blessing 💛</h2>
+        <p>Your words will mean everything to us. We'll treasure them always.</p>
+        <p style="margin-top:12px;font-style:italic;color:var(--gold-dark)">
+          With love, Nine &amp; Tom
+        </p>
+        <button class="btn-another" onclick="resetForm()"
+                aria-label="Leave another blessing">
+          Leave another blessing
+        </button>
+        <br>
+        <a href="../" style="display:inline-block;margin-top:20px;
+           color:var(--brown-light);font-size:11px;letter-spacing:2px;
+           text-transform:uppercase;text-decoration:none;
+           border-bottom:1px solid var(--gold-border)">
+          ← Back to guest portal
+        </a>
+      </div>
+    </div>
+
+    <!-- ── state-error ─────────────────────────────── -->
+    <div class="state" id="state-error" aria-live="polite">
+      <div class="error-wrap">
+        <div class="error-icon" aria-hidden="true">💌</div>
+        <h2>Something went wrong</h2>
+        <p id="error-msg">Could not send your blessing. Please check your connection and try again.</p>
+        <button class="btn-submit" style="margin-top:24px;max-width:280px;margin-left:auto;margin-right:auto;display:block"
+                onclick="showState('state-form')">Try Again</button>
+      </div>
+    </div>
+
+  </div><!-- /card -->
+</main>
+
+<footer>Nine &amp; Tom · July 11, 2027</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSe2HkjufsD6EDzBmDtIuNf8l3t7JNuPyBj6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  /* ── CONFIG ─────────────────────────────────────────────────────── */
+  const CONFIG = {
+    MOMENTS_ENDPOINT: 'PASTE_MOMENTS_APPS_SCRIPT_WEB_APP_URL_HERE'
+  };
+
+  /* ── State helpers ───────────────────────────────────────────────── */
+  function showState(id) {
+    document.querySelectorAll('.state').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+  }
+
+  /* ── Guest token ─────────────────────────────────────────────────── */
+  function getGuestToken() {
+    return new URLSearchParams(window.location.search).get('guest') || '';
+  }
+
+  /* ── Tab toggle ──────────────────────────────────────────────────── */
+  function showTab(tab) {
+    var voicePanel = document.getElementById('panel-voice');
+    var textPanel  = document.getElementById('panel-text');
+    var tabVoice   = document.getElementById('tab-voice');
+    var tabText    = document.getElementById('tab-text');
+
+    if (tab === 'voice') {
+      voicePanel.style.display = 'block';
+      textPanel.style.display  = 'none';
+      tabVoice.classList.add('active');
+      tabText.classList.remove('active');
+      tabVoice.setAttribute('aria-selected', 'true');
+      tabText.setAttribute('aria-selected', 'false');
+    } else {
+      voicePanel.style.display = 'none';
+      textPanel.style.display  = 'block';
+      tabVoice.classList.remove('active');
+      tabText.classList.add('active');
+      tabVoice.setAttribute('aria-selected', 'false');
+      tabText.setAttribute('aria-selected', 'true');
+    }
+  }
+
+  /* ── Voice recording state ───────────────────────────────────────── */
+  var mediaRecorder   = null;
+  var audioChunks     = [];
+  var recordingBlob   = null;
+  var timerInterval   = null;
+  var elapsedSeconds  = 0;
+  var MAX_SECONDS     = 180;
+
+  function formatTime(s) {
+    return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+  }
+
+  function updateTimerDisplay() {
+    document.getElementById('voice-timer').textContent = formatTime(elapsedSeconds);
+  }
+
+  function toggleRecord() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  }
+
+  function startRecording() {
+    if (!navigator.mediaDevices || !window.MediaRecorder) {
+      showVoiceFallback();
+      return;
+    }
+
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+      var mimeType = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg']
+        .find(function(t) { return MediaRecorder.isTypeSupported(t); }) || '';
+
+      audioChunks  = [];
+      recordingBlob = null;
+
+      var opts = mimeType ? { mimeType: mimeType } : {};
+      mediaRecorder = new MediaRecorder(stream, opts);
+
+      mediaRecorder.ondataavailable = function(e) {
+        if (e.data.size > 0) audioChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = function() {
+        stream.getTracks().forEach(function(t) { t.stop(); });
+        var actualMime = mediaRecorder.mimeType || 'audio/webm';
+        recordingBlob  = new Blob(audioChunks, { type: actualMime });
+        var url        = URL.createObjectURL(recordingBlob);
+        var audio      = document.getElementById('voice-playback');
+        audio.src      = url;
+        document.getElementById('voice-audio-wrap').style.display = 'block';
+        document.getElementById('btn-submit-voice').disabled = false;
+        setRecordUI('idle');
+        document.getElementById('voice-status').textContent = 'Recording saved — press play to review';
+      };
+
+      mediaRecorder.start(250);
+      elapsedSeconds = 0;
+      updateTimerDisplay();
+
+      timerInterval = setInterval(function() {
+        elapsedSeconds++;
+        updateTimerDisplay();
+        if (elapsedSeconds >= MAX_SECONDS) stopRecording();
+      }, 1000);
+
+      setRecordUI('recording');
+      document.getElementById('voice-status').textContent = 'Recording… tap Stop when done';
+
+    }).catch(function() {
+      showVoiceFallback();
+    });
+  }
+
+  function stopRecording() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  }
+
+  function setRecordUI(state) {
+    var btn   = document.getElementById('record-btn');
+    var icon  = document.getElementById('record-icon');
+    var timer = document.getElementById('voice-timer');
+
+    if (state === 'recording') {
+      btn.classList.add('recording');
+      icon.textContent = '⏹';
+      btn.setAttribute('aria-label', 'Stop recording');
+      timer.classList.add('recording');
+    } else {
+      btn.classList.remove('recording');
+      icon.textContent = '🎙';
+      btn.setAttribute('aria-label', 'Start recording');
+      timer.classList.remove('recording');
+    }
+  }
+
+  function reRecord() {
+    recordingBlob  = null;
+    elapsedSeconds = 0;
+    updateTimerDisplay();
+    document.getElementById('voice-audio-wrap').style.display = 'none';
+    document.getElementById('btn-submit-voice').disabled = true;
+    document.getElementById('voice-status').textContent = "Press record when you're ready";
+    setRecordUI('idle');
+    var audio = document.getElementById('voice-playback');
+    audio.pause();
+    audio.src = '';
+  }
+
+  function showVoiceFallback() {
+    document.getElementById('voice-fallback').style.display = 'block';
+    document.getElementById('record-btn').style.display = 'none';
+    document.getElementById('voice-status').style.display = 'none';
+    document.getElementById('voice-timer').style.display = 'none';
+    showTab('text');
+  }
+
+  /* ── Submit voice ────────────────────────────────────────────────── */
+  function submitVoice() {
+    if (!recordingBlob) return;
+    if (document.getElementById('btn-submit-voice').disabled) return;
+
+    document.getElementById('btn-submit-voice').disabled = true;
+    document.getElementById('upload-progress-text').textContent = 'Encoding your voice message…';
+    showState('state-uploading');
+
+    blobToBase64(recordingBlob).then(function(dataUrl) {
+      var base64 = dataUrl.split(',')[1];
+      document.getElementById('upload-progress-text').textContent = 'Sending your blessing…';
+
+      var ext = mimeToExt(recordingBlob.type);
+      var payload = {
+        type:            'voice',
+        guestName:       document.getElementById('m-name').value.trim(),
+        guestToken:      getGuestToken(),
+        submittedAt:     new Date().toISOString(),
+        fileName:        'voice-blessing-' + Date.now() + '.' + ext,
+        mimeType:        recordingBlob.type,
+        durationSeconds: elapsedSeconds,
+        audioBase64:     base64,
+        userAgent:       navigator.userAgent
+      };
+
+      return postToEndpoint(payload);
+    }).catch(function() {
+      document.getElementById('btn-submit-voice').disabled = false;
+      showError('Could not encode your recording. Please try the written note instead.');
+    });
+  }
+
+  /* ── Submit text ─────────────────────────────────────────────────── */
+  function submitText() {
+    var message = document.getElementById('m-text').value.trim();
+    if (!message) {
+      var ta = document.getElementById('m-text');
+      ta.style.borderColor = 'var(--rose)';
+      ta.focus();
+      ta.addEventListener('input', function() { ta.style.borderColor = ''; }, { once: true });
+      return;
+    }
+
+    document.getElementById('btn-submit-text').disabled = true;
+    document.getElementById('upload-progress-text').textContent = 'Sending your blessing…';
+    showState('state-uploading');
+
+    var payload = {
+      type:        'text',
+      guestName:   document.getElementById('m-name').value.trim(),
+      guestToken:  getGuestToken(),
+      submittedAt: new Date().toISOString(),
+      messageText: message,
+      userAgent:   navigator.userAgent
+    };
+
+    postToEndpoint(payload);
+  }
+
+  /* ── Shared POST ─────────────────────────────────────────────────── */
+  function postToEndpoint(payload) {
+    return fetch(CONFIG.MOMENTS_ENDPOINT, {
+      method:  'POST',
+      body:    JSON.stringify(payload),
+      headers: { 'Content-Type': 'text/plain' }  // avoids CORS preflight with Apps Script
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data.success) {
+        showState('state-success');
+      } else {
+        document.getElementById('btn-submit-text').disabled = false;
+        document.getElementById('btn-submit-voice').disabled = false;
+        showError(data.error || 'The server returned an error. Please try again.');
+      }
+    })
+    .catch(function() {
+      document.getElementById('btn-submit-text').disabled = false;
+      document.getElementById('btn-submit-voice').disabled = false;
+      showError('Could not reach the server. Please check your connection and try again.');
+    });
+  }
+
+  function showError(msg) {
+    if (msg) document.getElementById('error-msg').textContent = msg;
+    showState('state-error');
+  }
+
+  /* ── Reset form (for shared-device / next guest) ─────────────────── */
+  function resetForm() {
+    // Clear all inputs
+    document.getElementById('m-name').value  = '';
+    document.getElementById('m-text').value  = '';
+    document.getElementById('m-text').style.borderColor = '';
+
+    // Reset voice state
+    stopRecording();
+    recordingBlob  = null;
+    elapsedSeconds = 0;
+    updateTimerDisplay();
+    document.getElementById('voice-audio-wrap').style.display = 'none';
+    document.getElementById('btn-submit-voice').disabled = true;
+    document.getElementById('btn-submit-text').disabled  = false;
+    document.getElementById('voice-status').textContent  = "Press record when you're ready";
+    setRecordUI('idle');
+    var audio = document.getElementById('voice-playback');
+    audio.pause();
+    audio.src = '';
+
+    // Reset to default tab
+    showTab('voice');
+    showState('state-form');
+
+    // Scroll to top of card
+    document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ── Utilities ───────────────────────────────────────────────────── */
+  function blobToBase64(blob) {
+    return new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload  = function() { resolve(reader.result); };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  function mimeToExt(mime) {
+    if (mime.indexOf('mp4') !== -1)  return 'mp4';
+    if (mime.indexOf('ogg') !== -1)  return 'ogg';
+    return 'webm';
+  }
+
+  /* ── Init ────────────────────────────────────────────────────────── */
+  // Check for voice support; auto-fallback if missing
+  if (!navigator.mediaDevices || !window.MediaRecorder) {
+    showVoiceFallback();
+  }
+
+  // Render QR code for this page
+  (function() {
+    var pageUrl = 'https://tprasertsup.github.io/wedding/moments/';
+    if (typeof QRCode !== 'undefined') {
+      new QRCode(document.getElementById('page-qr'), {
+        text:           pageUrl,
+        width:          80,
+        height:         80,
+        colorDark:      '#5c3d2e',
+        colorLight:     '#fefaf6',
+        correctLevel:   QRCode.CorrectLevel.M
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
