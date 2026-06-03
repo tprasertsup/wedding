@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nine &amp; Tom Guestbook Admin</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="config.js"></script>
+  <script src="admin.js" defer></script>
+</head>
+<body class="admin-body">
+  <main class="admin-page">
+    <header class="admin-header">
+      <div>
+        <a class="mark" href="./" aria-label="Guestbook">囍</a>
+        <p class="eyebrow">Private Guestbook</p>
+        <h1>Nine &amp; Tom</h1>
+      </div>
+      <button type="button" class="secondary-action admin-logout" id="logout-button" hidden>Log Out</button>
+    </header>
+
+    <section class="admin-login" id="login-panel">
+      <h2>Admin Gallery</h2>
+      <p>Sign in to view submitted videos, photos, favorites, review status, and Drive links.</p>
+      <form id="login-form">
+        <label>
+          <span>Password</span>
+          <input type="password" id="admin-password" autocomplete="current-password" required />
+        </label>
+        <button type="submit" class="primary-action compact">Log In</button>
+      </form>
+      <p class="status-banner" id="admin-login-error" hidden></p>
+    </section>
+
+    <section class="admin-dashboard" id="dashboard" hidden>
+      <div class="admin-toolbar">
+        <div class="admin-tabs" role="tablist" aria-label="Submission filters">
+          <button type="button" class="tab active" data-filter="all">All</button>
+          <button type="button" class="tab" data-filter="video">Videos</button>
+          <button type="button" class="tab" data-filter="photo">Photos</button>
+          <button type="button" class="tab" data-filter="favorite">Favorites</button>
+          <button type="button" class="tab" data-filter="unreviewed">Unreviewed</button>
+        </div>
+        <div class="admin-actions">
+          <button type="button" class="secondary-action" id="refresh-button">Refresh</button>
+          <a class="secondary-action" id="export-link" href="#">Export CSV</a>
+        </div>
+      </div>
+
+      <div class="admin-summary" id="admin-summary"></div>
+      <div class="admin-grid" id="admin-grid"></div>
+      <p class="help-note" id="admin-empty" hidden>No submissions match this filter yet.</p>
+    </section>
+  </main>
+</body>
+</html>
+
