@@ -282,19 +282,19 @@
   <div class="state" id="state-pp-form">
     <button class="btn-back" onclick="showState('state-pp-qr')">← <span data-i18n="gift.back">Back</span></button>
     <h2 class="card-title" style="font-size:22px;margin-bottom:6px" data-i18n="gift.slip.title">Upload your transfer slip</h2>
-    <p class="card-sub" style="font-size:14px;margin-bottom:24px" data-i18n="gift.slip.note">Please upload a screenshot of your transfer. Name and amount are optional — the slip usually has the details.</p>
+    <p class="card-sub" style="font-size:14px;margin-bottom:24px" data-i18n="gift.slip.note">Please upload a screenshot of your transfer. This would greatly help us track your gifts.</p>
     <div class="divider"></div>
 
     <div class="form-group">
-      <label for="g-name" data-i18n="gift.name.label">Your Name (optional)</label>
-      <input type="text" id="g-name" data-i18n-placeholder="gift.name.ph" placeholder="How shall we remember you?" autocomplete="name">
+      <label for="g-name" data-i18n="gift.name.label">Your Name</label>
+      <input type="text" id="g-name" data-i18n-placeholder="gift.name.ph" placeholder="What do we call you?" autocomplete="name">
     </div>
     <div class="form-group">
-      <label for="g-amount" data-i18n="gift.amount.label">Amount (THB, optional)</label>
+      <label for="g-amount" data-i18n="gift.amount.label">Amount (THB)</label>
       <input type="number" id="g-amount" min="1" data-i18n-placeholder="gift.amount.ph" placeholder="e.g. 500">
     </div>
     <div class="form-group">
-      <label for="g-note" data-i18n="gift.note.label">Note (optional)</label>
+      <label for="g-note" data-i18n="gift.note.label">Note</label>
       <textarea id="g-note" rows="2" data-i18n-placeholder="gift.note.ph" placeholder="A little message for Nine & Tom…"></textarea>
     </div>
     <div class="form-group">
@@ -416,12 +416,12 @@
       'gift.pp.qr.label':     'Scan to transfer via PromptPay',
       'gift.pp.transferred':  "I've transferred →",
       'gift.slip.title':      'Upload your transfer slip',
-      'gift.slip.note':       'Please upload a screenshot of your transfer. Name and amount are optional — the slip usually has the details.',
-      'gift.name.label':      'Your Name (optional)',
-      'gift.name.ph':         'How shall we remember you?',
-      'gift.amount.label':    'Amount (THB, optional)',
+      'gift.slip.note':       'Please upload a screenshot of your transfer. This would greatly help us track your gifts.',
+      'gift.name.label':      'Your Name',
+      'gift.name.ph':         'What do we call you?',
+      'gift.amount.label':    'Amount (THB)',
       'gift.amount.ph':       'e.g. 500',
-      'gift.note.label':      'Note (optional)',
+      'gift.note.label':      'Note',
       'gift.note.ph':         'A little message for Nine & Tom…',
       'gift.slip.label':      'Transfer Slip *',
       'gift.slip.hint':       'Tap to upload — JPEG, PNG, WebP or PDF · Max 10 MB',
@@ -450,12 +450,12 @@
       'gift.pp.qr.label':     'สแกนเพื่อโอนผ่านพร้อมเพย์',
       'gift.pp.transferred':  'โอนเงินแล้ว →',
       'gift.slip.title':      'อัปโหลดสลิปการโอน',
-      'gift.slip.note':       'กรุณาอัปโหลดสลิปการโอนเงิน ชื่อและจำนวนเงินไม่จำเป็นต้องกรอก เพราะมีในสลิปอยู่แล้ว',
-      'gift.name.label':      'ชื่อของคุณ (ไม่จำเป็น)',
-      'gift.name.ph':         'จะให้เราจำว่าอะไรดี?',
-      'gift.amount.label':    'จำนวนเงิน (บาท, ไม่จำเป็น)',
+      'gift.slip.note':       'กรุณาอัปโหลดสลิปการโอนเงิน การแนบสลิปจะช่วยให้เราตรวจสอบของขวัญได้ง่ายขึ้น',
+      'gift.name.label':      'ชื่อของคุณ',
+      'gift.name.ph':         'เราเรียกคุณว่าอะไร?',
+      'gift.amount.label':    'จำนวนเงิน (บาท)',
       'gift.amount.ph':       'เช่น 500',
-      'gift.note.label':      'ข้อความ (ไม่จำเป็น)',
+      'gift.note.label':      'ข้อความ',
       'gift.note.ph':         'ข้อความถึงไนน์กับทอม…',
       'gift.slip.label':      'สลิปการโอน *',
       'gift.slip.hint':       'แตะเพื่ออัปโหลด — JPEG, PNG, WebP หรือ PDF · ไม่เกิน 10 MB',
@@ -638,14 +638,42 @@
     img.src = url;
   }
 
+  /* ── QR download — uses Web Share API on mobile so image goes to photo album ── */
+  function setupQrDownload(btnId, url, filename) {
+    var btn = document.getElementById(btnId);
+    btn.href = url;
+    btn.addEventListener('click', function(e) {
+      if (!url || url.indexOf('PASTE') !== -1) return; // placeholder, nothing to share
+      if (typeof navigator.share === 'function' && typeof navigator.canShare === 'function') {
+        e.preventDefault();
+        fetch(url)
+          .then(function(r) { return r.blob(); })
+          .then(function(blob) {
+            var file = new File([blob], filename, { type: blob.type || 'image/png' });
+            if (navigator.canShare({ files: [file] })) {
+              return navigator.share({ files: [file], title: filename });
+            }
+            // canShare returned false — fall back to blob URL download
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(a.href);
+          })
+          .catch(function() {}); // user cancelled share sheet — no-op
+      }
+      // Desktop: let the default <a download> behaviour proceed
+    });
+  }
+
   /* ── Init ─────────────────────────────────────────────────────────── */
   setLang(currentLang);
 
   loadQrImage('pp-qr-img',    'pp-qr-placeholder',    CONFIG.PROMPTPAY_QR_URL);
   loadQrImage('venmo-qr-img', 'venmo-qr-placeholder', CONFIG.VENMO_QR_URL);
 
-  document.getElementById('pp-download-btn').href    = CONFIG.PROMPTPAY_QR_URL;
-  document.getElementById('venmo-download-btn').href = CONFIG.VENMO_QR_URL;
+  setupQrDownload('pp-download-btn',    CONFIG.PROMPTPAY_QR_URL, 'promptpay-qr.png');
+  setupQrDownload('venmo-download-btn', CONFIG.VENMO_QR_URL,     'venmo-qr.png');
 
   // Keyboard support for slip drop zone
   document.getElementById('slip-drop-zone').addEventListener('keydown', function(e) {
