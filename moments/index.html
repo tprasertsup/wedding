@@ -329,27 +329,6 @@
       line-height: 1.7;
     }
 
-    /* ---- Page QR code ---- */
-    .page-qr-wrap {
-      text-align: center;
-      margin-top: 36px;
-      padding-top: 28px;
-      border-top: 1px solid var(--gold-border);
-    }
-    .page-qr-wrap p {
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--brown-light);
-      margin-bottom: 10px;
-    }
-    .page-qr-wrap a {
-      display: block;
-      font-size: 11px;
-      color: var(--brown-light);
-      margin-top: 8px;
-      text-decoration: none;
-    }
 
     /* ---- Footer ---- */
     footer {
@@ -441,13 +420,6 @@
 
       <p class="form-note">With love, Nine &amp; Tom 🌸</p>
 
-      <!-- QR code so a helper can hand the URL to the guest's own phone -->
-      <div class="page-qr-wrap">
-        <p>Scan to open on your phone</p>
-        <div id="page-qr" style="display:inline-block"></div>
-        <a href="https://tprasertsup.github.io/wedding/moments/"
-           aria-label="Direct link to this page">tprasertsup.github.io/wedding/moments/</a>
-      </div>
     </div><!-- /state-form -->
 
     <!-- ── state-uploading ─────────────────────────── -->
@@ -499,9 +471,7 @@
 
 <footer>Nine &amp; Tom · July 11, 2027</footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
-        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSe2HkjufsD6EDzBmDtIuNf8l3t7JNuPyBj6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
   /* ── CONFIG ─────────────────────────────────────────────────────── */
   const CONFIG = {
@@ -804,20 +774,6 @@
     showVoiceFallback();
   }
 
-  // Render QR code for this page
-  (function() {
-    var pageUrl = 'https://tprasertsup.github.io/wedding/moments/';
-    if (typeof QRCode !== 'undefined') {
-      new QRCode(document.getElementById('page-qr'), {
-        text:           pageUrl,
-        width:          80,
-        height:         80,
-        colorDark:      '#5c3d2e',
-        colorLight:     '#fefaf6',
-        correctLevel:   QRCode.CorrectLevel.M
-      });
-    }
-  })();
 </script>
 
 </body>
