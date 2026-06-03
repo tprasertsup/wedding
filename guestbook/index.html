@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nine &amp; Tom Video Guestbook</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="config.js"></script>
+  <script src="translations.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="gb-page">
+    <div class="gb-shell">
+      <header class="gb-header">
+        <div>
+          <a class="mark" href="../" aria-label="Nine and Tom">囍</a>
+          <p class="kiosk-pill" id="kiosk-pill" hidden data-i18n="kiosk.label"></p>
+        </div>
+        <div class="lang-switcher" aria-label="Language">
+          <button type="button" class="lang-btn active" data-lang="en">EN</button>
+          <span class="lang-sep">|</span>
+          <button type="button" class="lang-btn" data-lang="th">ไทย</button>
+        </div>
+      </header>
+
+      <div class="status-banner" id="status-banner" hidden></div>
+
+      <section class="screen active" data-screen="home">
+        <p class="eyebrow" data-i18n="common.guestbook"></p>
+        <h1 data-i18n="home.title"></h1>
+        <p class="lede" data-i18n="home.body"></p>
+        <div class="ornament" aria-hidden="true">
+          <span></span><i></i><span></span>
+        </div>
+        <div class="action-stack">
+          <button type="button" class="primary-action" data-action="start-record" data-i18n="home.recordVideo"></button>
+          <button type="button" class="secondary-action" data-action="open-photos" data-i18n="home.uploadPhotos"></button>
+        </div>
+        <p class="date-note" data-i18n="common.weddingDate"></p>
+      </section>
+
+      <section class="screen" data-screen="info">
+        <button type="button" class="text-button" data-action="home" data-i18n="common.back"></button>
+        <p class="eyebrow" data-i18n="common.guestbook"></p>
+        <h1 data-i18n="info.title"></h1>
+        <p class="lede small" data-i18n="info.intro"></p>
+        <form class="guest-form" id="guest-form">
+          <label>
+            <span data-i18n="info.name"></span>
+            <input id="guest-name" name="guestName" autocomplete="name" required />
+          </label>
+          <label>
+            <span data-i18n="info.relationship"></span>
+            <input id="guest-relationship" name="relationship" data-i18n-placeholder="info.relationshipHint" />
+          </label>
+          <button type="submit" class="primary-action compact" data-i18n="info.continue"></button>
+        </form>
+      </section>
+
+      <section class="screen" data-screen="prompt">
+        <button type="button" class="text-button" data-action="info" data-i18n="common.back"></button>
+        <p class="eyebrow" data-i18n="common.guestbook"></p>
+        <h1 data-i18n="prompt.title"></h1>
+        <p class="lede small" data-i18n="prompt.intro"></p>
+        <div class="prompt-list" id="prompt-list"></div>
+        <button type="button" class="secondary-action" data-action="skip-prompt" data-i18n="prompt.skip"></button>
+        <button type="button" class="primary-action compact" data-action="open-recorder" data-i18n="prompt.ready"></button>
+      </section>
+
+      <section class="screen" data-screen="record">
+        <button type="button" class="text-button" data-action="prompt" data-i18n="common.back"></button>
+        <p class="eyebrow" data-i18n="common.guestbook"></p>
+        <h1 data-i18n="record.title"></h1>
+        <p class="lede small" data-i18n="record.encouragement"></p>
+        <div class="video-frame">
+          <video id="camera-preview" playsinline muted autoplay></video>
+          <div class="countdown" id="countdown" hidden></div>
+        </div>
+        <div class="timer-row">
+          <span id="elapsed-time">00:00</span>
+          <span id="remaining-time"></span>
+        </div>
+        <div class="action-stack tight">
+          <button type="button" class="secondary-action" data-action="allow-camera" data-i18n="record.allowCamera"></button>
+          <button type="button" class="primary-action" data-action="toggle-record" disabled data-i18n="record.start"></button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="preview">
+        <button type="button" class="text-button" data-action="record-again" data-i18n="preview.again"></button>
+        <p class="eyebrow" data-i18n="common.guestbook"></p>
+        <h1 data-i18n="preview.title"></h1>
+        <video class="playback" id="recorded-preview" controls playsinline></video>
+        <p class="privacy" data-i18n="common.privateNote"></p>
+        <div class="action-stack tight">
+          <button type="button" class="primary-action" data-action="submit-video" data-i18n="preview.submit"></button>
+          <button type="button" class="secondary-action" data-action="record-again" data-i18n="preview.again"></button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="photos">
+        <button type="button" class="text-button" data-action="home" data-i18n="common.back"></button>
+        <p class="eyebrow" data-i18n="common.guestbook"></p>
+        <h1 data-i18n="photos.title"></h1>
+        <p class="lede small" data-i18n="photos.body"></p>
+        <form class="guest-form" id="photo-form">
+          <label>
+            <span data-i18n="photos.name"></span>
+            <input id="photo-name" name="photoName" autocomplete="name" />
+          </label>
+          <label>
+            <span data-i18n="photos.caption"></span>
+            <textarea id="photo-caption" name="caption" rows="3"></textarea>
+          </label>
+          <input id="photo-input" type="file" accept="image/*,.heic,.heif" multiple hidden />
+          <button type="button" class="secondary-action" data-action="choose-photos" data-i18n="photos.choose"></button>
+          <p class="help-note" data-i18n="photos.heicNote"></p>
+          <div class="photo-grid" id="photo-grid"></div>
+          <button type="submit" class="primary-action compact" data-i18n="photos.upload"></button>
+        </form>
+      </section>
+
+      <section class="screen" data-screen="upload">
+        <p class="eyebrow" data-i18n="common.guestbook"></p>
+        <h1 data-i18n="common.uploading"></h1>
+        <p class="lede small" data-i18n="common.keepOpen"></p>
+        <div class="progress-shell">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <p class="progress-label" id="progress-label">0%</p>
+        <button type="button" class="secondary-action" id="retry-upload" hidden data-i18n="common.retry"></button>
+      </section>
+
+      <section class="screen" data-screen="thanks">
+        <p class="eyebrow" data-i18n="common.guestbook"></p>
+        <h1 id="thanks-title"></h1>
+        <p class="lede small" id="thanks-body"></p>
+        <div class="ornament" aria-hidden="true">
+          <span></span><i></i><span></span>
+        </div>
+        <div class="action-stack tight">
+          <button type="button" class="primary-action" data-action="thanks-primary"></button>
+          <button type="button" class="secondary-action" data-action="thanks-secondary"></button>
+          <button type="button" class="text-button centered" data-action="home" data-i18n="common.home"></button>
+        </div>
+        <p class="help-note" id="kiosk-reset-note" hidden data-i18n="kiosk.resetSoon"></p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
+
