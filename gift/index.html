@@ -638,14 +638,42 @@
     img.src = url;
   }
 
+  /* ── QR download — uses Web Share API on mobile so image goes to photo album ── */
+  function setupQrDownload(btnId, url, filename) {
+    var btn = document.getElementById(btnId);
+    btn.href = url;
+    btn.addEventListener('click', function(e) {
+      if (!url || url.indexOf('PASTE') !== -1) return; // placeholder, nothing to share
+      if (typeof navigator.share === 'function' && typeof navigator.canShare === 'function') {
+        e.preventDefault();
+        fetch(url)
+          .then(function(r) { return r.blob(); })
+          .then(function(blob) {
+            var file = new File([blob], filename, { type: blob.type || 'image/png' });
+            if (navigator.canShare({ files: [file] })) {
+              return navigator.share({ files: [file], title: filename });
+            }
+            // canShare returned false — fall back to blob URL download
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(a.href);
+          })
+          .catch(function() {}); // user cancelled share sheet — no-op
+      }
+      // Desktop: let the default <a download> behaviour proceed
+    });
+  }
+
   /* ── Init ─────────────────────────────────────────────────────────── */
   setLang(currentLang);
 
   loadQrImage('pp-qr-img',    'pp-qr-placeholder',    CONFIG.PROMPTPAY_QR_URL);
   loadQrImage('venmo-qr-img', 'venmo-qr-placeholder', CONFIG.VENMO_QR_URL);
 
-  document.getElementById('pp-download-btn').href    = CONFIG.PROMPTPAY_QR_URL;
-  document.getElementById('venmo-download-btn').href = CONFIG.VENMO_QR_URL;
+  setupQrDownload('pp-download-btn',    CONFIG.PROMPTPAY_QR_URL, 'promptpay-qr.png');
+  setupQrDownload('venmo-download-btn', CONFIG.VENMO_QR_URL,     'venmo-qr.png');
 
   // Keyboard support for slip drop zone
   document.getElementById('slip-drop-zone').addEventListener('keydown', function(e) {
