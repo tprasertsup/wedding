@@ -7,7 +7,7 @@
   <link rel="icon" href="../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;600&family=Charmonman:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --peach:        #f5e6d8;
@@ -35,12 +35,23 @@
       flex-direction: column;
     }
 
+    body.lang-th { font-family: 'Sarabun', sans-serif; }
+    body.lang-th .card-title,
+    body.lang-th .success-wrap h2,
+    body.lang-th .error-wrap h2 {
+      font-family: 'Charmonman', serif; font-weight: 700;
+    }
+    body.lang-th .card-sub { font-family: 'Sarabun', sans-serif; font-weight: 600; }
+    body.lang-th .btn-submit, body.lang-th .btn-rerecord, body.lang-th .btn-another,
+    body.lang-th .tab-btn { font-family: 'Sarabun', sans-serif; letter-spacing: 0.04em; }
+
     /* ---- Header ---- */
     header {
       background: var(--peach);
       border-bottom: 1px solid var(--gold-border);
       padding: 28px 20px;
       text-align: center;
+      position: relative;
     }
     .header-ornament { font-size: 28px; color: var(--gold); opacity: .7; margin-bottom: 6px; }
     .header-names {
@@ -57,6 +68,29 @@
       color: var(--brown-light);
       margin-top: 4px;
     }
+
+    .lang-switcher {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      cursor: pointer;
+      padding: 4px 2px;
+    }
+    .lang-btn.active { color: var(--gold-dark); border-bottom: 1.5px solid var(--gold); }
+    .lang-sep { color: var(--gold-border); font-size: 10px; }
 
     /* ---- Main ---- */
     main {
@@ -329,7 +363,6 @@
       line-height: 1.7;
     }
 
-
     /* ---- Footer ---- */
     footer {
       background: var(--brown);
@@ -345,6 +378,9 @@
     @media (max-width: 600px) {
       .card { padding: 36px 24px; }
     }
+    @media (max-width: 400px) {
+      .lang-switcher { right: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -353,6 +389,11 @@
   <div class="header-ornament">囍</div>
   <div class="header-names">Nine &amp; Tom</div>
   <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="th" onclick="setLang('th')">ไทย</button>
+  </div>
 </header>
 
 <main>
@@ -360,35 +401,35 @@
 
     <!-- ── state-form ─────────────────────────────── -->
     <div class="state active" id="state-form">
-      <h1 class="card-title">Leave us a little blessing</h1>
-      <p class="card-sub">Record a short voice message or write us a note.<br>We'll keep these as one of our favorite memories from the day.</p>
+      <h1 class="card-title" data-i18n="moments.title">Leave us a little blessing</h1>
+      <p class="card-sub" data-i18n="moments.subtitle">Record a short voice message or write us a note.<br>We'll keep these as one of our favorite memories from the day.</p>
       <div class="divider"></div>
 
       <div class="form-group">
-        <label for="m-name">Your Name (optional)</label>
-        <input type="text" id="m-name" placeholder="How shall we remember you?" autocomplete="name">
+        <label for="m-name" data-i18n="moments.name.label">Your Name (optional)</label>
+        <input type="text" id="m-name" data-i18n-placeholder="moments.name.ph" placeholder="How shall we remember you?" autocomplete="name">
       </div>
 
       <div class="tab-bar" role="tablist" aria-label="Choose how to leave your blessing">
         <button class="tab-btn active" id="tab-voice" role="tab"
                 aria-selected="true" aria-controls="panel-voice"
-                onclick="showTab('voice')">
+                onclick="showTab('voice')" data-i18n="moments.tab.voice">
           🎙 Voice Message
         </button>
         <button class="tab-btn" id="tab-text" role="tab"
                 aria-selected="false" aria-controls="panel-text"
-                onclick="showTab('text')">
+                onclick="showTab('text')" data-i18n="moments.tab.text">
           ✍ Written Note
         </button>
       </div>
 
       <!-- Voice panel -->
       <div id="panel-voice" role="tabpanel" aria-labelledby="tab-voice">
-        <div id="voice-fallback" class="fallback-notice" aria-live="polite">
+        <div id="voice-fallback" class="fallback-notice" aria-live="polite" data-i18n="moments.fallback">
           Voice recording isn't available on this browser or device.
           Please use the <strong>Written Note</strong> tab instead.
         </div>
-        <div id="voice-status" class="voice-status" aria-live="polite">Press record when you're ready</div>
+        <div id="voice-status" class="voice-status" aria-live="polite" data-i18n="moments.status.ready">Press record when you're ready</div>
         <div id="voice-timer" class="voice-timer" aria-label="Recording timer" aria-live="polite">0:00</div>
         <button class="record-btn" id="record-btn" onclick="toggleRecord()"
                 aria-label="Start recording">
@@ -396,10 +437,10 @@
         </button>
         <div class="voice-audio-wrap" id="voice-audio-wrap">
           <audio id="voice-playback" controls aria-label="Playback your recorded message"></audio>
-          <button class="btn-rerecord" onclick="reRecord()">Record again</button>
+          <button class="btn-rerecord" onclick="reRecord()" data-i18n="moments.rerecord">Record again</button>
         </div>
         <button class="btn-submit" id="btn-submit-voice" disabled onclick="submitVoice()"
-                aria-label="Send voice blessing">
+                aria-label="Send voice blessing" data-i18n="moments.submit.voice">
           Send Voice Blessing
         </button>
       </div>
@@ -407,18 +448,19 @@
       <!-- Text panel -->
       <div id="panel-text" role="tabpanel" aria-labelledby="tab-text" style="display:none">
         <div class="form-group">
-          <label for="m-text">Your Blessing</label>
+          <label for="m-text" data-i18n="moments.blessing.label">Your Blessing</label>
           <textarea id="m-text"
+            data-i18n-placeholder="moments.blessing.ph"
             placeholder="Share a wish, a memory, or a few words of love for Nine and Tom…"
             aria-required="true"
             style="border-color:var(--gold);background:#fffdf9"></textarea>
         </div>
-        <button class="btn-submit" id="btn-submit-text" onclick="submitText()">
+        <button class="btn-submit" id="btn-submit-text" onclick="submitText()" data-i18n="moments.submit.text">
           Send Written Blessing
         </button>
       </div>
 
-      <p class="form-note">With love, Nine &amp; Tom 🌸</p>
+      <p class="form-note" data-i18n="moments.note">With love, Nine &amp; Tom 🌸</p>
 
     </div><!-- /state-form -->
 
@@ -426,7 +468,7 @@
     <div class="state" id="state-uploading" aria-live="polite">
       <div class="loading-wrap">
         <div class="spinner" role="status" aria-label="Uploading"></div>
-        <p id="upload-progress-text" style="color:var(--brown-light);font-size:14px">
+        <p id="upload-progress-text" style="color:var(--brown-light);font-size:14px" data-i18n="moments.uploading">
           Sending your blessing…
         </p>
       </div>
@@ -436,20 +478,21 @@
     <div class="state" id="state-success" aria-live="polite">
       <div class="success-wrap">
         <div class="success-icon" aria-hidden="true">🌸</div>
-        <h2>Thank you — we received your blessing 💛</h2>
-        <p>Your words will mean everything to us. We'll treasure them always.</p>
-        <p style="margin-top:12px;font-style:italic;color:var(--gold-dark)">
+        <h2 data-i18n="moments.success">Thank you — we received your blessing 💛</h2>
+        <p data-i18n="moments.success.note">Your words will mean everything to us. We'll treasure them always.</p>
+        <p style="margin-top:12px;font-style:italic;color:var(--gold-dark)" data-i18n="moments.success.love">
           With love, Nine &amp; Tom
         </p>
         <button class="btn-another" onclick="resetForm()"
-                aria-label="Leave another blessing">
+                aria-label="Leave another blessing" data-i18n="moments.another">
           Leave another blessing
         </button>
         <br>
         <a href="../" style="display:inline-block;margin-top:20px;
            color:var(--brown-light);font-size:11px;letter-spacing:2px;
            text-transform:uppercase;text-decoration:none;
-           border-bottom:1px solid var(--gold-border)">
+           border-bottom:1px solid var(--gold-border)"
+           data-i18n="moments.back">
           ← Back to guest portal
         </a>
       </div>
@@ -459,10 +502,10 @@
     <div class="state" id="state-error" aria-live="polite">
       <div class="error-wrap">
         <div class="error-icon" aria-hidden="true">💌</div>
-        <h2>Something went wrong</h2>
-        <p id="error-msg">Could not send your blessing. Please check your connection and try again.</p>
+        <h2 data-i18n="moments.error.title">Something went wrong</h2>
+        <p id="error-msg" data-i18n="moments.error.msg">Could not send your blessing. Please check your connection and try again.</p>
         <button class="btn-submit" style="margin-top:24px;max-width:280px;margin-left:auto;margin-right:auto;display:block"
-                onclick="showState('state-form')">Try Again</button>
+                onclick="showState('state-form')" data-i18n="moments.retry">Try Again</button>
       </div>
     </div>
 
@@ -477,6 +520,89 @@
   const CONFIG = {
     MOMENTS_ENDPOINT: 'PASTE_MOMENTS_APPS_SCRIPT_WEB_APP_URL_HERE'
   };
+
+  /* ── Translations ────────────────────────────────────────────────── */
+  var T = {
+    en: {
+      'moments.title':          'Leave us a little blessing',
+      'moments.subtitle':       "Record a short voice message or write us a note.<br>We'll keep these as one of our favorite memories from the day.",
+      'moments.name.label':     'Your Name (optional)',
+      'moments.name.ph':        "How shall we remember you?",
+      'moments.tab.voice':      '🎙 Voice Message',
+      'moments.tab.text':       '✍ Written Note',
+      'moments.fallback':       'Voice recording isn\'t available on this browser or device. Please use the <strong>Written Note</strong> tab instead.',
+      'moments.status.ready':   "Press record when you're ready",
+      'moments.status.recording': 'Recording… tap Stop when done',
+      'moments.status.saved':   'Recording saved — press play to review',
+      'moments.rerecord':       'Record again',
+      'moments.submit.voice':   'Send Voice Blessing',
+      'moments.blessing.label': 'Your Blessing',
+      'moments.blessing.ph':    'Share a wish, a memory, or a few words of love for Nine and Tom…',
+      'moments.submit.text':    'Send Written Blessing',
+      'moments.note':           'With love, Nine &amp; Tom 🌸',
+      'moments.encoding':       'Encoding your voice message…',
+      'moments.uploading':      'Sending your blessing…',
+      'moments.success':        'Thank you — we received your blessing 💛',
+      'moments.success.note':   "Your words will mean everything to us. We'll treasure them always.",
+      'moments.success.love':   'With love, Nine &amp; Tom',
+      'moments.another':        'Leave another blessing',
+      'moments.back':           '← Back to guest portal',
+      'moments.error.title':    'Something went wrong',
+      'moments.error.msg':      'Could not send your blessing. Please check your connection and try again.',
+      'moments.retry':          'Try Again'
+    },
+    th: {
+      'moments.title':          'ฝากคำอวยพรให้เรา',
+      'moments.subtitle':       'บันทึกข้อความเสียงสั้นๆ หรือเขียนโน้ตถึงเรา<br>เราจะเก็บไว้เป็นหนึ่งในความทรงจำที่ดีที่สุดจากวันนี้',
+      'moments.name.label':     'ชื่อของคุณ (ไม่จำเป็น)',
+      'moments.name.ph':        'จะให้เราจำว่าอะไรดี?',
+      'moments.tab.voice':      '🎙 ข้อความเสียง',
+      'moments.tab.text':       '✍ ข้อความเขียน',
+      'moments.fallback':       'การบันทึกเสียงไม่รองรับในเบราว์เซอร์หรืออุปกรณ์นี้ กรุณาใช้แท็บ <strong>ข้อความเขียน</strong> แทน',
+      'moments.status.ready':   'กดบันทึกเมื่อพร้อม',
+      'moments.status.recording': 'กำลังบันทึก… แตะหยุดเมื่อเสร็จ',
+      'moments.status.saved':   'บันทึกเสร็จแล้ว — กดเล่นเพื่อฟัง',
+      'moments.rerecord':       'บันทึกใหม่',
+      'moments.submit.voice':   'ส่งคำอวยพรแบบเสียง',
+      'moments.blessing.label': 'คำอวยพรของคุณ',
+      'moments.blessing.ph':    'แบ่งปันความปรารถนา ความทรงจำ หรือคำรักไม่กี่คำถึงไนน์กับทอม…',
+      'moments.submit.text':    'ส่งคำอวยพรแบบเขียน',
+      'moments.note':           'ด้วยความรัก ไนน์ &amp; ทอม 🌸',
+      'moments.encoding':       'กำลังเตรียมข้อความเสียง…',
+      'moments.uploading':      'กำลังส่งคำอวยพร…',
+      'moments.success':        'ขอบคุณมาก — รับคำอวยพรของคุณแล้ว 💛',
+      'moments.success.note':   'คำพูดของคุณมีความหมายต่อเราอย่างมาก เราจะเก็บรักษาไว้ตลอดไป',
+      'moments.success.love':   'ด้วยความรัก ไนน์ &amp; ทอม',
+      'moments.another':        'ฝากคำอวยพรอีกครั้ง',
+      'moments.back':           '← กลับหน้าหลัก',
+      'moments.error.title':    'เกิดข้อผิดพลาด',
+      'moments.error.msg':      'ส่งคำอวยพรไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อและลองใหม่อีกครั้ง',
+      'moments.retry':          'ลองอีกครั้ง'
+    }
+  };
+
+  var currentLang = localStorage.getItem('wedding-lang') || 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('wedding-lang', lang);
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (T[lang] && T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-placeholder');
+      if (T[lang] && T[lang][key] !== undefined) el.placeholder = T[lang][key];
+    });
+    document.querySelectorAll('.lang-btn[data-lang="en"]').forEach(function(b) {
+      b.classList.toggle('active', lang === 'en');
+    });
+    document.querySelectorAll('.lang-btn[data-lang="th"]').forEach(function(b) {
+      b.classList.toggle('active', lang === 'th');
+    });
+    document.body.classList.toggle('lang-th', lang === 'th');
+    document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+  }
 
   /* ── State helpers ───────────────────────────────────────────────── */
   function showState(id) {
@@ -569,7 +695,8 @@
         document.getElementById('voice-audio-wrap').style.display = 'block';
         document.getElementById('btn-submit-voice').disabled = false;
         setRecordUI('idle');
-        document.getElementById('voice-status').textContent = 'Recording saved — press play to review';
+        document.getElementById('voice-status').textContent =
+          T[currentLang]['moments.status.saved'];
       };
 
       mediaRecorder.start(250);
@@ -583,7 +710,8 @@
       }, 1000);
 
       setRecordUI('recording');
-      document.getElementById('voice-status').textContent = 'Recording… tap Stop when done';
+      document.getElementById('voice-status').textContent =
+        T[currentLang]['moments.status.recording'];
 
     }).catch(function() {
       showVoiceFallback();
@@ -619,7 +747,8 @@
     updateTimerDisplay();
     document.getElementById('voice-audio-wrap').style.display = 'none';
     document.getElementById('btn-submit-voice').disabled = true;
-    document.getElementById('voice-status').textContent = "Press record when you're ready";
+    document.getElementById('voice-status').textContent =
+      T[currentLang]['moments.status.ready'];
     setRecordUI('idle');
     var audio = document.getElementById('voice-playback');
     audio.pause();
@@ -640,12 +769,14 @@
     if (document.getElementById('btn-submit-voice').disabled) return;
 
     document.getElementById('btn-submit-voice').disabled = true;
-    document.getElementById('upload-progress-text').textContent = 'Encoding your voice message…';
+    document.getElementById('upload-progress-text').textContent =
+      T[currentLang]['moments.encoding'];
     showState('state-uploading');
 
     blobToBase64(recordingBlob).then(function(dataUrl) {
       var base64 = dataUrl.split(',')[1];
-      document.getElementById('upload-progress-text').textContent = 'Sending your blessing…';
+      document.getElementById('upload-progress-text').textContent =
+        T[currentLang]['moments.uploading'];
 
       var ext = mimeToExt(recordingBlob.type);
       var payload = {
@@ -679,7 +810,8 @@
     }
 
     document.getElementById('btn-submit-text').disabled = true;
-    document.getElementById('upload-progress-text').textContent = 'Sending your blessing…';
+    document.getElementById('upload-progress-text').textContent =
+      T[currentLang]['moments.uploading'];
     showState('state-uploading');
 
     var payload = {
@@ -738,7 +870,8 @@
     document.getElementById('voice-audio-wrap').style.display = 'none';
     document.getElementById('btn-submit-voice').disabled = true;
     document.getElementById('btn-submit-text').disabled  = false;
-    document.getElementById('voice-status').textContent  = "Press record when you're ready";
+    document.getElementById('voice-status').textContent  =
+      T[currentLang]['moments.status.ready'];
     setRecordUI('idle');
     var audio = document.getElementById('voice-playback');
     audio.pause();
@@ -769,6 +902,8 @@
   }
 
   /* ── Init ────────────────────────────────────────────────────────── */
+  setLang(currentLang);
+
   // Check for voice support; auto-fallback if missing
   if (!navigator.mediaDevices || !window.MediaRecorder) {
     showVoiceFallback();
