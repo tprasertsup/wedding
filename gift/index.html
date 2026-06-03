@@ -7,7 +7,7 @@
   <link rel="icon" href="../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;600&family=Charmonman:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --peach:        #f5e6d8;
@@ -29,7 +29,12 @@
       display: flex; flex-direction: column;
     }
     body.lang-th { font-family: 'Sarabun', sans-serif; }
-    body.lang-th .card-title, body.lang-th .card-sub,
+    body.lang-th .card-title,
+    body.lang-th .success-wrap h2,
+    body.lang-th .error-wrap h2 {
+      font-family: 'Charmonman', serif; font-weight: 700;
+    }
+    body.lang-th .card-sub,
     body.lang-th .section-label, body.lang-th .registry-note {
       font-family: 'Sarabun', sans-serif; font-weight: 600;
     }
@@ -441,7 +446,7 @@
     th: {
       'gift.title':           'ส่งของขวัญเป็นเงิน',
       'gift.subtitle':        'ไม่บังคับ และมาจากใจเสมอ',
-      'gift.note':            'เราไม่มีรายการของขวัญที่ลงทะเบียนไว้ — ของขวัญที่รับได้คือของขวัญเป็นเงิน และนั่นก็ไม่ได้บังคับเลยนะ การที่คุณมาร่วมงานด้วยวันนี้คือสิ่งที่พิเศษที่สุดสำหรับเราแล้ว แต่ถ้าอยากให้ของขวัญเพิ่มเติม ขอบคุณมากจากใจเลย 🌸',
+      'gift.note':            'เราไม่มีรายการของขวัญแต่งงานนะ<br>ถ้าใครอยากมอบของขวัญ เราขอรับเป็นของขวัญแทนใจในรูปแบบเงินเท่านั้น และทั้งหมดนี้ขึ้นอยู่กับความสมัครใจจริงๆ<br>แค่ทุกคนมาร่วมอยู่กับเราในวันนี้ ก็มีความหมายกับเรามากๆ แล้ว แต่ถ้าใครอยากช่วยเราเล็กๆ น้อยๆ เราก็ขอบคุณมากจากใจเลย 🌸',
       'gift.choose':          'เลือกวิธีโอน',
       'gift.pp.btn':          'พร้อมเพย์',
       'gift.venmo.btn':       'Venmo',
