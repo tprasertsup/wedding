@@ -8,7 +8,7 @@ Backend: `docs/google-apps-script/gift-webhook.gs`
 ## Pre-Deployment Setup
 
 - [ ] Create a private Google Drive folder for slips; copy its ID into `SLIP_FOLDER_ID`
-- [ ] Set `GIFT_SHEET_ID` (can share spreadsheet with RSVP/Moments)
+- [ ] Set `GIFT_SHEET_ID` (can share spreadsheet with RSVP/Guestbook)
 - [ ] Deploy `gift-webhook.gs` as Web App: **Execute as Me**, **Anyone can access**
 - [ ] Paste the Web App URL into `gift/index.html` → `CONFIG.GIFT_ENDPOINT`
 - [ ] (Optional) Upload your real PromptPay QR image to `/wedding/assets/promptpay-qr.png`
