@@ -1,0 +1,47 @@
+/* Translations for photos/index.html. */
+window.WEDDING_TRANSLATIONS = {
+    en: {
+      'photos.title':          'Share Your Photos',
+      'photos.subtitle':       'Upload your favorite moments from today',
+      'photos.name.label':     'Your Name',
+      'photos.name.ph':        'What do we call you?',
+      'photos.caption.label':  'Caption',
+      'photos.caption.ph':     'A short note about these photos…',
+      'photos.files.label':    'Photos *',
+      'photos.files.cta':      'Choose Photos',
+      'photos.files.hint':     'Up to 10 photos · Max 15 MB each · JPEG, PNG, WebP, HEIC/HEIF',
+      'photos.files.change':   'Tap to add more photos',
+      'photos.upload.btn':     'Upload Photos',
+      'photos.view.btn':       'View Shared Photos →',
+      'photos.uploading':      'Uploading your photos…',
+      'photos.success':        'Thank you — your photos were uploaded 💛',
+      'photos.success.note':   'Photos will appear in the shared album once reviewed.',
+      'photos.upload.another': 'Upload more photos',
+      'photos.back.portal':    '← Back to guest portal',
+      'photos.error.title':    'Something went wrong',
+      'photos.error.msg':      'Could not upload your photos. Please check your connection and try again.',
+      'photos.retry':          'Try Again'
+    },
+    th: {
+      'photos.title':          'แชร์รูปภาพ',
+      'photos.subtitle':       'อัปโหลดรูปที่ชอบจากวันนี้',
+      'photos.name.label':     'ชื่อของคุณ',
+      'photos.name.ph':        'เราเรียกคุณว่าอะไร?',
+      'photos.caption.label':  'คำบรรยาย',
+      'photos.caption.ph':     'คำอธิบายสั้นๆ เกี่ยวกับรูปเหล่านี้…',
+      'photos.files.label':    'รูปภาพ *',
+      'photos.files.cta':      'เลือกรูปภาพ',
+      'photos.files.hint':     'ได้สูงสุด 10 รูป · แต่ละรูปไม่เกิน 15 MB · JPEG, PNG, WebP, HEIC/HEIF',
+      'photos.files.change':   'แตะเพื่อเพิ่มรูปภาพ',
+      'photos.upload.btn':     'อัปโหลดรูปภาพ',
+      'photos.view.btn':       'ดูรูปที่แชร์ →',
+      'photos.uploading':      'กำลังอัปโหลดรูปภาพ…',
+      'photos.success':        'ขอบคุณมากนะ — อัปโหลดรูปสำเร็จแล้ว 💛',
+      'photos.success.note':   'รูปของคุณจะปรากฏในอัลบั้มหลังจากตรวจสอบแล้ว',
+      'photos.upload.another': 'อัปโหลดรูปเพิ่มเติม',
+      'photos.back.portal':    '← กลับหน้าหลัก',
+      'photos.error.title':    'เกิดข้อผิดพลาด',
+      'photos.error.msg':      'ไม่สามารถอัปโหลดรูปได้ กรุณาตรวจสอบการเชื่อมต่อและลองใหม่',
+      'photos.retry':          'ลองอีกครั้ง'
+    }
+  };

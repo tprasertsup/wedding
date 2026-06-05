@@ -1,0 +1,375 @@
+:root {
+      --peach:        #f5e6d8;
+      --peach-light:  #faf3ec;
+      --gold:         #c9a96e;
+      --gold-dark:    #8b6914;
+      --gold-border:  #d4b896;
+      --rose:         #e8968a;
+      --green:        #8fa884;
+      --brown:        #5c3d2e;
+      --brown-light:  #8a6552;
+      --cream:        #fefaf6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--peach-light);
+      color: var(--brown);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body.lang-th { font-family: 'Sarabun', sans-serif; }
+    body.lang-th .card-title,
+    body.lang-th .card-sub,
+    body.lang-th .success-wrap h2,
+    body.lang-th .error-wrap h2 {
+      font-family: 'Sarabun', sans-serif; font-weight: 600;
+    }
+    body.lang-th .btn-submit, body.lang-th .btn-rerecord, body.lang-th .btn-another,
+    body.lang-th .tab-btn { font-family: 'Sarabun', sans-serif; letter-spacing: 0.04em; }
+
+    /* ---- Header ---- */
+    header {
+      background: var(--peach);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 28px 20px;
+      text-align: center;
+      position: relative;
+    }
+    .header-ornament { font-size: 28px; color: var(--gold); opacity: .7; margin-bottom: 6px; }
+    .header-ornament a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    .header-ornament a:visited, .header-ornament a:hover, .header-ornament a:active { color: inherit; text-decoration: none; }
+    .header-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--brown);
+    }
+    .header-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-top: 4px;
+    }
+
+    .lang-switcher {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      cursor: pointer;
+      padding: 4px 2px;
+    }
+    .lang-btn.active { color: var(--gold-dark); border-bottom: 1.5px solid var(--gold); }
+    .lang-sep { color: var(--gold-border); font-size: 10px; }
+
+    /* ---- Main ---- */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 60px 20px 80px;
+    }
+
+    .card {
+      background: var(--cream);
+      border: 1px solid var(--gold-border);
+      max-width: 640px;
+      width: 100%;
+      padding: 50px 48px;
+      position: relative;
+    }
+    .card::before, .card::after {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .card::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .card::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 6px;
+      color: var(--brown);
+    }
+    .card-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-style: italic;
+      text-align: center;
+      color: var(--gold-dark);
+      margin-bottom: 36px;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 0 0 36px;
+    }
+
+    /* ---- State screens ---- */
+    .state { display: none; }
+    .state.active { display: block; }
+
+    .loading-wrap {
+      text-align: center;
+      padding: 40px 0 30px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 36px; height: 36px;
+      border: 3px solid var(--gold-border);
+      border-top-color: var(--gold-dark);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .success-wrap {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .success-icon { font-size: 40px; margin-bottom: 16px; }
+    .success-wrap h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .success-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
+
+    .error-wrap {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .error-icon { font-size: 40px; margin-bottom: 16px; }
+    .error-wrap h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .error-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
+
+    /* ---- Form ---- */
+    .form-group { margin-bottom: 22px; }
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-bottom: 7px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--gold-border);
+      background: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--brown);
+      outline: none;
+      transition: border-color .25s;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 130px; }
+    .field-required-err { font-size: 12px; color: var(--rose); margin-top: 6px; display: none; }
+
+    /* ---- Tab bar ---- */
+    .tab-bar {
+      display: flex;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 13px 16px;
+      border: 1px solid var(--gold-border);
+      background: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .2s;
+      color: var(--brown);
+      min-height: 48px;
+    }
+    .tab-btn:first-child { border-right: none; }
+    .tab-btn.active {
+      border-color: var(--gold);
+      background: var(--gold-dark);
+      color: white;
+    }
+    .tab-btn:hover:not(.active) {
+      border-color: var(--gold);
+      background: rgba(201,169,110,.08);
+    }
+
+    /* ---- Voice UI ---- */
+    .voice-status {
+      text-align: center;
+      font-size: 14px;
+      color: var(--brown-light);
+      margin-bottom: 12px;
+      min-height: 20px;
+    }
+
+    .voice-timer {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--brown);
+      text-align: center;
+      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+      min-height: 3rem;
+    }
+    .voice-timer.recording { color: var(--rose); }
+
+    .record-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      background: var(--gold-dark);
+      transition: background .2s, transform .1s;
+    }
+    .record-btn:hover { background: var(--brown); }
+    .record-btn:active { transform: scale(.96); }
+    .record-btn.recording { background: var(--rose); }
+    .record-btn-icon { font-size: 1.8rem; line-height: 1; }
+
+    .voice-audio-wrap {
+      display: none;
+      margin-bottom: 16px;
+    }
+    audio {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .fallback-notice {
+      background: #fff8f2;
+      border: 1px solid var(--gold-border);
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--brown-light);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    /* ---- Buttons ---- */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--gold-dark);
+      color: white;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .25s, transform .1s;
+      margin-top: 8px;
+      min-height: 52px;
+    }
+    .btn-submit:hover { background: var(--brown); }
+    .btn-submit:active { transform: scale(.99); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    .btn-rerecord {
+      width: 100%;
+      padding: 13px;
+      background: white;
+      color: var(--gold-dark);
+      border: 1px solid var(--gold-border);
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+      margin-bottom: 12px;
+      min-height: 48px;
+    }
+    .btn-rerecord:hover { border-color: var(--gold); color: var(--brown); }
+
+    .btn-another {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--gold-dark);
+      border: 1px solid var(--gold-border);
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      min-height: 48px;
+    }
+    .btn-another:hover { border-color: var(--gold); background: rgba(201,169,110,.06); }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--brown-light);
+      text-align: center;
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+
+    /* ---- Footer ---- */
+    footer {
+      background: var(--brown);
+      color: var(--peach);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      .card { padding: 36px 24px; }
+    }
+    @media (max-width: 400px) {
+      .lang-switcher { right: 12px; }
+    }

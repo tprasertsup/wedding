@@ -1,0 +1,234 @@
+:root {
+      --peach:        #f5e6d8;
+      --peach-light:  #faf3ec;
+      --gold:         #c9a96e;
+      --gold-dark:    #8b6914;
+      --gold-border:  #d4b896;
+      --rose:         #e8968a;
+      --brown:        #5c3d2e;
+      --brown-light:  #8a6552;
+      --cream:        #fefaf6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--peach-light);
+      color: var(--brown);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body.lang-th {
+      font-family: 'Sarabun', sans-serif;
+    }
+    body.lang-th .card-title,
+    body.lang-th .card-desc,
+    body.lang-th .portal-title,
+    body.lang-th .portal-subtitle,
+    body.lang-th .header-names {
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 600;
+    }
+    body.lang-th .portal-eyebrow { font-family: 'Sarabun', sans-serif; }
+    body.lang-th .portal-title { font-size: clamp(1.8rem, 4.5vw, 2.6rem); }
+
+    /* ---- Header ---- */
+    header {
+      background: var(--peach);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+    }
+    .header-ornament { font-size: 24px; color: var(--gold); opacity: .7; margin-bottom: 4px; }
+    .header-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--brown);
+    }
+    .header-sub {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-top: 3px;
+    }
+
+    .lang-switcher {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      cursor: pointer;
+      padding: 4px 2px;
+    }
+    .lang-btn.active { color: var(--gold-dark); border-bottom: 1.5px solid var(--gold); }
+    .lang-sep { color: var(--gold-border); font-size: 10px; }
+
+    /* ---- Main ---- */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 52px 20px 72px;
+    }
+
+    /* ---- Hero ---- */
+    .portal-hero {
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto 44px;
+    }
+    .portal-eyebrow {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      margin-bottom: 12px;
+    }
+    .portal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      font-weight: 400;
+      color: var(--brown);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      justify-content: center;
+      margin: 14px 0;
+    }
+    .ornament-line {
+      flex: 1;
+      max-width: 70px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-border));
+    }
+    .ornament-line:last-child { background: linear-gradient(to left, transparent, var(--gold-border)); }
+    .ornament-diamond {
+      width: 6px; height: 6px;
+      border: 1.5px solid var(--gold);
+      transform: rotate(45deg);
+    }
+    .portal-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--brown-light);
+      line-height: 1.65;
+    }
+
+    /* ---- Cards ---- */
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .portal-card {
+      background: var(--cream);
+      border: 1px solid var(--gold-border);
+      padding: 2.4rem 1.6rem 2rem;
+      text-decoration: none;
+      color: var(--brown);
+      position: relative;
+      transition: border-color .25s, box-shadow .25s, transform .15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+    .portal-card::before, .portal-card::after {
+      content: '';
+      position: absolute;
+      width: 14px; height: 14px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .portal-card::before { top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px; }
+    .portal-card::after  { bottom: 6px; right: 6px; border-width: 0 1.5px 1.5px 0; }
+    .portal-card:hover, .portal-card:focus {
+      border-color: var(--gold);
+      box-shadow: 0 6px 28px rgba(201,169,110,.2);
+      transform: translateY(-2px);
+      outline: none;
+    }
+    .portal-card:active { transform: translateY(0); }
+
+    .card-icon { font-size: 2.2rem; margin-bottom: 6px; }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--brown);
+      line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--brown-light);
+      line-height: 1.65;
+      margin-top: 2px;
+    }
+    .card-arrow {
+      margin-top: 12px;
+      font-size: 18px;
+      color: var(--gold);
+      transition: transform .2s;
+    }
+    .portal-card:hover .card-arrow { transform: translateX(4px); }
+
+    /* ---- Footer ---- */
+    footer {
+      background: var(--brown);
+      color: var(--peach);
+      text-align: center;
+      padding: 24px 20px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 720px) {
+      .portal-grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+      }
+      .portal-card {
+        padding: 2rem 1.6rem;
+        flex-direction: row;
+        text-align: left;
+        gap: 1.2rem;
+      }
+      .card-icon { font-size: 2rem; flex-shrink: 0; margin-bottom: 0; }
+      .card-text-wrap { display: flex; flex-direction: column; gap: 3px; }
+      .card-arrow { margin-top: 0; margin-left: auto; align-self: center; }
+    }
+
+    @media (max-width: 400px) {
+      .lang-switcher { right: 12px; }
+    }
