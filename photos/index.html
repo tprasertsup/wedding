@@ -30,6 +30,8 @@
 
     header { background: var(--peach); border-bottom: 1px solid var(--gold-border); padding: 24px 20px; text-align: center; position: relative; }
     .header-ornament { font-size: 24px; color: var(--gold); opacity: .7; margin-bottom: 4px; }
+    .header-ornament a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    .header-ornament a:visited, .header-ornament a:hover, .header-ornament a:active { color: inherit; text-decoration: none; }
     .header-names { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; }
     .header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--brown-light); margin-top: 3px; }
     .lang-switcher { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); display: flex; align-items: center; gap: 4px; }
@@ -149,7 +151,7 @@
 <body>
 
 <header>
-  <div class="header-ornament">囍</div>
+  <div class="header-ornament"><a href="../guest">囍</a></div>
   <div class="header-names">Nine &amp; Tom</div>
   <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
   <div class="lang-switcher">
@@ -180,11 +182,11 @@
     <div class="form-group">
       <label data-i18n="photos.files.label">Photos *</label>
       <div class="file-zone" id="file-zone" onclick="document.getElementById('photo-input').click()" role="button" tabindex="0" aria-label="Click to select photos">
-        <input type="file" id="photo-input" multiple accept="image/jpeg,image/png,image/webp,image/heic,image/heif" onchange="handleFiles(this.files)">
+        <input type="file" id="photo-input" multiple accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif,.avif" onchange="handleFiles(this.files)">
         <div id="fz-empty">
           <div class="file-zone-icon" aria-hidden="true">📷</div>
           <div class="file-zone-label" data-i18n="photos.files.cta">Choose Photos</div>
-          <div class="file-zone-hint" data-i18n="photos.files.hint">Up to 10 photos · Max 15 MB each · JPEG, PNG, WebP</div>
+          <div class="file-zone-hint" data-i18n="photos.files.hint">Up to 10 photos · Max 15 MB each · JPEG, PNG, WebP, HEIC/HEIF</div>
         </div>
         <div id="fz-selected" style="display:none">
           <div class="file-zone-label" data-i18n="photos.files.change">Tap to add more photos</div>
@@ -259,7 +261,7 @@
       'photos.caption.ph':     'A short note about these photos…',
       'photos.files.label':    'Photos *',
       'photos.files.cta':      'Choose Photos',
-      'photos.files.hint':     'Up to 10 photos · Max 15 MB each · JPEG, PNG, WebP',
+      'photos.files.hint':     'Up to 10 photos · Max 15 MB each · JPEG, PNG, WebP, HEIC/HEIF',
       'photos.files.change':   'Tap to add more photos',
       'photos.upload.btn':     'Upload Photos',
       'photos.view.btn':       'View Shared Photos →',
@@ -281,7 +283,7 @@
       'photos.caption.ph':     'คำอธิบายสั้นๆ เกี่ยวกับรูปเหล่านี้…',
       'photos.files.label':    'รูปภาพ *',
       'photos.files.cta':      'เลือกรูปภาพ',
-      'photos.files.hint':     'ได้สูงสุด 10 รูป · แต่ละรูปไม่เกิน 15 MB · JPEG, PNG, WebP',
+      'photos.files.hint':     'ได้สูงสุด 10 รูป · แต่ละรูปไม่เกิน 15 MB · JPEG, PNG, WebP, HEIC/HEIF',
       'photos.files.change':   'แตะเพื่อเพิ่มรูปภาพ',
       'photos.upload.btn':     'อัปโหลดรูปภาพ',
       'photos.view.btn':       'ดูรูปที่แชร์ →',
@@ -328,6 +330,78 @@
 
   /* ── File management ─────────────────────────────────────────────── */
   var selectedFiles = [];
+  var ALLOWED_PHOTO_MIMES = [
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/heic',
+    'image/heif',
+    'image/avif'
+  ];
+  var PHOTO_MIME_ALIASES = {
+    'image/jpg': 'image/jpeg',
+    'image/pjpeg': 'image/jpeg',
+    'image/x-png': 'image/png',
+    'image/heic-sequence': 'image/heic',
+    'image/heif-sequence': 'image/heif'
+  };
+  var PHOTO_MIME_BY_EXTENSION = {
+    jpg: 'image/jpeg',
+    jpeg: 'image/jpeg',
+    jpe: 'image/jpeg',
+    png: 'image/png',
+    webp: 'image/webp',
+    heic: 'image/heic',
+    heif: 'image/heif',
+    avif: 'image/avif'
+  };
+  var PHOTO_EXTENSION_BY_MIME = {
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+    'image/heic': 'heic',
+    'image/heif': 'heif',
+    'image/avif': 'avif'
+  };
+
+  function normalizePhotoMime(type) {
+    var mime = (type || '').toString().toLowerCase().split(';')[0].trim();
+    return PHOTO_MIME_ALIASES[mime] || mime;
+  }
+
+  function getFileExtension(fileName) {
+    var match = (fileName || '').toString().toLowerCase().match(/\.([a-z0-9]+)$/);
+    return match ? match[1] : '';
+  }
+
+  function inferPhotoMime(file) {
+    var mime = normalizePhotoMime(file.type);
+    if (!mime || mime === 'application/octet-stream' || mime === 'binary/octet-stream') {
+      mime = PHOTO_MIME_BY_EXTENSION[getFileExtension(file.name)] || '';
+    }
+    return ALLOWED_PHOTO_MIMES.indexOf(mime) !== -1 ? mime : '';
+  }
+
+  function getPhotoValidation(file) {
+    if (!inferPhotoMime(file)) {
+      return { ok: false, message: 'Unsupported photo type' };
+    }
+    if (file.size > CONFIG.MAX_SIZE_MB * 1048576) {
+      return { ok: false, message: 'Too large (max ' + CONFIG.MAX_SIZE_MB + ' MB)' };
+    }
+    return { ok: true, message: '✓' };
+  }
+
+  function makeUploadFileName(fileName, mimeType) {
+    var safeName = (fileName || 'wedding-photo').toString().replace(/[\\/:*?"<>|]+/g, '-').trim();
+    var ext = getFileExtension(safeName);
+    var expectedExt = PHOTO_EXTENSION_BY_MIME[mimeType] || 'jpg';
+    if (PHOTO_MIME_BY_EXTENSION[ext] === mimeType) return safeName;
+
+    var dot = safeName.lastIndexOf('.');
+    var base = dot > 0 ? safeName.slice(0, dot) : safeName;
+    return (base || 'wedding-photo') + '.' + expectedExt;
+  }
 
   function handleFiles(fileList) {
     var newFiles = Array.from(fileList);
@@ -374,12 +448,24 @@
       var item = document.createElement('div');
       item.className = 'file-item';
 
+      var mimeType = inferPhotoMime(file);
+      var validation = getPhotoValidation(file);
+
       // Thumbnail
-      if (file.type.startsWith('image/') && file.type !== 'image/heic' && file.type !== 'image/heif') {
+      if (mimeType && mimeType !== 'image/heic' && mimeType !== 'image/heif') {
         var img = document.createElement('img');
         img.className = 'file-thumb';
         img.alt = file.name;
-        img.src = URL.createObjectURL(file);
+        var thumbUrl = URL.createObjectURL(file);
+        img.onload = function() { URL.revokeObjectURL(thumbUrl); };
+        img.onerror = function() {
+          URL.revokeObjectURL(thumbUrl);
+          var placeholder = document.createElement('div');
+          placeholder.className = 'file-thumb-placeholder';
+          placeholder.innerHTML = '🖼';
+          if (this.parentNode) this.parentNode.replaceChild(placeholder, this);
+        };
+        img.src = thumbUrl;
       } else {
         var img = document.createElement('div');
         img.className = 'file-thumb-placeholder';
@@ -401,13 +487,12 @@
 
       // Validation
       var status = document.createElement('div');
-      var maxBytes = CONFIG.MAX_SIZE_MB * 1048576;
-      if (file.size > maxBytes) {
+      if (!validation.ok) {
         status.className = 'file-status error';
-        status.textContent = 'Too large (max ' + CONFIG.MAX_SIZE_MB + ' MB)';
+        status.textContent = validation.message;
       } else {
         status.className = 'file-status ok';
-        status.textContent = '✓';
+        status.textContent = validation.message;
         anyValid = true;
       }
       info.appendChild(status);
@@ -425,16 +510,41 @@
       list.appendChild(item);
     });
 
-    btn.disabled = !anyValid;
+    btn.disabled = !anyValid || selectedFiles.some(function(file) { return !getPhotoValidation(file).ok; });
   }
 
   /* ── Canvas resize ───────────────────────────────────────────────── */
-  function resizeImage(file) {
+  function forceDataUrlMime(dataUrl, mimeType) {
+    var parts = (dataUrl || '').split(',');
+    if (parts.length < 2) return dataUrl;
+    return 'data:' + mimeType + ';base64,' + parts.slice(1).join(',');
+  }
+
+  function readRawPhotoData(file, mimeType) {
     return new Promise(function(resolve) {
       var reader = new FileReader();
       reader.onload = function(e) {
-        var img = new Image();
-        img.onload = function() {
+        resolve({ dataUrl: forceDataUrlMime(e.target.result, mimeType), mimeType: mimeType });
+      };
+      reader.onerror = function() { resolve(null); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function resizeImage(file) {
+    return new Promise(function(resolve) {
+      var sourceMime = inferPhotoMime(file);
+      if (!sourceMime) {
+        resolve(null);
+        return;
+      }
+
+      var objectUrl = URL.createObjectURL(file);
+      var img = new Image();
+
+      img.onload = function() {
+        URL.revokeObjectURL(objectUrl);
+        try {
           var w = img.width, h = img.height;
           var max = CONFIG.MAX_DIMENSION;
           if (w > max || h > max) {
@@ -445,26 +555,27 @@
           canvas.width  = w;
           canvas.height = h;
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          var outMime = (file.type === 'image/png') ? 'image/png' : 'image/jpeg';
+          var outMime = (sourceMime === 'image/png') ? 'image/png' : 'image/jpeg';
           var dataUrl = canvas.toDataURL(outMime, 0.88);
           resolve({ dataUrl: dataUrl, mimeType: outMime });
-        };
-        img.onerror = function() {
-          // If canvas can't decode (e.g. HEIC), fall back to raw base64
-          resolve({ dataUrl: e.target.result, mimeType: file.type });
-        };
-        img.src = e.target.result;
+        } catch (_) {
+          readRawPhotoData(file, sourceMime).then(resolve);
+        }
       };
-      reader.onerror = function() {
-        resolve(null);
+
+      img.onerror = function() {
+        URL.revokeObjectURL(objectUrl);
+        // If canvas can't decode (for example HEIC), fall back to raw base64.
+        readRawPhotoData(file, sourceMime).then(resolve);
       };
-      reader.readAsDataURL(file);
+
+      img.src = objectUrl;
     });
   }
 
   /* ── Upload ──────────────────────────────────────────────────────── */
   async function uploadPhotos() {
-    var validFiles = selectedFiles.filter(function(f) { return f.size <= CONFIG.MAX_SIZE_MB * 1048576; });
+    var validFiles = selectedFiles.filter(function(f) { return getPhotoValidation(f).ok; });
     if (validFiles.length === 0) return;
 
     var btn = document.getElementById('btn-upload');
@@ -493,7 +604,7 @@
           guestName:        name,
           caption:          caption,
           submittedAt:      new Date().toISOString(),
-          fileName:         file.name,
+          fileName:         makeUploadFileName(file.name, result.mimeType),
           mimeType:         result.mimeType,
           imageBase64:      base64,
           userAgent:        navigator.userAgent

@@ -15,6 +15,8 @@ const PHOTO_FOLDER_ID  = 'PASTE_PHOTO_FOLDER_ID_HERE';
 const PHOTO_SHEET_ID   = 'PASTE_PHOTO_SHEET_ID_HERE';
 const PHOTO_SHEET_NAME = 'Photos';
 const MODERATION_ENABLED = true;
+const MAX_PHOTO_MB = 15;
+const MAX_PHOTO_BYTES = MAX_PHOTO_MB * 1024 * 1024;
 
 // Tip: PHOTO_SHEET_ID can be the same spreadsheet as RSVP / Moments / Gift.
 
@@ -36,8 +38,37 @@ const ALLOWED_PHOTO_TYPES = [
   'image/png',
   'image/webp',
   'image/heic',
-  'image/heif'
+  'image/heif',
+  'image/avif'
 ];
+
+const PHOTO_TYPE_ALIASES = {
+  'image/jpg': 'image/jpeg',
+  'image/pjpeg': 'image/jpeg',
+  'image/x-png': 'image/png',
+  'image/heic-sequence': 'image/heic',
+  'image/heif-sequence': 'image/heif'
+};
+
+const PHOTO_TYPE_BY_EXTENSION = {
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  jpe: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+  heic: 'image/heic',
+  heif: 'image/heif',
+  avif: 'image/avif'
+};
+
+const PHOTO_EXTENSION_BY_TYPE = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/heic': 'heic',
+  'image/heif': 'heif',
+  'image/avif': 'avif'
+};
 
 // ── Entry point ────────────────────────────────────────────────────
 
@@ -52,14 +83,24 @@ function doPost(e) {
 
     if (!data.imageBase64)  return jsonOut({ error: 'imageBase64 is required.' });
     if (!data.fileName)     return jsonOut({ error: 'fileName is required.' });
-    if (!data.mimeType)     return jsonOut({ error: 'mimeType is required.' });
-
-    if (ALLOWED_PHOTO_TYPES.indexOf(data.mimeType) === -1) {
-      return jsonOut({ error: 'Unsupported image type: ' + data.mimeType });
+    var mimeType = normalizePhotoType_(data.mimeType, data.fileName);
+    if (!mimeType) {
+      return jsonOut({ error: 'Unsupported image type: ' + (data.mimeType || guessPhotoTypeFromName_(data.fileName) || 'unknown') });
     }
 
-    var decoded  = Utilities.base64Decode(data.imageBase64);
-    var blob     = Utilities.newBlob(decoded, data.mimeType, data.fileName);
+    var decoded;
+    try {
+      decoded = Utilities.base64Decode(data.imageBase64);
+    } catch (_) {
+      return jsonOut({ error: 'Invalid imageBase64.' });
+    }
+
+    if (decoded.length > MAX_PHOTO_BYTES) {
+      return jsonOut({ error: 'Photo is too large. Max ' + MAX_PHOTO_MB + ' MB.' });
+    }
+
+    var fileName = normalizePhotoFileName_(data.fileName, mimeType);
+    var blob     = Utilities.newBlob(decoded, mimeType, fileName);
 
     var folder   = DriveApp.getFolderById(PHOTO_FOLDER_ID);
     var file     = folder.createFile(blob);
@@ -81,8 +122,8 @@ function doPost(e) {
       (data.caption    || '').toString().trim(),        // caption
       fileId,                                           // drive_file_id
       fileUrl,                                          // drive_file_url
-      data.mimeType,                                    // mime_type
-      data.fileName,                                    // original_file_name
+      mimeType,                                         // mime_type
+      fileName,                                         // original_file_name
       status,                                           // status
       data.userAgent   || ''                            // user_agent
     ]);
@@ -92,6 +133,47 @@ function doPost(e) {
   } catch (err) {
     return jsonOut({ error: 'Server error: ' + err.message });
   }
+}
+
+// ── Photo type helpers ──────────────────────────────────────────────
+
+function normalizePhotoType_(mimeType, fileName) {
+  var type = (mimeType || '').toString().toLowerCase().split(';')[0].trim();
+  type = PHOTO_TYPE_ALIASES[type] || type;
+
+  if (!type || type === 'application/octet-stream' || type === 'binary/octet-stream') {
+    type = guessPhotoTypeFromName_(fileName);
+  }
+
+  return ALLOWED_PHOTO_TYPES.indexOf(type) !== -1 ? type : '';
+}
+
+function guessPhotoTypeFromName_(fileName) {
+  var ext = getPhotoExtension_(fileName);
+  return PHOTO_TYPE_BY_EXTENSION[ext] || '';
+}
+
+function normalizePhotoFileName_(fileName, mimeType) {
+  var safeName = (fileName || 'wedding-photo')
+    .toString()
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .trim();
+
+  var expectedExt = PHOTO_EXTENSION_BY_TYPE[mimeType] || 'jpg';
+  var currentExt = getPhotoExtension_(safeName);
+
+  if (PHOTO_TYPE_BY_EXTENSION[currentExt] === mimeType) {
+    return safeName || ('wedding-photo.' + expectedExt);
+  }
+
+  var dot = safeName.lastIndexOf('.');
+  var base = dot > 0 ? safeName.slice(0, dot) : safeName;
+  return (base || 'wedding-photo') + '.' + expectedExt;
+}
+
+function getPhotoExtension_(fileName) {
+  var match = (fileName || '').toString().toLowerCase().match(/\.([a-z0-9]+)$/);
+  return match ? match[1] : '';
 }
 
 // ── Sheet helper ───────────────────────────────────────────────────
