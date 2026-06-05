@@ -1,4 +1,4 @@
-# Photo Guide — Just Drop the Files In
+# Image Guide — Just Drop the Files In
 
 Everything is already wired up. You only need to put your photos in the `images/` folder with the exact file names below. No code editing needed.
 
