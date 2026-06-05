@@ -94,7 +94,7 @@ window.WEDDING_TRANSLATIONS = {
         'venue.location_city':'นนทบุรี ประเทศไทย',
         'venue.date_label':'วันที่','venue.date_value':'วันเสาร์ที่ 11 กรกฎาคม 2570',
         'venue.location_label':'สถานที่','venue.location_detail':'Le Pansiri, จังหวัดนนทบุรี ประเทศไทย',
-        'venue.afternoon':'พิธีช่วงบ่าย','venue.afternoon_desc':'15:30 — ขบวนขันหมาก และพิธีชงชา',
+        'venue.afternoon':'พิธีช่วงบ่าย','venue.afternoon_desc':'15:30 — ขบวนขันหมาก และพิธียกน้ำชา',
         'venue.evening':'งานเลี้ยงช่วงเย็น','venue.evening_desc':'18:00 — รีเซปชัน & อาหารค่ำ',
         'venue.maplink':'เปิดใน Google Maps',
         'venue.parking':'มีที่จอดรถ 180 คัน',
