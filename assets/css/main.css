@@ -344,10 +344,8 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  width: 100%;
-  max-width: 360px; /* Slightly narrower to feel more compact */
-  margin: 0 auto;
-  align-items: center;
+  margin: 2.2rem 0 2rem;
+  align-items: start;
 }
 
 .hero-button-grid .rsvp-button {
@@ -370,24 +368,24 @@ h1, h2, h3, h4 {
 }
 .rsvp-button:hover { background: var(--oxblood); border-color: var(--oxblood); }
 
-/* Compact secondary button styling */
-.rsvp-button.secondary-btn {
-  background: transparent !important;
-  color: var(--ink) !important;
-  border: 2px solid var(--ink) !important;
-  font-size: 0.78rem !important;
-  letter-spacing: 0.1em !important;
-  padding-top: 0.8rem !important;
-  padding-bottom: 0.8rem !important;
-   text-decoration: none !important;
-}
 
-.rsvp-button.secondary-btn:hover {
-  background: var(--ink) !important;
-  color: var(--paper) !important;
+.rsvp-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.8rem;
+  background: transparent;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  color: var(--ink);
+  font-family: var(--label);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: background 0.25s, color 0.25s;
 }
-
-.hero-button-grid 
+.rsvp-secondary-btn:hover { background: var(--ink); color: var(--paper); }
 
 /* The plate — the photograph, framed and captioned */
 .hero-plate {
