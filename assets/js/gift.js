@@ -2,8 +2,8 @@
    * Replace placeholder values after creating your Assets and Apps Script.
    */
   var CONFIG = {
-    PROMPTPAY_QR_URL: '/wedding/assets/promptpay-qr.png',
-    VENMO_QR_URL:     '/wedding/assets/venmo-qr.png',
+    PROMPTPAY_QR_URL: '../../assets/promptpay-qr.png',
+    VENMO_QR_URL:     '../../assets/venmo-qr.png',
     GIFT_ENDPOINT:    'https://script.google.com/macros/s/AKfycbwhGGUr2J09tAeM6erUHoIH_obnaiSoOOvM96J3BGLgyLOI2aDstvRTFHkq7aEgCL1UzA/exec',
     MAX_SLIP_SIZE_MB: 10
   };

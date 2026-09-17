@@ -1,6 +1,6 @@
 # QA Checklist — Gift Page
 
-Page: `/wedding/gift/`  
+Page: `/wedding/guest/gift/`  
 Backend: `docs/google-apps-script/gift-webhook.gs`
 
 ---
@@ -18,7 +18,7 @@ Backend: `docs/google-apps-script/gift-webhook.gs`
 
 ## First-load Check
 
-- [ ] Open `/wedding/gift/`
+- [ ] Open `/wedding/guest/gift/`
 - [ ] "No registry" note is visible and readable
 - [ ] PromptPay and Venmo buttons are visible
 - [ ] Language toggle works (EN → ไทย → EN)

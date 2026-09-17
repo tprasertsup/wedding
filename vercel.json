@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/gift", "destination": "/guest/gift/", "permanent": true },
+    { "source": "/gift/", "destination": "/guest/gift/", "permanent": true },
+    { "source": "/guestbook", "destination": "/guest/guestbook/", "permanent": true },
+    { "source": "/guestbook/", "destination": "/guest/guestbook/", "permanent": true },
+    { "source": "/photos", "destination": "/guest/photos/", "permanent": true },
+    { "source": "/photos/", "destination": "/guest/photos/", "permanent": true }
+  ]
+}

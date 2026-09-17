@@ -1,6 +1,6 @@
 # QA Checklist — Photos Page
 
-Page: `/wedding/photos/`  
+Page: `/wedding/guest/photos/`  
 Backend: `docs/google-apps-script/photos-webhook.gs`
 
 ---
@@ -19,7 +19,7 @@ Backend: `docs/google-apps-script/photos-webhook.gs`
 
 ## Upload Flow
 
-- [ ] Open `/wedding/photos/`
+- [ ] Open `/wedding/guest/photos/`
 - [ ] Name and caption fields are optional; page loads with them empty
 - [ ] Click / tap file zone → photo picker opens
 - [ ] Drag-and-drop photos onto the file zone (desktop)
@@ -79,7 +79,7 @@ Backend: `docs/google-apps-script/photos-webhook.gs`
 
 ## Guest Token
 
-- [ ] Visit `/wedding/photos/?guest=testtoken123`
+- [ ] Visit `/wedding/guest/photos/?guest=testtoken123`
 - [ ] Upload a photo
 - [ ] Sheet row shows `guest_token = testtoken123`
 
