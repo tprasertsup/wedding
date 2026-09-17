@@ -143,6 +143,18 @@
       }, 760);
     }
 
+    /* ── MASTHEAD MARK — hidden while the hero title is on screen ───── */
+    (function () {
+      const nav   = document.getElementById('nav');
+      const title = document.getElementById('heroNames');
+      if (!nav || !title || !('IntersectionObserver' in window)) return;
+
+      nav.classList.add('hero-in-view');
+      new IntersectionObserver((entries) => {
+        nav.classList.toggle('hero-in-view', entries[0].isIntersecting);
+      }, { rootMargin: '-64px 0px 0px 0px', threshold: 0 }).observe(title);
+    })();
+
     function toggleNav() {
       document.getElementById('navLinks').classList.toggle('open');
     }

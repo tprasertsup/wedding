@@ -183,6 +183,18 @@ h1, h2, h3, h4 {
 }
 .nav-logo:hover { color: var(--terracotta); }
 .nav-amp { color: var(--terracotta); }
+/* The hero already says "Nine & Tom" — the compact mark only appears
+   once that title has scrolled out of the way */
+#nav.hero-in-view .nav-logo {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+}
+.nav-logo {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+}
 .nav-links {
   display: flex;
   align-items: center;
@@ -672,23 +684,44 @@ h1, h2, h3, h4 {
 /* ═══════════════════════════════════════════════
    DRESS CODE
 ═══════════════════════════════════════════════ */
+/* The palette, presented like a swatch card */
+.palette { margin-bottom: 2rem; }
+.palette-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  font-family: var(--label);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.palette-count { font-weight: 400; letter-spacing: 0.12em; color: var(--ink-2); }
+
 .swatch-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  grid-template-columns: repeat(7, 1fr);
   gap: 0.6rem;
-  margin-bottom: 1.8rem;
 }
-.swatch-pill {
+.swatch-dot {
+  display: block;
+  aspect-ratio: 4 / 5;
   border: 1px solid var(--rule-soft);
-  background: var(--card);
 }
-.swatch-dot { display: block; height: 3.2rem; }
 .swatch-name {
   display: block;
-  padding: 0.45rem 0.4rem;
+  margin-top: 0.5rem;
   font-family: var(--label);
-  font-size: 0.66rem;
-  letter-spacing: 0.04em;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
   text-align: center;
   color: var(--ink-2);
 }
@@ -1223,8 +1256,8 @@ form { display: grid; gap: 1.4rem; }
   body { font-size: 1.06rem; }
   .couple-flipper { min-height: 400px; }
   .journey-deck-area { gap: 0.3rem; }
-  .swatch-strip { grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); }
-  .swatch-dot { height: 2.6rem; }
+  .swatch-strip { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+  .swatch-name { font-size: 0.58rem; letter-spacing: 0.05em; }
 }
 
 /* ═══════════════════════════════════════════════
