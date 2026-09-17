@@ -685,8 +685,8 @@ h1, h2, h3, h4 {
 
 .swatch-strip {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.6rem;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.5rem;
 }
 .swatch-dot {
   display: block;
@@ -697,9 +697,9 @@ h1, h2, h3, h4 {
   display: block;
   margin-top: 0.5rem;
   font-family: var(--label);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   line-height: 1.35;
   text-transform: uppercase;
   text-align: center;
