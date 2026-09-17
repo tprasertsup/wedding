@@ -2,10 +2,11 @@
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2B9dx1JlUDKu59fKOP2SNd15COt5m5lysFgnGUXNibhpRTLdRG5zacv4XARtTJL7H/exec';
     // ─────────────────────────────────────────────────────────────────────
 
-    /* ── PETALS ─────────────────────────────────────────────────────── */
+    /* ── PETALS (only if the page provides a container) ─────────────── */
     (function () {
       const container = document.getElementById('petals-container');
-      const colors = ['#f2b5c0', '#e8968a', '#f5d5dc', '#d4b896', '#f0c8b0', '#e8d0bc'];
+      if (!container) return;
+      const colors = ['#e0a08c', '#c2674a', '#f5c79b', '#dccdb4', '#9cb584', '#cfc1ee'];
       const count  = 28;
 
       for (let i = 0; i < count; i++) {
@@ -152,25 +153,15 @@
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
 
-      // Nav background
+      // Masthead background — a touch more opaque once the page moves
       document.getElementById('nav').style.background = y > 60
-        ? 'rgba(250,243,236,0.96)'
-        : 'rgba(245,230,216,0.88)';
+        ? 'rgba(247,243,235,0.97)'
+        : 'rgba(247,243,235,0.90)';
 
       // Scroll progress bar
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       document.getElementById('scroll-progress').style.width =
         totalScroll > 0 ? (y / totalScroll * 100) + '%' : '0%';
-
-      // ── HERO: illustration fades 1→0.5, names float upward ──────────
-      const heroEl = document.getElementById('hero');
-      if (heroEl && y < heroEl.offsetHeight * 1.1) {
-        const prog = Math.min(y / (heroEl.offsetHeight * 0.65), 1);
-        const bgIllus = document.getElementById('heroBgIllus');
-        if (bgIllus) bgIllus.style.opacity = (1 - prog * 0.52).toFixed(3);
-        const names = document.getElementById('heroNames');
-        if (names) names.style.transform = 'translateY(' + (-prog * 72) + 'px)';
-      }
     }, { passive: true });
 
 
@@ -334,25 +325,46 @@
 
     /* ── COUPLE CARD FLIP ───────────────────────────────────────────── */
     (function () {
-      document.querySelectorAll('.couple-card').forEach(card => {
-        const flipper = card.querySelector('.couple-flipper');
-        const back    = card.querySelector('.couple-card-back');
-        if (!flipper || !back) return;
-        // Set height to whichever face is taller
-        requestAnimationFrame(() => {
-          const front = card.querySelector('.couple-card-front');
+      const cards = Array.from(document.querySelectorAll('.couple-card'));
+      if (!cards.length) return;
+
+      // Every card gets the height of the tallest face on the page, so the
+      // pair stays aligned side by side
+      function sizeCards() {
+        let tallest = 380;
+        const flippers = [];
+
+        cards.forEach(card => {
+          const flipper = card.querySelector('.couple-flipper');
+          const front   = card.querySelector('.couple-card-front');
+          const back    = card.querySelector('.couple-card-back');
+          if (!flipper || !front || !back) return;
+
+          flipper.style.minHeight = '';
           back.style.transform   = 'none';
           back.style.position    = 'relative';
           back.style.visibility  = 'hidden';
-          const backH  = back.scrollHeight;
-          const frontH = front.scrollHeight;
+          tallest = Math.max(tallest, back.scrollHeight, front.scrollHeight);
           back.style.transform  = '';
           back.style.position   = '';
           back.style.visibility = '';
-          flipper.style.minHeight = Math.max(backH, frontH, 380) + 'px';
+          flippers.push(flipper);
         });
-        card.addEventListener('click', () => card.classList.toggle('flipped'));
+
+        flippers.forEach(f => { f.style.minHeight = tallest + 'px'; });
+      }
+
+      requestAnimationFrame(sizeCards);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeCards);
+      cards.forEach(card => card.addEventListener('click', () => card.classList.toggle('flipped')));
+
+      // Re-measure on resize (column count and text wrapping change)
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(sizeCards, 200);
       });
+      document.addEventListener('langchange', () => requestAnimationFrame(sizeCards));
     })();
 
     /* ── PLUS ONE TOGGLE ────────────────────────────────────────────── */
@@ -472,6 +484,16 @@
         document.getElementById(id === 'rsvp-name' ? 'name-error' : 'email-error')?.classList.remove('show');
       });
     });
+    /* ── SIGN-OFF — the letter signs itself as you type ─────────────── */
+    (function () {
+      const nameInput = document.getElementById('rsvp-name');
+      const signature = document.getElementById('rsvp-signature');
+      if (!nameInput || !signature) return;
+      nameInput.addEventListener('input', () => {
+        signature.textContent = nameInput.value.trim() || ' ';
+      });
+    })();
+
     document.querySelectorAll('input[name="session"]').forEach((radio) => {
       radio.addEventListener('change', () => {
         document.querySelector('.session-grid')?.classList.remove('session-invalid');

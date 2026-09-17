@@ -6,7 +6,7 @@ Everything is already wired up. You only need to put your photos in the `images/
 
 | File name | What it's for | Best orientation |
 |---|---|---|
-| `couple.png` | Full-screen hero background (behind your names) | Landscape (wide) |
+| `hero-couple.jpg` | The framed photograph under the invitation type in the hero | Portrait (tall) — shown as a 3:4 crop |
 | `nine-kid.png` | Nine's childhood photo on the couple card | Square |
 | `tom-kid.png` | Tom's childhood photo on the couple card | Square |
 | `story-1.jpg` | Our Story deck — card 1 (bottom of stack) | Portrait (tall) |
@@ -24,6 +24,7 @@ Everything is already wired up. You only need to put your photos in the `images/
 
 **Notes:**
 - jpg, png, and webp all work for any slot
-- The hero (`couple.png`) can also be a jpg — just rename it `couple.jpg` and change the one line in `index.html` that says `images/couple.png`
+- The hero photo is cropped to 3:4 and anchored slightly above centre (`object-position: center 30%` in `assets/css/main.css`) — if a different crop suits your photo better, that is the one value to change
+- `couple.png`, `hero-desktop.jpg` and the two `hero-*-empty-space.png` files are left over from the previous hero and are no longer referenced
 - The story deck cards reveal from card 10 down to card 1 as the user scrolls, so put your favourite/most striking photo as `story-10.jpg` since it appears first
 - Story cards 6–10 still have placeholder captions ("Caption six" etc.) — let me know what captions you'd like and I'll update them
