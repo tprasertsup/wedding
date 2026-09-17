@@ -29,7 +29,7 @@ window.WEDDING_TRANSLATIONS = {
         'program.m8.title':'After Party','program.m8.desc':'No formalities — just good music, good drinks, and a chance for everyone to let loose and celebrate together.',
         'dress.title':'Dress Code','dress.subtitle':'Come as your most comfortable self',
         'dress.palette':'Meadow &amp; Earth','dress.palette.count':'Sample colors',
-        'dress.note1':'Wear what you already own and feel your most comfortable, beautiful self in — anything in these tones will sit beautifully against the venue.',
+        'dress.note1':'Wear what you already own and feel your most comfortable, beautiful self in — and if you land anywhere near these tones, all the better.',
         'dress.avoid':'Just one small ask — please avoid white, ivory, and black.',
         'venue.title':'The Venue','venue.subtitle':'Where our story continues',
         'venue.location_city':'Nonthaburi, Thailand',
