@@ -1,6 +1,6 @@
 # QA Checklist — Voice Guestbook
 
-Page: `/wedding/guestbook/`  
+Page: `/guest/guestbook/`  
 Backend: `docs/google-apps-script/guestbook-webhook.gs`
 
 ---
@@ -17,7 +17,7 @@ Backend: `docs/google-apps-script/guestbook-webhook.gs`
 
 ## Desktop Chrome — Text Flow
 
-- [ ] Open `/wedding/guestbook/`
+- [ ] Open `/guest/guestbook/`
 - [ ] Default tab is "Voice Message"; click "Written Note" — voice panel hides, text panel shows
 - [ ] Submit with empty textarea → textarea border turns rose-red, no network request sent
 - [ ] Enter a message and click "Send Written Blessing"
@@ -32,7 +32,7 @@ Backend: `docs/google-apps-script/guestbook-webhook.gs`
 
 ## Desktop Chrome — Voice Flow
 
-- [ ] Open `/wedding/guestbook/`
+- [ ] Open `/guest/guestbook/`
 - [ ] Voice tab shown by default
 - [ ] Name field is optional — proceed without filling it
 - [ ] Click the record button (🎙)
@@ -69,7 +69,7 @@ Backend: `docs/google-apps-script/guestbook-webhook.gs`
 
 ## iPhone Safari — Voice Flow (audio/mp4 fallback)
 
-- [ ] Open `/wedding/guestbook/` on iPhone (iOS 14.5+)
+- [ ] Open `/guest/guestbook/` on iPhone (iOS 14.5+)
 - [ ] Record a voice message
 - [ ] File saved to Drive has `.mp4` extension
 - [ ] Audio playback works in the `<audio>` element on Safari
@@ -79,7 +79,7 @@ Backend: `docs/google-apps-script/guestbook-webhook.gs`
 
 ## Microphone Permission Denied
 
-- [ ] Open `/wedding/guestbook/`
+- [ ] Open `/guest/guestbook/`
 - [ ] Click record button → deny microphone permission when prompted
 - [ ] Voice tab automatically switches to "Written Note"
 - [ ] Fallback notice appears (soft warning box)
@@ -102,10 +102,10 @@ const saved = window.MediaRecorder; delete window.MediaRecorder; location.reload
 
 ## Guest Token Passthrough
 
-- [ ] Visit `/wedding/guestbook/?guest=testtoken123`
+- [ ] Visit `/guest/guestbook/?guest=testtoken123`
 - [ ] Submit any blessing
 - [ ] Google Sheet row shows `guest_token = testtoken123`
-- [ ] Visit `/wedding/guestbook/` (no token)
+- [ ] Visit `/guest/guestbook/` (no token)
 - [ ] Submit — sheet row shows empty guest_token
 
 ---
@@ -133,14 +133,14 @@ const saved = window.MediaRecorder; delete window.MediaRecorder; location.reload
 ## QR Code (on moments page)
 
 - [ ] Small QR code visible at the bottom of the card ("Scan to open on your phone")
-- [ ] Scan with a different phone → opens `/wedding/guestbook/` correctly
+- [ ] Scan with a different phone → opens `/guest/guestbook/` correctly
 
 ---
 
 ## Portal Navigation
 
-- [ ] Click "← Back to guest portal" on success state → navigates to `/wedding/guest/`
-- [ ] On `/wedding/guest/`, the "Leave a Blessing" card links to `/wedding/guestbook/`
+- [ ] Click "← Back to guest portal" on success state → navigates to `/guest/`
+- [ ] On `/guest/`, the "Leave a Blessing" card links to `/guest/guestbook/`
 
 ---
 

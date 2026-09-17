@@ -1,0 +1,402 @@
+/* ═══════════════════════════════════════════════
+   NINE & TOM — shared foundation for the sub-pages
+   (guest portal, guestbook, gift, photos)
+
+   Same tokens, type and primitives as the main
+   invitation in main.css. Load this first, then the
+   page's own stylesheet.
+═══════════════════════════════════════════════ */
+
+:root {
+  /* Dress-code palette, straight off the card */
+  --clay:       #e0a08c;
+  --terracotta: #c2674a;
+  --apricot:    #f5c79b;
+  --oat:        #dccdb4;
+  --meadow:     #9cb584;
+  --forest:     #2e4034;
+  --oxblood:    #5c241e;
+  --lilac:      #cfc1ee;
+
+  /* Paper & ink */
+  --paper:      #f7f3eb;
+  --paper-2:    #efe8da;
+  --card:       #fcfaf5;
+  --ink:        #232b25;
+  --ink-2:      #4e544b;
+  --rule:       rgba(35, 43, 37, 0.22);
+  --rule-soft:  rgba(35, 43, 37, 0.12);
+  --error:      #8a2b1e;
+
+  /* Type */
+  --display: 'Gloock', 'Cormorant Garamond', Georgia, serif;
+  --body:    'EB Garamond', 'Noto Serif Thai', Georgia, serif;
+  --label:   'Archivo', system-ui, -apple-system, sans-serif;
+  --script:  'Nothing You Could Do', cursive;
+}
+
+/* ── Reset & base ───────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.06rem;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 3px; }
+::selection { background: var(--apricot); color: var(--ink); }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.18; }
+
+/* ── Header ─────────────────────────────────── */
+header {
+  position: relative;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 22px 20px 20px;
+  text-align: center;
+}
+.header-names {
+  font-family: var(--script);
+  font-size: 2rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+/* On the sub-pages the wordmark is the way back to the guest portal */
+.header-names a {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s;
+}
+.header-names a:visited { color: inherit; }
+.header-names a:hover, .header-names a:active { color: var(--terracotta); }
+.header-sub {
+  font-family: var(--label);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+
+/* ── Language switch ────────────────────────── */
+.lang-switcher {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lang-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: var(--label);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+  padding: 0 0 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.lang-btn:hover { color: var(--ink); }
+.lang-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
+.lang-sep { color: var(--rule); font-size: 0.66rem; user-select: none; }
+
+/* ── Main & the paper card ──────────────────── */
+main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(2.4rem, 7vw, 3.6rem) 20px clamp(3.4rem, 9vw, 5rem);
+}
+.card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  box-shadow: 0 16px 38px rgba(35, 43, 37, 0.09);
+  max-width: 620px;
+  width: 100%;
+  padding: clamp(1.8rem, 5vw, 2.8rem);
+  padding-left: clamp(2.4rem, 7vw, 3.6rem);
+}
+/* the stationery margin rule */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: clamp(1.2rem, 3.5vw, 1.8rem);
+  width: 1px;
+  background: var(--clay);
+}
+.card-title {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 4.6vw, 1.9rem);
+  font-weight: 400;
+  margin-bottom: 0.3rem;
+}
+.card-sub {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--ink-2);
+  margin-bottom: 1.6rem;
+}
+.divider {
+  height: 1px;
+  background: var(--rule);
+  margin: 0 0 1.8rem;
+}
+.section-label {
+  font-family: var(--label);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 0.9rem;
+}
+
+/* ── States ─────────────────────────────────── */
+.state { display: none; }
+.state.active { display: block; }
+
+/* ── Forms ──────────────────────────────────── */
+.form-group { margin-bottom: 1.3rem; }
+.form-group label {
+  display: block;
+  font-family: var(--label);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  margin-bottom: 0.25rem;
+}
+/* Radios and checkboxes keep their native rendering — everything else
+   becomes a written-on-the-line field */
+.form-group input:not([type="radio"]):not([type="checkbox"]),
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  border: 0;
+  border-bottom: 1px solid var(--ink-2);
+  border-radius: 0;
+  padding: 0.35rem 0;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: #8a857a; font-style: italic; }
+.form-group input:not([type="radio"]):not([type="checkbox"]):focus,
+.form-group textarea:focus,
+.form-group select:focus { border-color: var(--terracotta); }
+
+/* Long answers sit on ruled paper */
+.form-group textarea {
+  border: 1px solid var(--rule);
+  padding: 6px 0.8rem;
+  line-height: 32px;
+  min-height: 130px;
+  resize: vertical;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    var(--rule-soft) 31px,
+    var(--rule-soft) 32px
+  );
+}
+
+.field-required-err,
+.slip-required-err {
+  display: none;
+  font-family: var(--label);
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--error);
+  margin-top: 0.4rem;
+}
+
+/* ── Buttons ────────────────────────────────── */
+.btn-submit {
+  display: block;
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 1rem;
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  color: var(--paper);
+  font-family: var(--label);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 0.6rem;
+  transition: background 0.25s, border-color 0.25s;
+}
+.btn-submit:hover { background: var(--oxblood); border-color: var(--oxblood); }
+.btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-submit:disabled:hover { background: var(--ink); border-color: var(--ink); }
+/* "Try again" on the error screens — narrower and centered */
+.btn-retry { max-width: 280px; margin: 1.6rem auto 0; }
+
+/* Ghost buttons — download QR, view album, record again, leave another */
+.btn-download,
+.btn-view,
+.btn-another,
+.btn-rerecord {
+  display: inline-block;
+  min-height: 2.9rem;
+  padding: 0.8rem 1.6rem;
+  background: transparent;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  color: var(--ink);
+  font-family: var(--label);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+.btn-download:hover,
+.btn-view:hover,
+.btn-another:hover,
+.btn-rerecord:hover { background: var(--ink); color: var(--paper); }
+.btn-view,
+.btn-rerecord { display: block; width: 100%; }
+.btn-another { margin-top: 1.3rem; }
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: 0;
+  color: var(--ink-2);
+  font-family: var(--label);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 1.8rem;
+  transition: color 0.2s;
+}
+.btn-back:hover { color: var(--terracotta); }
+
+.link-back {
+  display: inline-block;
+  margin-top: 1.4rem;
+  font-family: var(--label);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  text-decoration: none;
+  border-bottom: 1px solid var(--clay);
+  padding-bottom: 2px;
+}
+.link-back:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ── Loading / success / error ──────────────── */
+.loading-wrap { text-align: center; padding: 2.4rem 0 1.8rem; }
+.spinner {
+  display: inline-block;
+  width: 34px; height: 34px;
+  border: 2px solid var(--rule);
+  border-top-color: var(--terracotta);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.state-note { font-size: 1rem; color: var(--ink-2); }
+
+.success-wrap, .error-wrap { text-align: center; padding: 0.6rem 0; }
+.success-icon, .error-icon { font-size: 2.2rem; margin-bottom: 0.9rem; }
+.success-wrap h2, .error-wrap h2 {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 4vw, 1.75rem);
+  font-weight: 400;
+  margin-bottom: 0.6rem;
+}
+.success-wrap p, .error-wrap p { color: var(--ink-2); line-height: 1.7; }
+.success-love { margin-top: 0.8rem; font-style: italic; color: var(--terracotta); }
+
+/* ── Footer ─────────────────────────────────── */
+footer {
+  border-top: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink-2);
+  text-align: center;
+  padding: 1.8rem 20px;
+  font-family: var(--label);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ── Responsive ─────────────────────────────── */
+@media (max-width: 400px) {
+  .lang-switcher { right: 12px; }
+  .header-names { font-size: 1.7rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .spinner { animation-duration: 2s; }
+}
+
+/* ── Thai ───────────────────────────────────── */
+body.lang-th { font-family: 'Noto Serif Thai', var(--body); line-height: 1.95; }
+body.lang-th h1, body.lang-th h2, body.lang-th h3,
+body.lang-th .card-title,
+body.lang-th .card-sub,
+body.lang-th .success-wrap h2,
+body.lang-th .error-wrap h2,
+body.lang-th .state-note {
+  font-family: 'Noto Serif Thai', var(--body);
+  font-style: normal;
+  letter-spacing: 0;
+}
+body.lang-th .section-label,
+body.lang-th .header-sub,
+body.lang-th .lang-btn,
+body.lang-th .form-group label,
+body.lang-th .btn-submit,
+body.lang-th .btn-download,
+body.lang-th .btn-view,
+body.lang-th .btn-another,
+body.lang-th .btn-rerecord,
+body.lang-th .btn-back,
+body.lang-th .link-back,
+body.lang-th footer {
+  font-family: 'Noto Serif Thai', var(--label);
+  letter-spacing: 0.04em;
+}
+body.lang-th .header-names { font-family: var(--script); }

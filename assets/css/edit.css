@@ -1,0 +1,96 @@
+/* ═══════════════════════════════════════════════
+   EDIT YOUR RSVP — loads after base.css
+═══════════════════════════════════════════════ */
+
+.card { max-width: 680px; }
+
+/* ── Form layout ────────────────────────────── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+  margin-bottom: 1.3rem;
+}
+.form-group input:not([type="radio"]):disabled {
+  color: var(--ink-2);
+  border-bottom-style: dashed;
+  cursor: not-allowed;
+}
+
+/* ── Session choice ─────────────────────────── */
+.radio-grid { display: grid; gap: 0.15rem; }
+.radio-grid .radio-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border-bottom: 1px dotted var(--rule);
+  padding: 0.6rem 0;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+.radio-grid .radio-card input[type="radio"] {
+  flex-shrink: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-top: 0.45rem;
+  accent-color: var(--forest);
+}
+.radio-card-label {
+  display: block;
+  font-family: var(--label);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.radio-card-desc {
+  display: block;
+  font-size: 0.98rem;
+  color: var(--ink-2);
+  margin-top: 1px;
+}
+.radio-grid .radio-card:hover .radio-card-label { color: var(--terracotta); }
+.radio-grid .radio-card.selected {
+  border-bottom-style: solid;
+  border-bottom-color: var(--forest);
+}
+.radio-grid .radio-card.selected .radio-card-label { color: var(--forest); }
+
+/* ── Plus one ───────────────────────────────── */
+.plusone-toggle { display: flex; gap: 1.4rem; margin-bottom: 0.4rem; }
+.toggle-btn {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-2);
+  font-family: var(--body);
+  font-size: 1.02rem;
+  cursor: pointer;
+  padding: 0.15rem 0;
+  transition: color 0.2s, border-color 0.2s;
+}
+.toggle-btn:hover { color: var(--ink); }
+.toggle-btn.active { color: var(--ink); border-bottom-color: var(--forest); font-weight: 500; }
+.plusone-name-wrap {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s ease;
+}
+.plusone-name-wrap.open { max-height: 90px; }
+
+/* ── Blessing ───────────────────────────────── */
+.blessing-group textarea { min-height: 150px; border-color: var(--ink-2); }
+.blessing-label-icon { color: var(--terracotta); }
+
+.form-note {
+  font-size: 0.98rem;
+  font-style: italic;
+  color: var(--ink-2);
+  text-align: center;
+  margin-top: 1.2rem;
+}
+
+/* ── Responsive ─────────────────────────────── */
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+}

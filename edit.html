@@ -3,294 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <title>Edit Your RSVP — Nine & Tom</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-  <style>
-    /* ---- Replace with your Apps Script Web App URL ---- */
-    /* Set via script tag below                            */
-
-    :root {
-      --peach:        #f5e6d8;
-      --peach-light:  #faf3ec;
-      --gold:         #c9a96e;
-      --gold-dark:    #8b6914;
-      --gold-border:  #d4b896;
-      --rose:         #e8968a;
-      --green:        #8fa884;
-      --brown:        #5c3d2e;
-      --brown-light:  #8a6552;
-      --cream:        #fefaf6;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Lato', sans-serif;
-      background: var(--peach-light);
-      color: var(--brown);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ---- Header ---- */
-    header {
-      background: var(--peach);
-      border-bottom: 1px solid var(--gold-border);
-      padding: 28px 20px;
-      text-align: center;
-    }
-    .header-ornament { font-size: 28px; color: var(--gold); opacity: .7; margin-bottom: 6px; }
-    .header-names {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 400;
-      color: var(--brown);
-    }
-    .header-sub {
-      font-family: 'Lato', sans-serif;
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--brown-light);
-      margin-top: 4px;
-    }
-
-    /* ---- Main ---- */
-    main {
-      flex: 1;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 60px 20px;
-    }
-
-    .card {
-      background: var(--cream);
-      border: 1px solid var(--gold-border);
-      max-width: 680px;
-      width: 100%;
-      padding: 50px 48px;
-      position: relative;
-    }
-    .card::before, .card::after {
-      content: '';
-      position: absolute;
-      width: 18px; height: 18px;
-      border-color: var(--gold);
-      border-style: solid;
-    }
-    .card::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
-    .card::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
-
-    .card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 400;
-      text-align: center;
-      margin-bottom: 6px;
-    }
-    .card-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16px;
-      font-style: italic;
-      text-align: center;
-      color: var(--gold-dark);
-      margin-bottom: 36px;
-    }
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold), transparent);
-      margin: 0 0 36px;
-    }
-
-    /* ---- State screens ---- */
-    .state { display: none; }
-    .state.active { display: block; }
-
-    .loading-wrap {
-      text-align: center;
-      padding: 20px 0 10px;
-    }
-    .spinner {
-      display: inline-block;
-      width: 36px; height: 36px;
-      border: 3px solid var(--gold-border);
-      border-top-color: var(--gold-dark);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-      margin-bottom: 16px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .error-wrap {
-      text-align: center;
-      padding: 10px 0;
-    }
-    .error-icon { font-size: 40px; margin-bottom: 16px; }
-    .error-wrap h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 400;
-      margin-bottom: 12px;
-    }
-    .error-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
-
-    .success-wrap { text-align: center; padding: 10px 0; }
-    .success-icon { font-size: 40px; margin-bottom: 16px; }
-    .success-wrap h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      font-weight: 400;
-      margin-bottom: 12px;
-    }
-    .success-wrap p { color: var(--brown-light); font-size: 15px; line-height: 1.7; }
-
-    /* ---- Form ---- */
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-    .form-group { margin-bottom: 18px; }
-    .form-group label {
-      display: block;
-      font-size: 10px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--brown-light);
-      margin-bottom: 7px;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--gold-border);
-      background: white;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      color: var(--brown);
-      outline: none;
-      transition: border-color .25s;
-      border-radius: 0;
-      -webkit-appearance: none;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus { border-color: var(--gold); }
-    .form-group textarea { resize: vertical; min-height: 100px; }
-
-    /* session radio cards */
-    .radio-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .radio-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 12px 14px;
-      border: 1px solid var(--gold-border);
-      cursor: pointer;
-      transition: border-color .2s, background .2s;
-      user-select: none;
-    }
-    .radio-card:hover { border-color: var(--gold); background: rgba(201,169,110,.06); }
-    .radio-card input[type="radio"] { margin-top: 3px; flex-shrink: 0; accent-color: var(--gold-dark); }
-    .radio-card-label { font-size: 13px; font-weight: 700; display: block; }
-    .radio-card-desc { font-size: 11px; color: var(--brown-light); margin-top: 2px; }
-    .radio-card.selected { border-color: var(--gold); background: rgba(201,169,110,.1); }
-
-    /* plus one */
-    .plusone-toggle { display: flex; gap: 12px; margin-bottom: 12px; }
-    .toggle-btn {
-      flex: 1;
-      padding: 11px;
-      border: 1px solid var(--gold-border);
-      background: white;
-      font-family: 'Lato', sans-serif;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all .2s;
-      color: var(--brown);
-    }
-    .toggle-btn.active {
-      border-color: var(--gold);
-      background: var(--gold-dark);
-      color: white;
-    }
-    .plusone-name-wrap {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height .35s ease;
-    }
-    .plusone-name-wrap.open { max-height: 80px; }
-
-    /* blessing */
-    .blessing-group textarea {
-      border-color: var(--gold);
-      background: #fffdf9;
-      min-height: 130px;
-    }
-    .blessing-label-icon { color: var(--gold-dark); }
-
-    /* submit */
-    .btn-submit {
-      width: 100%;
-      padding: 16px;
-      background: var(--gold-dark);
-      color: white;
-      border: none;
-      font-family: 'Lato', sans-serif;
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background .25s, transform .1s;
-      margin-top: 8px;
-    }
-    .btn-submit:hover { background: var(--brown); }
-    .btn-submit:active { transform: scale(.99); }
-    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
-
-    .form-note {
-      font-size: 12px;
-      color: var(--brown-light);
-      text-align: center;
-      margin-top: 18px;
-      line-height: 1.7;
-    }
-
-    /* ---- Footer ---- */
-    footer {
-      background: var(--brown);
-      color: var(--peach);
-      text-align: center;
-      padding: 28px 20px;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* ---- Responsive ---- */
-    @media (max-width: 600px) {
-      .card { padding: 36px 24px; }
-      .form-row { grid-template-columns: 1fr; }
-      .radio-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;500;600&family=Noto+Serif+Thai:wght@400;500;600&family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/edit.css">
 </head>
 <body>
 
 <header>
-  <div class="header-ornament">囍</div>
   <div class="header-names">Nine &amp; Tom</div>
   <div class="header-sub">July 11, 2027 · Le Pansiri, Nonthaburi</div>
 </header>
@@ -302,7 +26,7 @@
     <div class="state active" id="state-loading">
       <div class="loading-wrap">
         <div class="spinner"></div>
-        <p style="color:var(--brown-light);font-size:14px;">Fetching your details…</p>
+        <p class="state-note">Fetching your details…</p>
       </div>
     </div>
 
@@ -330,7 +54,7 @@
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" id="f-email" disabled style="opacity:.6;cursor:not-allowed;" title="Email cannot be changed">
+            <input type="email" id="f-email" disabled title="Email cannot be changed">
           </div>
         </div>
 
@@ -420,7 +144,7 @@
         <div class="success-icon">🌸</div>
         <h2>Changes Saved!</h2>
         <p>Your RSVP has been updated. We look forward to celebrating with you on July 11, 2027.</p>
-        <p style="margin-top:16px;font-style:italic;color:var(--gold-dark);">With love, Nine &amp; Tom</p>
+        <p class="success-love">With love, Nine &amp; Tom</p>
       </div>
     </div>
 
