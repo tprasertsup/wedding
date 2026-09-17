@@ -1,0 +1,5 @@
+# Not part of the published site — Apps Script source, QA notes and the
+# early design mock-ups. Keeps the deployment to the pages guests use.
+backend/
+docs/
+design/

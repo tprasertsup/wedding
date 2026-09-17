@@ -1,6 +1,6 @@
 # QA Checklist — Gift Page
 
-Page: `/wedding/guest/gift/`  
+Page: `/guest/gift/`  
 Backend: `docs/google-apps-script/gift-webhook.gs`
 
 ---
@@ -11,14 +11,14 @@ Backend: `docs/google-apps-script/gift-webhook.gs`
 - [ ] Set `GIFT_SHEET_ID` (can share spreadsheet with RSVP/Guestbook)
 - [ ] Deploy `gift-webhook.gs` as Web App: **Execute as Me**, **Anyone can access**
 - [ ] Paste the Web App URL into `gift/index.html` → `CONFIG.GIFT_ENDPOINT`
-- [ ] (Optional) Upload your real PromptPay QR image to `/wedding/assets/promptpay-qr.png`
-- [ ] (Optional) Upload your real Venmo QR image to `/wedding/assets/venmo-qr.png`
+- [ ] (Optional) Upload your real PromptPay QR image to `/assets/promptpay-qr.png`
+- [ ] (Optional) Upload your real Venmo QR image to `/assets/venmo-qr.png`
 
 ---
 
 ## First-load Check
 
-- [ ] Open `/wedding/guest/gift/`
+- [ ] Open `/guest/gift/`
 - [ ] "No registry" note is visible and readable
 - [ ] PromptPay and Venmo buttons are visible
 - [ ] Language toggle works (EN → ไทย → EN)

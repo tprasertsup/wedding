@@ -214,7 +214,7 @@ function findRowByEmail(email) {
 
 function sendEditEmail(email, name, token, lang) {
   // Update WEBSITE_URL before deploying
-  const WEBSITE_URL = 'https://tprasertsup.github.io/wedding';
+  const WEBSITE_URL = 'https://nineandtom.vercel.app';
   const editUrl = `${WEBSITE_URL}/edit.html?token=${token}`;
 
   const isThai = (lang === 'th');
