@@ -391,7 +391,7 @@ h1, h2, h3, h4 {
 
 /* The plate — the photograph, framed and captioned */
 .hero-plate {
-  margin: 2.8rem auto 0;
+  margin-top: 2.8rem;
   max-width: 600px;
 }
 .hero-plate img {
