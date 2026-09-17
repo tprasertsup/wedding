@@ -158,17 +158,21 @@
   }
 
   /* ── QR image loading ─────────────────────────────────────────────── */
-  function loadQrImage(imgId, placeholderId, url) {
+  function loadQrImage(imgId, placeholderId, url, downloadBtnId) {
     var img = document.getElementById(imgId);
     var placeholder = document.getElementById(placeholderId);
+    var downloadBtn = downloadBtnId ? document.getElementById(downloadBtnId) : null;
     if (!url || url.indexOf('PASTE') !== -1) return; // still a placeholder constant
     img.onload = function() {
       img.style.display = 'block';
       placeholder.style.display = 'none';
     };
     img.onerror = function() {
+      // No QR image for this method yet: show the fallback graphic and take
+      // away the save button, which would only fetch a missing file
       img.style.display = 'none';
       placeholder.style.display = 'block';
+      if (downloadBtn) downloadBtn.style.display = 'none';
     };
     img.src = url;
   }
@@ -204,8 +208,8 @@
   /* ── Init ─────────────────────────────────────────────────────────── */
   setLang(currentLang);
 
-  loadQrImage('pp-qr-img',    'pp-qr-placeholder',    CONFIG.PROMPTPAY_QR_URL);
-  loadQrImage('venmo-qr-img', 'venmo-qr-placeholder', CONFIG.VENMO_QR_URL);
+  loadQrImage('pp-qr-img',    'pp-qr-placeholder',    CONFIG.PROMPTPAY_QR_URL, 'pp-download-btn');
+  loadQrImage('venmo-qr-img', 'venmo-qr-placeholder', CONFIG.VENMO_QR_URL,     'venmo-download-btn');
 
   setupQrDownload('pp-download-btn',    CONFIG.PROMPTPAY_QR_URL, 'promptpay-qr.png');
   setupQrDownload('venmo-download-btn', CONFIG.VENMO_QR_URL,     'venmo-qr.png');
