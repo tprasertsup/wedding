@@ -2,7 +2,7 @@
 window.WEDDING_TRANSLATIONS = {
       en: {
         'nav.story':'Our Story','nav.program':'Program','nav.dresscode':'Dress Code','nav.venue':'Venue','nav.rsvp':'RSVP',
-        'hero.eyebrow':'joyfully invite you to celebrate the wedding of','hero.date':'July 11, 2027','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
+        'hero.eyebrow':'Kindly join us for the wedding of','hero.date':'July 11, 2027','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
         'hero.caption':'Nine &amp; Tom &nbsp;·&nbsp; July 11, 2027 &nbsp;·&nbsp; Le Pansiri, Nonthaburi',
         'cd.days':'Days','cd.hours':'Hours','cd.mins':'Minutes','cd.secs':'Seconds',
         'kick.couple':'Our story','kick.journey':'Ten photographs','kick.program':'How the day runs',
@@ -71,7 +71,7 @@ window.WEDDING_TRANSLATIONS = {
       },
       th: {
         'nav.story':'เรื่องราวของเรา','nav.program':'กำหนดการ','nav.dresscode':'การแต่งกาย','nav.venue':'สถานที่จัดงาน','nav.rsvp':'ยืนยันการเข้าร่วม',
-        'hero.eyebrow':'ขอเชิญร่วมเป็นเกียรติในงานมงคลสมรสของ','hero.date':'11 กรกฎาคม พ.ศ. 2570','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
+        'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.date':'11 กรกฎาคม พ.ศ. 2570','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
         'hero.caption':'ไนน์ &amp; ทอม &nbsp;·&nbsp; 11 กรกฎาคม 2570 &nbsp;·&nbsp; Le Pansiri นนทบุรี',
         'cd.days':'วัน','cd.hours':'ชั่วโมง','cd.mins':'นาที','cd.secs':'วินาที',
         'kick.couple':'เรื่องราวของเรา','kick.journey':'สิบภาพความทรงจำ','kick.program':'ลำดับงานในวันนั้น',

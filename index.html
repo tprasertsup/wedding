@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600&family=Noto+Serif+Thai:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Archivo:wght@400;500;600&family=Noto+Serif+Thai:wght@400;500;600&family=Nothing+You+Could+Do&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
   ═══════════════════════════════ -->
   <nav id="nav">
     <div class="nav-inner">
-      <a href="#hero" class="nav-logo"><span class="nav-wordmark">Nine &amp; Tom</span></a>
+      <a href="#hero" class="nav-logo" aria-label="Nine and Tom — back to top">N <span class="nav-amp">&amp;</span> T</a>
       <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -48,37 +48,22 @@
   ═══════════════════════════════ -->
   <section id="hero" class="section sheet" aria-label="Wedding invitation">
 
-    <div class="letterhead fade-line" style="animation-delay: 0.9s;">
-      <div class="host-block">
-        <span>Chawanuch Prasertsup</span>
-        <span>Teerapong Prasertsup</span>
-      </div>
-      <div class="host-block">
-        <span>Lana Pham</span>
-        <span>Trung Pham</span>
-      </div>
-    </div>
-
-    <p class="invite-line fade-line" style="animation-delay: 1.3s;" data-i18n="hero.eyebrow">
-      joyfully invite you to celebrate the wedding of
+    <p class="invite-line fade-line" style="animation-delay: 0.9s;" data-i18n="hero.eyebrow">
+      Kindly join us for the wedding of
     </p>
 
-    <h1 class="couple-names fade-line" id="heroNames" style="animation-delay: 1.7s;" aria-label="Nine and Tom">
+    <h1 class="couple-names fade-line" id="heroNames" style="animation-delay: 1.3s;" aria-label="Nine and Tom">
       <span class="name">Nine</span>
       <span class="ampersand">&amp;</span>
       <span class="name">Tom</span>
     </h1>
 
-    <p class="names-full fade-line" style="animation-delay: 2.1s;">
-      Thananun Prasertsup <span class="dot-sep">·</span> Thomas Pham
-    </p>
-
-    <div class="hero-meta fade-line" style="animation-delay: 2.4s;">
+    <div class="hero-meta fade-line" style="animation-delay: 1.8s;">
       <p class="date" data-i18n="hero.date">July 11, 2027</p>
       <p class="venue">Le Pansiri <span class="dot-sep">·</span> Nonthaburi, Thailand</p>
     </div>
 
-    <div class="countdown fade-line" style="animation-delay: 2.7s;" aria-label="Countdown to wedding">
+    <div class="countdown fade-line" style="animation-delay: 2.2s;" aria-label="Countdown to wedding">
       <div class="countdown-unit">
         <span class="countdown-number" id="cd-days">000</span>
         <span class="countdown-label" data-i18n="cd.days">Days</span>
@@ -97,11 +82,11 @@
       </div>
     </div>
 
-    <a href="#rsvp" class="rsvp-button fade-line" style="animation-delay: 3s;" data-i18n="hero.cta">
+    <a href="#rsvp" class="rsvp-button fade-line" style="animation-delay: 2.5s;" data-i18n="hero.cta">
       RSVP Now
     </a>
 
-    <figure class="hero-plate fade-line" style="animation-delay: 3.3s;">
+    <figure class="hero-plate fade-line" style="animation-delay: 2.8s;">
       <img src="images/hero-couple.jpg" alt="Nine and Tom" />
       <figcaption data-i18n="hero.caption">Nine &amp; Tom &nbsp;·&nbsp; July 11, 2027 &nbsp;·&nbsp; Le Pansiri, Nonthaburi</figcaption>
     </figure>

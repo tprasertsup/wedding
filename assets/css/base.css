@@ -32,7 +32,7 @@
   --display: 'Gloock', 'Cormorant Garamond', Georgia, serif;
   --body:    'EB Garamond', 'Noto Serif Thai', Georgia, serif;
   --label:   'Archivo', system-ui, -apple-system, sans-serif;
-  --script:  'Mrs Saint Delafield', cursive;
+  --script:  'Nothing You Could Do', cursive;
 }
 
 /* ── Reset & base ───────────────────────────── */
@@ -64,8 +64,8 @@ header {
 }
 .header-names {
   font-family: var(--script);
-  font-size: 2.6rem;
-  line-height: 1.1;
+  font-size: 2rem;
+  line-height: 1.2;
   color: var(--ink);
 }
 /* On the sub-pages the wordmark is the way back to the guest portal */
@@ -364,7 +364,7 @@ footer {
 /* ── Responsive ─────────────────────────────── */
 @media (max-width: 400px) {
   .lang-switcher { right: 12px; }
-  .header-names { font-size: 2.2rem; }
+  .header-names { font-size: 1.7rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
