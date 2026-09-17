@@ -226,7 +226,6 @@ function sendEditEmail(email, name, token, lang) {
   const html = isThai ? `
   <div style="font-family:'Sarabun',sans-serif;max-width:580px;margin:0 auto;background:#faf3ec;padding:0;border:1px solid #d4b896;">
     <div style="background:#f5e6d8;padding:40px 40px 30px;text-align:center;border-bottom:1px solid #d4b896;">
-      <div style="font-size:36px;color:#c9a96e;margin-bottom:8px;">囍</div>
       <h1 style="font-size:28px;color:#5c3d2e;margin:0;font-weight:400;letter-spacing:1px;">ไนน์ &amp; ทอม</h1>
       <p style="color:#8a6552;font-size:13px;letter-spacing:2px;margin:6px 0 0;">11 กรกฎาคม 2570</p>
     </div>
@@ -254,7 +253,6 @@ function sendEditEmail(email, name, token, lang) {
   </div>` : `
   <div style="font-family:'Georgia',serif;max-width:580px;margin:0 auto;background:#faf3ec;padding:0;border:1px solid #d4b896;">
     <div style="background:#f5e6d8;padding:40px 40px 30px;text-align:center;border-bottom:1px solid #d4b896;">
-      <div style="font-size:36px;color:#c9a96e;margin-bottom:8px;">囍</div>
       <h1 style="font-size:28px;color:#5c3d2e;margin:0;font-weight:400;letter-spacing:1px;">Nine &amp; Tom</h1>
       <p style="color:#8a6552;font-size:13px;letter-spacing:3px;text-transform:uppercase;margin:6px 0 0;">July 11, 2027</p>
     </div>

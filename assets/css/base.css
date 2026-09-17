@@ -62,20 +62,21 @@ header {
   padding: 22px 20px 20px;
   text-align: center;
 }
-.header-ornament {
-  font-size: 18px;
-  line-height: 1;
-  color: var(--terracotta);
-  margin-bottom: 2px;
-}
-.header-ornament a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
-.header-ornament a:visited, .header-ornament a:hover, .header-ornament a:active { color: inherit; text-decoration: none; }
 .header-names {
   font-family: var(--script);
   font-size: 2.6rem;
   line-height: 1.1;
   color: var(--ink);
 }
+/* On the sub-pages the wordmark is the way back to the guest portal */
+.header-names a {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s;
+}
+.header-names a:visited { color: inherit; }
+.header-names a:hover, .header-names a:active { color: var(--terracotta); }
 .header-sub {
   font-family: var(--label);
   font-size: 0.66rem;

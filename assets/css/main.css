@@ -173,11 +173,9 @@ h1, h2, h3, h4 {
 .nav-logo {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.5rem;
   text-decoration: none;
   line-height: 1;
 }
-.nav-mark { font-size: 1.05rem; color: var(--terracotta); }
 .nav-wordmark {
   font-family: var(--display);
   font-size: 1.15rem;
@@ -1172,12 +1170,6 @@ form { display: grid; gap: 1.4rem; }
   margin: 0 auto;
   padding: 3.2rem clamp(1.4rem, 5vw, 2.8rem) 3.6rem;
   text-align: center;
-}
-.footer-happiness {
-  display: block;
-  font-size: 1.6rem;
-  color: var(--terracotta);
-  margin-bottom: 0.8rem;
 }
 .footer-names {
   font-family: var(--script);
