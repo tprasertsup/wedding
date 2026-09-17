@@ -34,7 +34,7 @@ window.WEDDING_TRANSLATIONS = {
         'venue.title':'The Venue','venue.subtitle':'Where our story continues',
         'venue.location_city':'Nonthaburi, Thailand',
         'venue.date_label':'Date','venue.date_value':'Sunday, July 11, 2027',
-        'venue.location_label':'Location','venue.location_detail':'Le Pansiri, Nonthaburi Province, Thailand',
+        'venue.location_label':'Location','venue.location_detail':'Le Pasiri, Nonthaburi Province, Thailand',
         'venue.afternoon':'Afternoon Ceremony','venue.afternoon_desc':'15:30 — Khan Maak procession, tea ceremony &amp; water blessing',
         'venue.evening':'Evening Reception','venue.evening_desc':'18:00 — Reception &amp; Dinner',
         'venue.maplink':'Open in Google Maps',
@@ -100,7 +100,7 @@ window.WEDDING_TRANSLATIONS = {
         'venue.title':'สถานที่จัดงาน','venue.subtitle':'สถานที่แห่งบทใหม่ของเรา',
         'venue.location_city':'นนทบุรี ประเทศไทย',
         'venue.date_label':'วันที่','venue.date_value':'วันอาทิตย์ที่ 11 กรกฎาคม 2570',
-        'venue.location_label':'สถานที่','venue.location_detail':'Le Pansiri, จังหวัดนนทบุรี ประเทศไทย',
+        'venue.location_label':'สถานที่','venue.location_detail':'Le Pasiri, จังหวัดนนทบุรี ประเทศไทย',
         'venue.afternoon':'พิธีช่วงบ่าย','venue.afternoon_desc':'15:30 — ขบวนขันหมาก พิธียกน้ำชา และรดน้ำสังข์',
         'venue.evening':'งานเลี้ยงช่วงเย็น','venue.evening_desc':'18:00 — รีเซปชัน & อาหารค่ำ',
         'venue.maplink':'เปิดใน Google Maps',
@@ -131,8 +131,8 @@ window.WEDDING_TRANSLATIONS = {
         'success.title':'ขอบคุณมากนะคะ!',
         'success.msg':'ได้รับการยืนยันของคุณแล้ว ดีใจมากเลย 🤍<br>เช็กอีเมลด้วยนะ — เราส่งลิงก์ให้แก้ไขข้อมูลได้ตลอดเวลา<br><br><em>ไนน์ & ทอม รอเจอคุณนะ</em>',
         'footer.tagline':'ฉลองรักและบทใหม่ของชีวิต',
-            'venue.name': 'เลอปาสิริ',
-            'venue.province': 'นนทบุรี',
+            'venue.name': 'Le Pasiri',
+            'venue.province': 'จังหวัดนนทบุรี',
             'venue.country': 'ประเทศไทย',
       }
     };
