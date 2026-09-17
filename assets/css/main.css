@@ -372,15 +372,6 @@ h1, h2, h3, h4 {
   object-position: center 30%;
   background: var(--paper-2);
 }
-.hero-plate figcaption {
-  margin-top: 0.6rem;
-  padding-top: 0.55rem;
-  border-top: 1px solid var(--rule);
-  font-family: var(--label);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  color: var(--ink-2);
-}
 
 /* ═══════════════════════════════════════════════
    THE COUPLE — flip cards
