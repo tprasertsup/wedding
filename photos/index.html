@@ -7,7 +7,8 @@
   <link rel="icon" href="../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;500;600&family=Noto+Serif+Thai:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/photos.css">
 </head>
 <body>
@@ -67,7 +68,7 @@
   <div class="state" id="state-uploading" aria-live="polite">
     <div class="loading-wrap">
       <div class="spinner" role="status" aria-label="Uploading"></div>
-      <p id="uploading-text" style="color:var(--brown-light);font-size:14px" data-i18n="photos.uploading">Uploading your photos…</p>
+      <p id="uploading-text" class="state-note" data-i18n="photos.uploading">Uploading your photos…</p>
     </div>
   </div>
 
@@ -77,7 +78,7 @@
       <div class="success-icon" aria-hidden="true">🌸</div>
       <h2 data-i18n="photos.success">Thank you — your photos were uploaded 💛</h2>
       <p data-i18n="photos.success.note">Photos will appear in the shared album once reviewed.</p>
-      <a id="view-link-success" href="#" class="btn-view" style="margin-top:20px" target="_blank" rel="noopener noreferrer" data-i18n="photos.view.btn">View Shared Photos →</a>
+      <a id="view-link-success" href="#" class="btn-view" target="_blank" rel="noopener noreferrer" data-i18n="photos.view.btn">View Shared Photos →</a>
       <br>
       <button class="btn-another" onclick="resetForm()" data-i18n="photos.upload.another">Upload more photos</button>
       <br>
@@ -91,7 +92,7 @@
       <div class="error-icon" aria-hidden="true">💌</div>
       <h2 data-i18n="photos.error.title">Something went wrong</h2>
       <p id="error-msg" data-i18n="photos.error.msg">Could not upload your photos. Please check your connection and try again.</p>
-      <button class="btn-submit" style="max-width:280px;margin:24px auto 0;display:block" onclick="showState('state-form')" data-i18n="photos.retry">Try Again</button>
+      <button class="btn-submit btn-retry" onclick="showState('state-form')" data-i18n="photos.retry">Try Again</button>
     </div>
   </div>
 

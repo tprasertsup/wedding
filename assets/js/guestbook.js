@@ -227,7 +227,7 @@
     if (!message) {
       var ta = document.getElementById('m-text');
       var err = document.getElementById('blessing-err');
-      ta.style.borderColor = 'var(--rose)';
+      ta.style.borderColor = 'var(--error)';
       err.style.display = 'block';
       ta.focus();
       ta.addEventListener('input', function() {

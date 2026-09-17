@@ -7,7 +7,8 @@
   <link rel="icon" href="../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;500;600&family=Noto+Serif+Thai:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/guestbook.css">
 </head>
 <body>
@@ -79,8 +80,7 @@
           <textarea id="m-text"
             data-i18n-placeholder="moments.blessing.ph"
             placeholder="Share a wish, a memory, or a few words of love for Nine and Tom…"
-            aria-required="true"
-            style="border-color:var(--gold);background:#fffdf9"></textarea>
+            aria-required="true"></textarea>
           <div class="field-required-err" id="blessing-err" data-i18n="moments.blessing.err">Please write your blessing.</div>
         </div>
         <button class="btn-submit" id="btn-submit-text" onclick="submitText()" data-i18n="moments.submit.text">
@@ -96,7 +96,7 @@
     <div class="state" id="state-uploading" aria-live="polite">
       <div class="loading-wrap">
         <div class="spinner" role="status" aria-label="Uploading"></div>
-        <p id="upload-progress-text" style="color:var(--brown-light);font-size:14px" data-i18n="moments.uploading">
+        <p id="upload-progress-text" class="state-note" data-i18n="moments.uploading">
           Sending your blessing…
         </p>
       </div>
@@ -108,7 +108,7 @@
         <div class="success-icon" aria-hidden="true">🌸</div>
         <h2 data-i18n="moments.success">Thank you — we received your blessing 💛</h2>
         <p data-i18n="moments.success.note">Your words will mean everything to us. We'll treasure them always.</p>
-        <p style="margin-top:12px;font-style:italic;color:var(--gold-dark)" data-i18n="moments.success.love">
+        <p class="success-love" data-i18n="moments.success.love">
           With love, Nine &amp; Tom
         </p>
         <button class="btn-another" onclick="resetForm()"
@@ -116,11 +116,7 @@
           Leave another blessing
         </button>
         <br>
-        <a href="../guest" style="display:inline-block;margin-top:20px;
-           color:var(--brown-light);font-size:11px;letter-spacing:2px;
-           text-transform:uppercase;text-decoration:none;
-           border-bottom:1px solid var(--gold-border)"
-           data-i18n="moments.back">
+        <a href="../guest" class="link-back" data-i18n="moments.back">
           ← Back to guest portal
         </a>
       </div>
@@ -132,7 +128,7 @@
         <div class="error-icon" aria-hidden="true">💌</div>
         <h2 data-i18n="moments.error.title">Something went wrong</h2>
         <p id="error-msg" data-i18n="moments.error.msg">Could not send your blessing. Please check your connection and try again.</p>
-        <button class="btn-submit" style="margin-top:24px;max-width:280px;margin-left:auto;margin-right:auto;display:block"
+        <button class="btn-submit btn-retry"
                 onclick="showState('state-form')" data-i18n="moments.retry">Try Again</button>
       </div>
     </div>
