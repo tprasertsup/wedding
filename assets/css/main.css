@@ -369,11 +369,12 @@ h1, h2, h3, h4 {
 .rsvp-button:hover { background: var(--oxblood); border-color: var(--oxblood); }
 
 
-.rsvp-secondary-btn {
+.hero-button-grid .rsvp-secondary-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.8rem;
+  justify-content: center;
+  min-height: 3.2rem;
+  width: min(100%, 290px);
   background: transparent;
   border: 2px solid var(--ink);
   border-radius: 2px;
@@ -382,7 +383,7 @@ h1, h2, h3, h4 {
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.1em;
-  text-decoration: none;
+  text-transform: uppercase;
   transition: background 0.25s, color 0.25s;
 }
 .rsvp-secondary-btn:hover { background: var(--ink); color: var(--paper); }
