@@ -195,9 +195,9 @@
             a.click();
             URL.revokeObjectURL(a.href);
           })
-          .catch(function() {}); // user cancelled share sheet — no-op
+          .catch(function() {}); // user canceled share sheet — no-op
       }
-      // Desktop: let the default <a download> behaviour proceed
+      // Desktop: let the default <a download> behavior proceed
     });
   }
 

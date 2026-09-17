@@ -255,7 +255,7 @@ main {
 .btn-submit:hover { background: var(--oxblood); border-color: var(--oxblood); }
 .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-submit:disabled:hover { background: var(--ink); border-color: var(--ink); }
-/* "Try again" on the error screens — narrower and centred */
+/* "Try again" on the error screens — narrower and centered */
 .btn-retry { max-width: 280px; margin: 1.6rem auto 0; }
 
 /* Ghost buttons — download QR, view album, record again, leave another */

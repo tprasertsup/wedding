@@ -92,7 +92,7 @@ audio { width: 100%; margin-bottom: 0.7rem; }
   margin-bottom: 1.2rem;
 }
 
-/* The written note is the centrepiece — give it the ruled letter treatment */
+/* The written note is the centerpiece — give it the ruled letter treatment */
 #m-text { min-height: 150px; border-color: var(--ink-2); }
 
 .form-note {

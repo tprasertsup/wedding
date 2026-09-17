@@ -24,7 +24,7 @@ Everything is already wired up. You only need to put your photos in the `images/
 
 **Notes:**
 - jpg, png, and webp all work for any slot
-- The hero photo is cropped to 3:4 and anchored slightly above centre (`object-position: center 30%` in `assets/css/main.css`) — if a different crop suits your photo better, that is the one value to change
+- The hero photo is cropped to 3:4 and anchored slightly above center (`object-position: center 30%` in `assets/css/main.css`) — if a different crop suits your photo better, that is the one value to change
 - `couple.png`, `hero-desktop.jpg` and the two `hero-*-empty-space.png` files are left over from the previous hero and are no longer referenced
-- The story deck cards reveal from card 10 down to card 1 as the user scrolls, so put your favourite/most striking photo as `story-10.jpg` since it appears first
+- The story deck cards reveal from card 10 down to card 1 as the user scrolls, so put your favorite/most striking photo as `story-10.jpg` since it appears first
 - Story cards 6–10 still have placeholder captions ("Caption six" etc.) — let me know what captions you'd like and I'll update them
