@@ -4,7 +4,7 @@ window.WEDDING_TRANSLATIONS = {
         'nav.story':'Our Story','nav.program':'Program','nav.dresscode':'Dress Code','nav.venue':'Venue','nav.rsvp':'RSVP',
         'hero.eyebrow':'Kindly join us for the wedding of','hero.date':'July 11, 2027','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
         'cd.days':'Days','cd.hours':'Hours','cd.mins':'Minutes','cd.secs':'Seconds',
-        'kick.couple':'Our story','kick.journey':'Ten photographs','kick.program':'How the day runs',
+        'kick.couple':'Our story','kick.journey':'From the album','kick.program':'How the day runs',
         'kick.dress':'What to wear','kick.venue':'Getting there','kick.rsvp':'Kindly respond by 1 June 2027',
         'about.title':'The Couple','about.subtitle':'Two cultures, two hearts, one love story',
         'about.flip':'tap to reveal ↻','about.flipback':'↺ tap to go back',
@@ -65,13 +65,12 @@ window.WEDDING_TRANSLATIONS = {
         'success.title':'Thank you!',
         'success.msg':"Your RSVP has been received — we're so glad you'll be there.<br>You'll receive an email with a link to update your RSVP any time.<br><br><em>Nine & Tom can't wait to celebrate with you.</em>",
         'footer.tagline':'Celebrating love, family, and a beautiful new beginning',
-        'footer.apology':'Sincere apologies if this invitation was not delivered in person.',
       },
       th: {
         'nav.story':'เรื่องราวของเรา','nav.program':'กำหนดการ','nav.dresscode':'การแต่งกาย','nav.venue':'สถานที่จัดงาน','nav.rsvp':'ยืนยันการเข้าร่วม',
         'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.date':'11 กรกฎาคม พ.ศ. 2570','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
         'cd.days':'วัน','cd.hours':'ชั่วโมง','cd.mins':'นาที','cd.secs':'วินาที',
-        'kick.couple':'เรื่องราวของเรา','kick.journey':'สิบภาพความทรงจำ','kick.program':'ลำดับงานในวันนั้น',
+        'kick.couple':'เรื่องราวของเรา','kick.journey':'จากอัลบั้มของเรา','kick.program':'ลำดับงานในวันนั้น',
         'kick.dress':'แต่งตัวอย่างไรดี','kick.venue':'การเดินทาง','kick.rsvp':'กรุณาตอบรับภายใน 1 มิถุนายน 2570',
         'about.title':'คู่บ่าวสาว','about.subtitle':'สองวัฒนธรรม สองหัวใจ หนึ่งเรื่องราวความรัก',
         'about.flip':'แตะเพื่อดู ↻','about.flipback':'↺ แตะเพื่อกลับ',
@@ -132,6 +131,5 @@ window.WEDDING_TRANSLATIONS = {
         'success.title':'ขอบคุณมากนะคะ!',
         'success.msg':'ได้รับการยืนยันของคุณแล้ว ดีใจมากเลย 🤍<br>เช็กอีเมลด้วยนะ — เราส่งลิงก์ให้แก้ไขข้อมูลได้ตลอดเวลา<br><br><em>ไนน์ & ทอม รอเจอคุณนะ</em>',
         'footer.tagline':'ฉลองรักและบทใหม่ของชีวิต',
-        'footer.apology':'ขออภัยหากไม่ได้นำคำเชิญนี้ไปมอบให้ด้วยตนเอง',
       }
     };

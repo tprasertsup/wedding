@@ -1180,12 +1180,6 @@ form { display: grid; gap: 1.4rem; }
   font-style: italic;
   color: var(--ink-2);
 }
-.footer-apology {
-  margin-top: 1.2rem;
-  font-size: 0.92rem;
-  color: var(--ink-2);
-  opacity: 0.8;
-}
 
 /* ═══════════════════════════════════════════════
    RESPONSIVE
@@ -1275,7 +1269,6 @@ body.lang-th .env-prompt-main,
 body.lang-th .env-success-title,
 body.lang-th .success-title-rsvp,
 body.lang-th .footer-tagline,
-body.lang-th .footer-apology,
 body.lang-th .date {
   font-family: 'Noto Serif Thai', var(--body);
   letter-spacing: 0;
