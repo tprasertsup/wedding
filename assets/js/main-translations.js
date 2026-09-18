@@ -66,7 +66,7 @@ window.WEDDING_TRANSLATIONS = {
         'success.msg':"Your RSVP has been received — we're so glad you'll be there.<br>You'll receive an email with a link to update your RSVP any time.<br><br><em>Nine & Tom can't wait to celebrate with you.</em>",
         'footer.tagline':'Celebrating love, family, and a beautiful new beginning',
         'footer.contact.label':'Any questions?',
-        'footer.contact.note':'You can also ask Nine or Tom directly, or either of our families — with any question or concern at all.',
+        'footer.contact.note':'You can also message Nine, Tom, or any of our family members directly',
       },
       th: {
         'nav.story':'เรื่องราวของเรา','nav.program':'กำหนดการ','nav.dresscode':'การแต่งกาย','nav.venue':'สถานที่จัดงาน','nav.rsvp':'ยืนยันการเข้าร่วม',
@@ -134,7 +134,7 @@ window.WEDDING_TRANSLATIONS = {
         'success.msg':'ได้รับการยืนยันของคุณแล้ว ดีใจมากเลย 🤍<br>เช็กอีเมลด้วยนะ — เราส่งลิงก์ให้แก้ไขข้อมูลได้ตลอดเวลา<br><br><em>ไนน์ & ทอม รอเจอคุณนะ</em>',
         'footer.tagline':'ฉลองรักและบทใหม่ของชีวิต',
         'footer.contact.label':'มีคำถาม?',
-        'footer.contact.note':'หรือจะทักหาไนน์ ทอม หรือครอบครัวของเราโดยตรงได้เลยนะคะ/ครับ',
+        'footer.contact.note':'หรือจะทักหาไนน์ ทอม หรือครอบครัวของเราโดยตรงได้เลย',
             'venue.name': 'Le Pasiri',
             'venue.province': 'นนทบุรี',
             'venue.country': 'ประเทศไทย',
