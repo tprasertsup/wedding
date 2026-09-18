@@ -162,6 +162,57 @@
       document.getElementById('navLinks').classList.remove('open');
     }
 
+    /* ── VENUE MAP — directions image over the live embed ───────────── */
+    function setMapView(view) {
+      const map = document.getElementById('venueMap');
+      if (!map) return;
+      map.dataset.view = view;
+      map.querySelectorAll('.map-switch-btn').forEach(btn => {
+        const isActive = btn.getAttribute('aria-controls') ===
+          (view === 'sketch' ? 'mapSketch' : 'mapLive');
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      map.querySelector('#mapSketch')?.setAttribute('aria-hidden', view === 'sketch' ? 'false' : 'true');
+      map.querySelector('#mapLive')?.setAttribute('aria-hidden', view === 'live' ? 'false' : 'true');
+    }
+
+    // If the illustrated map can't load, fall back to the live embed
+    // rather than leaving a broken frame in the page.
+    function mapSketchFailed() {
+      const map = document.getElementById('venueMap');
+      if (!map) return;
+      map.querySelector('.map-switch')?.remove();
+      map.querySelector('#mapSketch')?.remove();
+      map.dataset.view = 'live';
+    }
+
+    function openMapZoom() {
+      const img  = document.querySelector('#mapSketch img');
+      const zoom = document.getElementById('mapZoom');
+      if (!img || !zoom) return;
+      document.getElementById('mapZoomImg').src = img.currentSrc || img.src;
+      zoom.hidden = false;
+      document.body.classList.add('map-zoom-open');
+      document.body.style.overflow = 'hidden';
+      // On phones the map is wider than the screen — start in the middle
+      // rather than pinned to the left edge.
+      zoom.scrollLeft = (zoom.scrollWidth - zoom.clientWidth) / 2;
+      zoom.scrollTop  = (zoom.scrollHeight - zoom.clientHeight) / 2;
+    }
+
+    function closeMapZoom() {
+      const zoom = document.getElementById('mapZoom');
+      if (!zoom) return;
+      zoom.hidden = true;
+      document.body.classList.remove('map-zoom-open');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeMapZoom();
+    });
+
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
 

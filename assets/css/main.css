@@ -776,12 +776,137 @@ h1, h2, h3, h4 {
 .vlist span { font-size: 1.02rem; color: var(--ink); }
 
 .venue-map {
+  position: relative;
   border: 1px solid var(--rule);
   aspect-ratio: 3 / 2;
   margin-bottom: 1.6rem;
   background: var(--paper-2);
 }
 .venue-map iframe { display: block; width: 100%; height: 100%; border: none; }
+
+/* Two stacked panes — illustrated route map over the live embed */
+.map-pane {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.venue-map[data-view="sketch"] .map-live,
+.venue-map[data-view="live"] .map-sketch { display: none; }
+
+.map-sketch {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: var(--paper-2);
+  cursor: zoom-in;
+  font: inherit;
+}
+.map-sketch img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.map-zoom-hint {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.3rem 0.7rem;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  font-family: var(--label);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  pointer-events: none;
+}
+
+/* View switch */
+.map-switch {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 2;
+  display: flex;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.map-switch-btn {
+  padding: 0.42rem 0.8rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 0;
+  color: var(--ink-2);
+  font-family: var(--label);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.map-switch-btn + .map-switch-btn { border-left: 1px solid var(--rule-soft); }
+.map-switch-btn:hover { color: var(--ink); }
+.map-switch-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Fullscreen zoom */
+.map-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.8rem, 4vw, 2.4rem);
+  background: rgba(28, 25, 23, 0.9);
+  cursor: zoom-out;
+}
+/* The masthead's backdrop-filter puts it on its own composited layer, so a
+   higher z-index alone won't cover it — stand it down while zoom is open. */
+body.map-zoom-open #nav { opacity: 0; pointer-events: none; }
+.map-zoom[hidden] { display: none; }
+.map-zoom img {
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  object-fit: contain;
+  background: var(--paper);
+  cursor: default;
+}
+/* On a phone, fitting the map to the screen makes the street names
+   unreadable — render it wider than the viewport and let the guest pan. */
+@media (max-width: 700px) {
+  .map-zoom { overflow: auto; -webkit-overflow-scrolling: touch; }
+  .map-zoom img {
+    width: 230vw;
+    max-width: none;
+    max-height: none;
+    flex-shrink: 0;
+  }
+}
+.map-zoom-close {
+  position: fixed;
+  top: 0.8rem;
+  right: 1rem;
+  z-index: 1;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: none;
+  border: 0;
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
 
 .btn-map {
   display: inline-flex;
@@ -1205,6 +1330,52 @@ form { display: grid; gap: 1.4rem; }
   color: var(--ink-2);
 }
 .footer-line { width: 54px; height: 1px; background: var(--clay); margin: 1.5rem auto; }
+
+.footer-contact-label {
+  font-family: var(--label);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.footer-contact-intro {
+  margin-top: 0.45rem;
+  font-style: italic;
+  color: var(--ink-2);
+}
+.footer-contact-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 2.2rem;
+  margin-top: 1rem;
+}
+.footer-contact-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+.footer-contact-list .fc-key {
+  font-family: var(--label);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.footer-contact-list a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--clay);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.footer-contact-list a:hover {
+  color: var(--oxblood);
+  border-color: var(--oxblood);
+}
 .footer-tagline {
   font-size: 1.02rem;
   font-style: italic;
@@ -1299,6 +1470,7 @@ body.lang-th .env-prompt-main,
 body.lang-th .env-success-title,
 body.lang-th .success-title-rsvp,
 body.lang-th .footer-tagline,
+body.lang-th .footer-contact-intro,
 body.lang-th .date {
   font-family: 'Noto Serif Thai', var(--body);
   letter-spacing: 0;
@@ -1315,6 +1487,10 @@ body.lang-th .tl-part,
 body.lang-th .form-group label,
 body.lang-th .vlist b,
 body.lang-th .countdown-label,
+body.lang-th .map-switch-btn,
+body.lang-th .map-zoom-hint,
+body.lang-th .footer-contact-label,
+body.lang-th .footer-contact-list .fc-key,
 body.lang-th .footer-date {
   font-family: 'Noto Serif Thai', var(--label);
   letter-spacing: 0.04em;

@@ -401,8 +401,29 @@
       </li>
     </ul>
 
-    <div class="venue-map fade-in">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3874.202694367918!2d100.4829907758968!3d13.826863986572905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29bc8df191987%3A0x7c7255c4e6b7cade!2sLe%20Pasiri!5e0!3m2!1sen!2sth!4v1789674576387!5m2!1sen!2sth" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="venue-map fade-in" id="venueMap" data-view="sketch">
+      <div class="map-switch" role="tablist" aria-label="Map view">
+        <button type="button" class="map-switch-btn active" role="tab" aria-selected="true"
+                aria-controls="mapSketch" onclick="setMapView('sketch')"
+                data-i18n="venue.map.sketch">Directions map</button>
+        <button type="button" class="map-switch-btn" role="tab" aria-selected="false"
+                aria-controls="mapLive" onclick="setMapView('live')"
+                data-i18n="venue.map.live">Live map</button>
+      </div>
+
+      <!-- Illustrated route map. To serve it locally, drop the file in images/
+           and change src to "images/map-le-pasiri.webp". -->
+      <button type="button" class="map-pane map-sketch" id="mapSketch" role="tabpanel"
+              onclick="openMapZoom()" aria-label="Zoom the directions map">
+        <img src="https://www.magiclovehouse.com/stocks/branch/c1092x656/g7/li/khmvg7lid2p/map-1.webp"
+             alt="Illustrated map with directions to Le Pasiri" width="1092" height="656"
+             loading="lazy" decoding="async" onerror="mapSketchFailed()" />
+        <span class="map-zoom-hint" data-i18n="venue.map.zoom">tap to enlarge</span>
+      </button>
+
+      <div class="map-pane map-live" id="mapLive" role="tabpanel" aria-hidden="true">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3874.202694367918!2d100.4829907758968!3d13.826863986572905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29bc8df191987%3A0x7c7255c4e6b7cade!2sLe%20Pasiri!5e0!3m2!1sen!2sth!4v1789674576387!5m2!1sen!2sth" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Le Pasiri on Google Maps"></iframe>
+      </div>
     </div>
     <a href="https://maps.google.com/?q=Le+Pansiri+Nonthaburi+Thailand" target="_blank" rel="noopener" class="btn-map fade-in">
       <span data-i18n="venue.maplink">Open in Google Maps</span>
@@ -576,12 +597,36 @@
     </div><!-- /rsvp-form-reveal -->
   </section>
 
+  <!-- Fullscreen zoom for the directions map -->
+  <div class="map-zoom" id="mapZoom" hidden onclick="closeMapZoom()">
+    <button type="button" class="map-zoom-close" aria-label="Close" onclick="closeMapZoom()">&times;</button>
+    <img src="" alt="Illustrated map with directions to Le Pasiri" id="mapZoomImg" onclick="event.stopPropagation()" />
+  </div>
+
   <!-- ═══════════════════════════════
        FOOTER
   ═══════════════════════════════ -->
   <footer id="footer">
     <div class="footer-names">Nine <span class="footer-amp">&amp;</span> Tom</div>
     <div class="footer-date">July 11, 2027 &nbsp;·&nbsp; Le Pasiri, Nonthaburi</div>
+    <div class="footer-line"></div>
+
+    <!-- Contact — TODO: replace with your real email and LINE ID -->
+    <div class="footer-contact">
+      <p class="footer-contact-label" data-i18n="footer.contact.label">Any questions?</p>
+      <p class="footer-contact-intro" data-i18n="footer.contact.intro">We'd love to hear from you — reach us anytime.</p>
+      <ul class="footer-contact-list">
+        <li>
+          <span class="fc-key" data-i18n="footer.contact.email">Email</span>
+          <a href="mailto:hello@nineandtom.com">hello@nineandtom.com</a>
+        </li>
+        <li>
+          <span class="fc-key" data-i18n="footer.contact.line">LINE</span>
+          <a href="https://line.me/ti/p/~nineandtom" target="_blank" rel="noopener">@nineandtom</a>
+        </li>
+      </ul>
+    </div>
+
     <div class="footer-line"></div>
     <div class="footer-tagline" data-i18n="footer.tagline">Celebrating love, family, and a beautiful new beginning</div>
   </footer>
