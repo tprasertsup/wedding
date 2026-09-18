@@ -18,7 +18,7 @@ window.WEDDING_TRANSLATIONS = {
       'portal.c1.title': 'ฝากคำอวยพร',
       'portal.c1.desc':  'บันทึกเสียงหรือเขียนข้อความถึงไนน์กับทอม',
       'portal.c2.title': 'ซองแทนใจ',
-      'portal.c2.desc':  'PromptPay หรือ Venmo — ขอบคุณมากนะ',
+      'portal.c2.desc':  'PromptPay หรือ Venmo — ขอบคุณมากนะคะ/ครับ',
       'portal.c3.title': 'แชร์รูปภาพ',
       'portal.c3.desc':  'อัปโหลดรูปที่ชอบจากวันนี้'
     }
