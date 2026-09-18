@@ -223,8 +223,8 @@ h1, h2, h3, h4 {
   letter-spacing: 0.08em;
 }
 .nav-links .nav-rsvp-cta a:hover {
-  background: var(--oxblood);
-  border-color: var(--oxblood);
+  background: var(--terracotta); 
+  border-color: var(--terracotta);
   color: var(--paper) !important;
 }
 
@@ -366,7 +366,7 @@ h1, h2, h3, h4 {
   text-transform: uppercase;
   transition: background 0.25s, border-color 0.25s;
 }
-.rsvp-button:hover { background: var(--oxblood); border-color: var(--oxblood); }
+.rsvp-button:hover { background: var(--terracotta); border-color: var(--terracotta); }
 
 
 .hero-button-grid .rsvp-secondary-btn {
@@ -387,7 +387,7 @@ h1, h2, h3, h4 {
   text-transform: uppercase;
   transition: background 0.25s, color 0.25s;
 }
-.rsvp-secondary-btn:hover { background: var(--terracotta); border-color: var(--terracotta); color: var(--paper); }
+.rsvp-secondary-btn:hover { background: var(--oxblood); border-color: var(--oxblood); color: var(--paper); }
 
 /* The plate — the photograph, framed and captioned */
 .hero-plate {
@@ -919,7 +919,7 @@ body.map-zoom-open #nav { opacity: 0; pointer-events: none; }
   text-transform: uppercase;
   transition: background 0.25s, color 0.25s;
 }
-.btn-map:hover { background: var(--ink); color: var(--paper); }
+.btn-map:hover { background: var(--oxblood); border-color: var(--oxblood); color: var(--paper); }
 
 /* ═══════════════════════════════════════════════
    RSVP — the envelope
@@ -1280,7 +1280,7 @@ form { display: grid; gap: 1.4rem; }
   cursor: pointer;
   transition: background 0.25s, border-color 0.25s;
 }
-.btn-submit:hover { background: var(--oxblood); border-color: var(--oxblood); }
+.btn-submit:hover { background: var(--terracotta); border-color: var(--terracotta); }
 .btn-submit:disabled { opacity: 0.6; cursor: default; }
 
 /* Success (in-paper fallback) */
