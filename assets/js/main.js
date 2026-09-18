@@ -164,27 +164,28 @@
 
     /* ── VENUE MAP — directions image over the live embed ───────────── */
     function setMapView(view) {
-      const map = document.getElementById('venueMap');
-      if (!map) return;
-      map.dataset.view = view;
-      map.querySelectorAll('.map-switch-btn').forEach(btn => {
+      const block = document.getElementById('venueMapBlock');
+      if (!block) return;
+      block.dataset.view = view;
+      block.querySelectorAll('.map-switch-btn').forEach(btn => {
         const isActive = btn.getAttribute('aria-controls') ===
           (view === 'sketch' ? 'mapSketch' : 'mapLive');
         btn.classList.toggle('active', isActive);
         btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
       });
-      map.querySelector('#mapSketch')?.setAttribute('aria-hidden', view === 'sketch' ? 'false' : 'true');
-      map.querySelector('#mapLive')?.setAttribute('aria-hidden', view === 'live' ? 'false' : 'true');
+      block.querySelector('#mapSketch')?.setAttribute('aria-hidden', view === 'sketch' ? 'false' : 'true');
+      block.querySelector('#mapLive')?.setAttribute('aria-hidden', view === 'live' ? 'false' : 'true');
     }
 
     // If the illustrated map can't load, fall back to the live embed
     // rather than leaving a broken frame in the page.
     function mapSketchFailed() {
-      const map = document.getElementById('venueMap');
-      if (!map) return;
-      map.querySelector('.map-switch')?.remove();
-      map.querySelector('#mapSketch')?.remove();
-      map.dataset.view = 'live';
+      const block = document.getElementById('venueMapBlock');
+      if (!block) return;
+      block.querySelector('.map-switch')?.remove();
+      block.querySelector('.map-caption')?.remove();
+      block.querySelector('#mapSketch')?.remove();
+      block.dataset.view = 'live';
     }
 
     function openMapZoom() {

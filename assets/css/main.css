@@ -775,11 +775,13 @@ h1, h2, h3, h4 {
 }
 .vlist span { font-size: 1.02rem; color: var(--ink); }
 
+.venue-map-block { margin-bottom: 1.6rem; }
+
 .venue-map {
   position: relative;
   border: 1px solid var(--rule);
-  aspect-ratio: 3 / 2;
-  margin-bottom: 1.6rem;
+  /* Matches the directions map so it fills the frame with no letterboxing */
+  aspect-ratio: 1800 / 1081;
   background: var(--paper-2);
 }
 .venue-map iframe { display: block; width: 100%; height: 100%; border: none; }
@@ -791,8 +793,9 @@ h1, h2, h3, h4 {
   width: 100%;
   height: 100%;
 }
-.venue-map[data-view="sketch"] .map-live,
-.venue-map[data-view="live"] .map-sketch { display: none; }
+.venue-map-block[data-view="sketch"] .map-live,
+.venue-map-block[data-view="live"] .map-sketch { display: none; }
+.venue-map-block[data-view="live"] .map-caption { visibility: hidden; }
 
 .map-sketch {
   display: block;
@@ -808,43 +811,24 @@ h1, h2, h3, h4 {
   height: 100%;
   object-fit: contain;
 }
-.map-zoom-hint {
-  position: absolute;
-  bottom: 0.6rem;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.3rem 0.7rem;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid var(--rule-soft);
-  border-radius: 2px;
-  font-family: var(--label);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-  pointer-events: none;
-}
 
-/* View switch */
+/* Switch and caption sit outside the frame — the artwork is dense enough
+   that any badge on top of it covers a road or a landmark. */
 .map-switch {
-  position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  z-index: 2;
   display: flex;
+  width: fit-content;
+  margin-bottom: 0.7rem;
   border: 1px solid var(--rule);
   border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 .map-switch-btn {
-  padding: 0.42rem 0.8rem;
-  background: rgba(255, 255, 255, 0.92);
+  padding: 0.42rem 0.9rem;
+  background: transparent;
   border: 0;
   color: var(--ink-2);
   font-family: var(--label);
-  font-size: 0.62rem;
+  font-size: 0.64rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -856,6 +840,16 @@ h1, h2, h3, h4 {
 .map-switch-btn.active {
   background: var(--ink);
   color: var(--paper);
+}
+
+.map-caption {
+  margin-top: 0.6rem;
+  font-family: var(--label);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
 }
 
 /* Fullscreen zoom */
@@ -1488,7 +1482,7 @@ body.lang-th .form-group label,
 body.lang-th .vlist b,
 body.lang-th .countdown-label,
 body.lang-th .map-switch-btn,
-body.lang-th .map-zoom-hint,
+body.lang-th .map-caption,
 body.lang-th .footer-contact-label,
 body.lang-th .footer-contact-list .fc-key,
 body.lang-th .footer-date {
