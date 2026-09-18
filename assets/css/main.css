@@ -1333,42 +1333,27 @@ form { display: grid; gap: 1.4rem; }
   text-transform: uppercase;
   color: var(--ink-2);
 }
-.footer-contact-intro {
-  margin-top: 0.45rem;
-  font-style: italic;
-  color: var(--ink-2);
+.footer-contact-email {
+  margin-top: 0.8rem;
+  font-size: 1.08rem;
 }
-.footer-contact-list {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.6rem 2.2rem;
-  margin-top: 1rem;
-}
-.footer-contact-list li {
-  display: flex;
-  align-items: baseline;
-  gap: 0.55rem;
-}
-.footer-contact-list .fc-key {
-  font-family: var(--label);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.footer-contact-list a {
+.footer-contact-email a {
   color: var(--ink);
   text-decoration: none;
   border-bottom: 1px solid var(--clay);
   padding-bottom: 1px;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
-.footer-contact-list a:hover {
+.footer-contact-email a:hover {
   color: var(--oxblood);
   border-color: var(--oxblood);
+}
+.footer-contact-note {
+  max-width: 34rem;
+  margin: 0.9rem auto 0;
+  font-size: 0.98rem;
+  font-style: italic;
+  color: var(--ink-2);
 }
 .footer-tagline {
   font-size: 1.02rem;
@@ -1464,7 +1449,7 @@ body.lang-th .env-prompt-main,
 body.lang-th .env-success-title,
 body.lang-th .success-title-rsvp,
 body.lang-th .footer-tagline,
-body.lang-th .footer-contact-intro,
+body.lang-th .footer-contact-note,
 body.lang-th .date {
   font-family: 'Noto Serif Thai', var(--body);
   letter-spacing: 0;
@@ -1484,7 +1469,6 @@ body.lang-th .countdown-label,
 body.lang-th .map-switch-btn,
 body.lang-th .map-caption,
 body.lang-th .footer-contact-label,
-body.lang-th .footer-contact-list .fc-key,
 body.lang-th .footer-date {
   font-family: 'Noto Serif Thai', var(--label);
   letter-spacing: 0.04em;
