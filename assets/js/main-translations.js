@@ -103,7 +103,7 @@ window.WEDDING_TRANSLATIONS = {
         'venue.date_label':'วันที่','venue.date_value':'วันอาทิตย์ที่ 11 กรกฎาคม 2570',
         'venue.location_label':'สถานที่','venue.location_detail':'Le Pasiri, นนทบุรี, ประเทศไทย',
         'venue.time_label':'เวลา',
-        'venue.time_value':'พิธีหมั้นเริ่ม 15:30 น. · งานเลี้ยงเริ่ม 18:00 น. · จบงาน 21:00 น.',
+        'venue.time_value':'พิธีไทยเริ่ม 15:30 น. · งานเลี้ยงเริ่ม 18:00 น. · จบงาน 21:00 น.',
         'venue.maplink':'เปิดใน Google Maps',
         'venue.map.sketch':'แผนที่เส้นทาง','venue.map.live':'แผนที่จริง','venue.map.zoom':'แตะแผนที่เพื่อขยาย',
         'venue.parking_label':'ที่จอดรถ','venue.access_label':'สิ่งอำนวยความสะดวก',
