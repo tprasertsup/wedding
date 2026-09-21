@@ -99,7 +99,7 @@ window.WEDDING_TRANSLATIONS = {
         'dress.note1':'เพียงเลือกชุดโปรดในตู้ที่คุณสวมใส่แล้วมั่นใจ และหากอยู่ในเฉดสีธรรมชาติเหล่านี้ด้วย ก็จะยิ่งเติมเต็มบรรยากาศของสถานที่ให้งดงามยิ่งขึ้น',
         'dress.avoid':'ขอแค่หลีกเลี่ยงสีขาว สีครีม และสีดำ',
         'venue.title':'สถานที่จัดงาน','venue.subtitle':'สถานที่แห่งบทใหม่ของเรา',
-        'venue.location_city':'นนทบุรี ประเทศไทย',
+        'venue.location_city':'นนทบุรี, ประเทศไทย',
         'venue.date_label':'วันที่','venue.date_value':'วันอาทิตย์ที่ 11 กรกฎาคม 2570',
         'venue.location_label':'สถานที่','venue.location_detail':'Le Pasiri, นนทบุรี, ประเทศไทย',
         'venue.time_label':'เวลา',
@@ -135,8 +135,5 @@ window.WEDDING_TRANSLATIONS = {
         'footer.tagline':'ฉลองรักและบทใหม่ของชีวิต',
         'footer.contact.label':'มีคำถาม?',
         'footer.contact.note':'หรือจะทักหาไนน์ ทอม หรือครอบครัวของเราโดยตรงได้เลย',
-            'venue.name': 'Le Pasiri',
-            'venue.province': 'นนทบุรี',
-            'venue.country': 'ประเทศไทย',
       }
     };
