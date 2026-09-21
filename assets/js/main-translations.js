@@ -2,7 +2,7 @@
 window.WEDDING_TRANSLATIONS = {
       en: {
         'nav.story':'Our Story','nav.program':'Program','nav.dresscode':'Dress Code','nav.venue':'Venue','nav.rsvp':'RSVP',
-        'hero.eyebrow':'Kindly join us for the wedding of','hero.date':'July 11, 2027','hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
+        'hero.eyebrow':'Kindly join us for the wedding of','hero.date':'July 11, 2027','hero.add_to_calendar': 'Add to Google Calendar', 'hero.cta':'RSVP Now','hero.scroll':'Scroll to explore ↓',
         'cd.days':'Days','cd.hours':'Hours','cd.mins':'Minutes','cd.secs':'Seconds',
         'kick.couple':'Our story','kick.journey':'From the album','kick.program':'How the day runs',
         'kick.dress':'What to wear','kick.venue':'Getting there','kick.rsvp':'Kindly respond by 1 June 2027',
@@ -70,7 +70,7 @@ window.WEDDING_TRANSLATIONS = {
       },
       th: {
         'nav.story':'เรื่องราวของเรา','nav.program':'กำหนดการ','nav.dresscode':'การแต่งกาย','nav.venue':'สถานที่จัดงาน','nav.rsvp':'ยืนยันการเข้าร่วม',
-        'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.date':'11 กรกฎาคม พ.ศ. 2570','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
+        'hero.eyebrow':'ขอเชิญร่วมเฉลิมฉลองวันแต่งงานของ','hero.date':'11 กรกฎาคม พ.ศ. 2570','hero.add_to_calendar':'เพิ่มลง Google Calendar','hero.cta':'ยืนยันการเข้าร่วม','hero.scroll':'เลื่อนดูเพิ่มเติม ↓',
         'cd.days':'วัน','cd.hours':'ชั่วโมง','cd.mins':'นาที','cd.secs':'วินาที',
         'kick.couple':'เรื่องราวของเรา','kick.journey':'จากอัลบั้มของเรา','kick.program':'ลำดับงานในวันนั้น',
         'kick.dress':'แต่งตัวอย่างไรดี','kick.venue':'การเดินทาง','kick.rsvp':'กรุณาตอบรับภายใน 1 มิถุนายน 2570',
